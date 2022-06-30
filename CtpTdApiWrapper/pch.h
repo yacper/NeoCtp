@@ -16,9 +16,9 @@
 
 
 #ifdef CTPTDAPIWRAPPER_EXPORTS
-#define TRADEAPI_API __declspec(dllexport)
+#define TDAPI_API __declspec(dllexport)
 #else
-#define TRADEAPI_API __declspec(dllimport)
+#define TDAPI_API __declspec(dllimport)
 #endif
 
 #pragma comment (lib, "thosttraderapi_se.lib")

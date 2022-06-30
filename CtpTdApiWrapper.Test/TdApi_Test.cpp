@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "InitCtp.h"
+#include "Connect.h"
 #include "LoginCtp.h"
 #include "LogoutCtp.h"
 #include "QryAccountregisterCtp.h"

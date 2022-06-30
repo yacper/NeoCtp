@@ -1,75 +1,82 @@
 #pragma once
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <mutex>
 #include "pch.h"
-#include "..\CtpTdApiWrapper\TraderApi.h"
-#include "..\CtpTdApiWrapper\TraderSpi.h"
-#include <functional>
+#include "TestConstants.h"
 using namespace std;
 
 
-class ICtpTdApi:CThostFtdcTraderSpi
+class TdApiTestBase 
 {
 public:
-	
+
 	void InitTdApi()
 	{
+		strcpy(m_tradeFrontAddr, gTradeFrontAddr);
+
+		strcpy(m_brokerID, gBrokerID);
+		strcpy(m_investerID, gInvesterID);
+		strcpy(m_investerPassword, gInvesterPassword);
+
+
 		cout << "连接交易服务器..." << endl;
-		if (m_pTdApi == NULL) {
+		if (m_pTdApi == NULL)
+		{
 			m_pTdApi = CreateFtdcTraderApi();									// 创建行情实例		
-			m_pTdApi->RegisterSpi(this);
+			m_pTdSpi = CreateTraderSpi();
+			RegisterSpi(m_pTdApi, m_pTdSpi);
 
-			m_pTdApi->SubscribePrivateTopic(THOST_TERT_RESUME);		// 订阅私有流
-			m_pTdApi->SubscribePublicTopic(THOST_TERT_RESUME);		// 订阅公有流
-			m_pTdApi->RegisterFront(m_tradeFrontAddr);					// 设置行情前置地址
+			SubscribePublicTopic(m_pTdApi, THOST_TERT_RESUME);
+			SubscribePrivateTopic(m_pTdApi, THOST_TERT_RESUME);
 
-			m_pTdApi->Init();											// 初始化 ctp					
-		}		
+			RegisterFront(m_pTdApi, m_tradeFrontAddr);
+
+			Init(m_pTdApi);
+		}
 	}
 
 	// 回调成功后调用
-	void NotifySuccess() 
+	void NotifySuccess()
 	{
 		m_isCheckOK = true;
 		m_cndt_v.notify_one();
 	}
 
 	// 回调失败通知
-	void NotifyFailed() 
+	void NotifyFailed()
 	{
 		m_isCheckOK = false;
 		m_cndt_v.notify_one();
 	}
 
 	// 用于检测当前是否成功
-	virtual bool CheckIsOK() 
+	virtual bool CheckIsOK()
 	{
-		if (m_isCheckOK) {
+		if (m_isCheckOK)
+		{
 			m_isCheckOK = false;
 			return true;
 		}
 
 		std::unique_lock<mutex> lck(m_mtx);
 		m_cndt_v.wait_for(lck, chrono::seconds(m_time));
-		
+
 		bool isOK = m_isCheckOK;
 		m_isCheckOK = false;
 		return isOK;
 	}
 
-	~ICtpTdApi()
+	~TdApiTestBase()
 	{
-		Release();
+		TearDown();
 	}
 
 private:
 
-	void Release() {
-		// m_pTdApi->Join();
-		m_pTdApi->Release();
+	void TearDown()
+	{
+		//Join(m_pTdApi);
+		Release(m_pTdApi);
 		m_pTdApi = NULL;
+		m_pTdSpi = NULL;
 	}
 
 public:
@@ -81,8 +88,8 @@ public:
 	// 行情参数
 	CThostFtdcTraderApi* m_pTdApi = nullptr;											// 行情指针
 	TraderSpi* m_pTdSpi = nullptr;											 // spi
-	char m_tradeFrontAddr[28] = "tcp://180.168.146.187:10201";				 // 模拟交易前置地址 第一组
-	//char m_tradeFrontAddr[28] = "tcp://180.168.146.187:10130";				 // 模拟交易前置地址 24h
+
+	char m_tradeFrontAddr[28] = { '\0' };				 // 模拟交易前置地址 第一组
 
 private:
 	bool m_isCheckOK = false;
@@ -92,3 +99,4 @@ private:
 	int m_time = 7;															 // 超时时间	
 };
 
+TdApiTestBase* TestBase = NULL;

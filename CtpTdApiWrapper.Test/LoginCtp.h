@@ -1,7 +1,7 @@
 #pragma once
-#include "InitCtp.h"
+#include "Connect.h"
 
-class LoginCtp : public InitCtp 
+class LoginCtp : public Connect 
 {
 public:	
 	// µÇÂ¼»Øµ÷
@@ -29,8 +29,8 @@ public:
 
 	virtual void Run() 
 	{
-		InitCtp::Run();
-		bool initOK = InitCtp::CheckIsOK();
+		Connect::Run();
+		bool initOK = Connect::CheckIsOK();
 		if (initOK)
 			SendLoginRequest();		
 		else 

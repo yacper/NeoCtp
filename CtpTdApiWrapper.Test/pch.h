@@ -8,7 +8,12 @@
 // Windows 头文件
 #include <windows.h>
 
+#include <stdio.h>
 #include <iostream>
+#include <fstream>
+#include <mutex>
+#include <functional>
+
 #include "gtest/gtest.h"
 
 
@@ -16,6 +21,8 @@
 #include "ThostFtdcUserApiDataType.h"   // 最新6.3.19版本 
 #include "ThostFtdcUserApiStruct.h"   // 最新6.3.19版本 
 
+#include "..\CtpTdApiWrapper\TraderApi.h"
+#include "..\CtpTdApiWrapper\TraderSpi.h"
 
 #pragma comment (lib, "CtpTdApiWrapper.lib")
 
