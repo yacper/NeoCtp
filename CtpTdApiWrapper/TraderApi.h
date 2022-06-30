@@ -6,7 +6,7 @@ extern "C"  // 以C的方式导出函数名
 {
 #pragma  region Api
 
-	TRADEAPI_API CThostFtdcTraderApi* CreateFtdcTraderApi(const char* pszFlowPath = "Flow/");
+	TRADEAPI_API CThostFtdcTraderApi* CreateFtdcTraderApi(const char* pszFlowPath = "CtpFlow/");
 	TRADEAPI_API TraderSpi*	CreateTraderSpi();
 	TRADEAPI_API void		RegisterSpi(CThostFtdcTraderApi* api, TraderSpi* pSpi);
 
