@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EE673466-97C2-4025-9E57-579C89C12D5B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CtpMdApiWrapper.Test", "CtpMdApiWrapper.Test\CtpMdApiWrapper.Test.vcxproj", "{F0A24B5D-2264-4827-8427-2A2607D09876}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D6F390A7-2D96-40B5-821C-9468A19D058C} = {D6F390A7-2D96-40B5-821C-9468A19D058C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CtpSimpleTest", "CtpSimpleTest\CtpSimpleTest.vcxproj", "{E7B77322-6337-45C8-8A4B-DF428BB00A4B}"
 EndProject
