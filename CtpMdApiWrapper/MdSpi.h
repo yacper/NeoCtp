@@ -20,17 +20,15 @@
 	typedef void (WINAPI* CBOnRspUserLogin)(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 	typedef void (WINAPI* CBOnRspUserLogout)(CThostFtdcUserLogoutField* pUserLogout, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 
-	typedef void (WINAPI* CBOnRspQryMulticastInstrument)(CThostFtdcMulticastInstrumentField* pMulticastInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
-
 	typedef void (WINAPI* CBOnRspSubMarketData)(CThostFtdcSpecificInstrumentField* pSpecificInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 	typedef void (WINAPI* CBOnRspUnSubMarketData)(CThostFtdcSpecificInstrumentField* pSpecificInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
+	typedef void (WINAPI* CBOnRtnDepthMarketData)(CThostFtdcDepthMarketDataField* pDepthMarketData);
 
 	typedef void (WINAPI* CBOnRspSubForQuoteRsp)(CThostFtdcSpecificInstrumentField* pSpecificInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 	typedef void (WINAPI* CBOnRspUnSubForQuoteRsp)(CThostFtdcSpecificInstrumentField* pSpecificInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
-
-	typedef void (WINAPI* CBOnRtnDepthMarketData)(CThostFtdcDepthMarketDataField* pDepthMarketData);
-
 	typedef void (WINAPI* CBOnRtnForQuoteRsp)(CThostFtdcForQuoteRspField* pForQuoteRsp);
+
+	typedef void (WINAPI* CBOnRspQryMulticastInstrument)(CThostFtdcMulticastInstrumentField* pMulticastInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 //}
 #pragma endregion
 
@@ -39,7 +37,7 @@ class /*MDAPI_API*/ MdSpi : public CThostFtdcMdSpi
 public:
 
 #pragma region 回调委托实例
-	CBOnRspError cbOnRspError = 0;
+	CBOnRspError cbOnRspError = nullptr;
 	CBOnHeartBeatWarning cbOnHeartBeatWarning = 0;
 
 	CBOnFrontConnected cbOnFrontConnected = 0;

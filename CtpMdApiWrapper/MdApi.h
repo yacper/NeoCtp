@@ -12,7 +12,7 @@
 extern "C"  // 以C的方式导出函数名
 {
 #pragma  region Api
-	MDAPI_API CThostFtdcMdApi* CreateFtdcMdApi(const char* pszFlowPath = "Flow/", const bool bIsUsingUdp = false, const bool bIsMulticast = false);
+	MDAPI_API CThostFtdcMdApi* CreateFtdcMdApi(const char* pszFlowPath = "CtpFlow/", const bool bIsUsingUdp = false, const bool bIsMulticast = false);
 	MDAPI_API MdSpi*		CreateMdSpi();
 	MDAPI_API void			RegisterSpi(CThostFtdcMdApi* api, MdSpi* pSpi);
 
@@ -30,14 +30,15 @@ extern "C"  // 以C的方式导出函数名
 	MDAPI_API void			RegisterNameServer(CThostFtdcMdApi* pUserApi, char* pszNsAddress);
 	MDAPI_API void			RegisterFensUserInfo(CThostFtdcMdApi* pUserApi, CThostFtdcFensUserInfoField* pFensUserInfo);
 
+	MDAPI_API int			ReqUserLogin(CThostFtdcMdApi* pUserApi, CThostFtdcReqUserLoginField* pReqUserLoginField, int nRequestID);
+	MDAPI_API int			ReqUserLogout(CThostFtdcMdApi* pUserApi, CThostFtdcUserLogoutField* pUserLogout, int nRequestID);
+
 	MDAPI_API int			SubscribeMarketData(CThostFtdcMdApi* pUserApi, char* instrumentsID[], int nCount);
 	MDAPI_API int			UnSubscribeMarketData(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount);
 
+	// quote无意义
 	MDAPI_API int			SubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount);
 	MDAPI_API int			UnSubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount);
-
-	MDAPI_API int			ReqUserLogin(CThostFtdcMdApi* pUserApi, CThostFtdcReqUserLoginField* pReqUserLoginField, int nRequestID);
-	MDAPI_API int			ReqUserLogout(CThostFtdcMdApi* pUserApi, CThostFtdcUserLogoutField* pUserLogout, int nRequestID);
 
 	MDAPI_API int			ReqQryMulticastInstrument(CThostFtdcMdApi* pUserApi, CThostFtdcQryMulticastInstrumentField* pQryMulticastInstrument, int nRequestID);
 #pragma endregion
@@ -55,15 +56,13 @@ extern "C"  // 以C的方式导出函数名
 
 	MDAPI_API void			RegOnRspSubMarketData(MdSpi* spi, CBOnRspSubMarketData cb);
 	MDAPI_API void			RegOnRspUnSubMarketData(MdSpi* spi, CBOnRspUnSubMarketData cb);
+	MDAPI_API void			RegOnRtnDepthMarketData(MdSpi* spi, CBOnRtnDepthMarketData cb);
 
 	MDAPI_API void			RegOnRspSubForQuoteRsp(MdSpi* spi, CBOnRspSubForQuoteRsp cb);
 	MDAPI_API void			RegOnRspUnSubForQuoteRsp(MdSpi* spi, CBOnRspUnSubForQuoteRsp cb);
+	MDAPI_API void			RegOnRtnForQuoteRsp(MdSpi* spi, CBOnRtnForQuoteRsp cb);
 
 	MDAPI_API void			RegOnRspQryMulticastInstrument(MdSpi* spi, CBOnRspQryMulticastInstrument cb);
-
-	MDAPI_API void			RegOnRtnDepthMarketData(MdSpi* spi, CBOnRtnDepthMarketData cb);
-
-	MDAPI_API void			RegOnRtnForQuoteRsp(MdSpi* spi, CBOnRtnForQuoteRsp cb);
 #pragma endregion
 
 }

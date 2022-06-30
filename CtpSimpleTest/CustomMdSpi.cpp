@@ -62,6 +62,21 @@ void CustomMdSpi::OnRspUserLogin(
 		std::cout << "登录时间： " << pRspUserLogin->LoginTime << std::endl;
 		std::cout << "经纪商： " << pRspUserLogin->BrokerID << std::endl;
 		std::cout << "帐户名： " << pRspUserLogin->UserID << std::endl;
+
+		//// 登出请求  无此功能
+		//CThostFtdcUserLogoutField logout = { "\0" };
+		//std::strcpy(logout.BrokerID, gBrokerID);
+		//std::strcpy(logout.UserID, gInvesterID);
+		//int requestID = 100; // 请求编号
+		//int rt = g_pMdUserApi->ReqUserLogout(&logout, requestID);
+		//if (!rt)
+		//	std::cout << ">>>>>>发送登出请求成功" << std::endl;
+		//else
+		//	std::cout << "--->>>发送登出请求失败" << std::endl ;
+
+		//return;
+
+
 		// 开始订阅行情
 		int rt = g_pMdUserApi->SubscribeMarketData(g_pInstrumentID, instrumentNum);
 		if (!rt)
@@ -94,9 +109,10 @@ void CustomMdSpi::OnRspUserLogout(
 // 错误通知
 void CustomMdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+	// nRequestID 该id永远是0
 	bool bResult = pRspInfo && (pRspInfo->ErrorID != 0);
 	if (bResult)
-		std::cerr << "返回错误--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << std::endl;
+		std::cerr << "返回错误--->>> RequestID=" << nRequestID << " ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << std::endl;
 }
 
 // 订阅行情应答
