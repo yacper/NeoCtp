@@ -21,4 +21,6 @@
 
 #pragma comment (lib, "thostmduserapi_se.lib")
 
+#pragma warning(disable : 4996)
+
 #endif //PCH_H

@@ -14,3 +14,5 @@
 
 #pragma comment (lib, "CtpMdApiWrapper.lib")
 
+#pragma warning(disable : 4996)
+
