@@ -18,6 +18,7 @@ using MoreLinq;
 using NeoCtp.Api;
 using NeoCtp.Enums;
 using NeoCtp.Exceptions;
+using NLog;
 
 namespace NeoCtp.Imp
 {
@@ -35,7 +36,7 @@ namespace NeoCtp.Imp
 
 		public void OnFrontDisconnected(int nReason)
 		{
-            IsConnected = false;
+            ConnectionState = EConnectionState.Disconnected;
 
 			OnFrontDisconnectedEvent?.Invoke(this, (EFrontDisconnectedReason)nReason);
 		}
@@ -112,22 +113,26 @@ namespace NeoCtp.Imp
 
 
 
-        public CtpMdApi(string frontAddress, string brokerId, string userId, string password)
+        public CtpMdApi(string frontAddress, string brokerId, string userId, string password, ILogger logger = null)
 			:base(frontAddress, brokerId, userId, password)
         {
+            Logger = logger;
             RegisterSpi(this);
             RegisterFront(FrontAddress);
         }
 
+        public    EConnectionState ConnectionState { get => ConnectionState_; set => SetProperty(ref ConnectionState_, value); }
+        protected EConnectionState ConnectionState_;
 
-		public bool                IsConnected
-        {
-	        get { return _IsConnected; }
+		//public bool                IsConnected
+  //      {
+	 //       get { return _IsConnected; }
 
-			protected set { SetProperty(ref _IsConnected, value); }
+		//	protected set { SetProperty(ref _IsConnected, value); }
 
-        }
+  //      }
 
+        public ILogger Logger { get; protected set; }
 
 		public bool IsLogined
 		{
@@ -145,19 +150,20 @@ namespace NeoCtp.Imp
 
         string ICtpMdApi.GetApiVersion() => CtpMdApiBase.GetApiVersion();
 
-        public Task			ConnectAsync()
+        public Task<bool>			ConnectAsync()
         {
-            if (IsLogined)
-                return Task.CompletedTask;
+            if (ConnectionState == EConnectionState.Connected)
+                return Task.FromResult(true);
 
-            var taskSource = new TaskCompletionSource();
+            ConnectionState           =  EConnectionState.Connecting;
+            var taskSource = new TaskCompletionSource<bool>();
 
             EventHandler onFrontConnectedHandler = null;
             onFrontConnectedHandler = (s, e) =>
             {
                 OnFrontConnectedEvent -= onFrontConnectedHandler;
-                IsConnected           =  true;
-                taskSource.TrySetResult();
+                ConnectionState           =  EConnectionState.Connected;
+                taskSource.TrySetResult(true);
             };
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
@@ -171,6 +177,12 @@ namespace NeoCtp.Imp
     
             Init();
             return taskSource.Task;
+        }
+
+        public Task DisconnectAsync()
+        {
+            throw new NotImplementedException();
+
         }
 
         public event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;

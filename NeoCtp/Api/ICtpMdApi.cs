@@ -43,9 +43,10 @@ namespace NeoCtp
         event EventHandler<CtpRsp> OnRspErrorEvent;
         event EventHandler<int> OnHeartBeatWarningEvent;
 
-        bool                IsConnected { get; }
-		Task				ConnectAsync();
-//		Task				Disconnect();
+        EConnectionState ConnectionState { get; }
+        //bool             IsConnected     { get; }
+		Task<bool>          ConnectAsync();
+		Task				DisconnectAsync();
         event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
 
 

@@ -21,5 +21,6 @@
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  <PackageReference Include="morelinq" Version="3.3.2" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	  <PackageReference Include="NLog" Version="5.0.1" />
 	</ItemGroup>
 </Project>
