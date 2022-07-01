@@ -1512,7 +1512,7 @@ TDAPI_API void   RegRspGenUserText(TraderSpi* pSpi, CBRspGenUserText cb)	//»ñÈ¡¶
 {
 	pSpi->cbRspGenUserText = cb;
 }
-TDAPI_API void   RegRspOrderInsert(TraderSpi* pSpi, CBRspOrderInsert cb)	//±¨µ¥Â¼ÈëÇëÇóÏìÓ¦
+TDAPI_API void   RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb)	//±¨µ¥Â¼ÈëÇëÇóÏìÓ¦
 {
 	pSpi->cbRspOrderInsert = cb;
 }
@@ -1532,7 +1532,7 @@ TDAPI_API void   RegRspQueryMaxOrderVolume(TraderSpi* pSpi, CBRspQueryMaxOrderVo
 {
 	pSpi->cbRspQueryMaxOrderVolume = cb;
 }
-TDAPI_API void   RegRspSettlementInfoConfirm(TraderSpi* pSpi, CBRspSettlementInfoConfirm cb)	//Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏÏìÓ¦
+TDAPI_API void   RegOnRspSettlementInfoConfirm(TraderSpi* pSpi, CBOnRspSettlementInfoConfirm cb)	//Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏÏìÓ¦
 {
 	pSpi->cbRspSettlementInfoConfirm = cb;
 }
@@ -1552,7 +1552,7 @@ TDAPI_API void   RegCombActionInsert(TraderSpi* pSpi, CBRspCombActionInsert cb)	
 {
 	pSpi->cbRspCombActionInsert = cb;
 }
-TDAPI_API void   RegRspQryOrder(TraderSpi* pSpi, CBRspQryOrder cb)	//ÇëÇó²éÑ¯±¨µ¥ÏìÓ¦
+TDAPI_API void   RegOnRspQryOrder(TraderSpi* pSpi, CBOnRspQryOrder cb)	//ÇëÇó²éÑ¯±¨µ¥ÏìÓ¦
 {
 	pSpi->cbRspQryOrder = cb;
 }
@@ -1720,7 +1720,7 @@ TDAPI_API void   RegRspQryTransferSerial(TraderSpi* pSpi, CBRspQryTransferSerial
 {
 	pSpi->cbRspQryTransferSerial = cb;
 }
-TDAPI_API void   RegRspQryAccountregister(TraderSpi* pSpi, CBRspQryAccountregister cb)	//ÇëÇó²éÑ¯ÒøÆÚÇ©Ô¼¹ØÏµÏìÓ¦
+TDAPI_API void   RegOnRspQryAccountregister(TraderSpi* pSpi, CBOnRspQryAccountregister cb)	//ÇëÇó²éÑ¯ÒøÆÚÇ©Ô¼¹ØÏµÏìÓ¦
 {
 	pSpi->cbRspQryAccountregister = cb;
 }

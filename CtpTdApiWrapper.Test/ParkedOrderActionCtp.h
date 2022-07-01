@@ -1,8 +1,8 @@
 #pragma once
-#include "OrderInsertCtp.h"
+#include "OrderInsert.h"
 
 // 预埋撤单录入 （撤掉已经提交到交易所的报单）
-class ParkedOrderActionCtp : public OrderInsertCtp
+class ParkedOrderActionCtp : public OrderInsert
 {
 public:
 	// 预埋撤单响应
@@ -44,8 +44,8 @@ public:
 
 	virtual void Run() 
 	{
-		OrderInsertCtp::Run();
-		bool orderInsertOK = OrderInsertCtp::CheckIsOK();
+		OrderInsert::Run();
+		bool orderInsertOK = OrderInsert::CheckIsOK();
 		if (orderInsertOK)
 			SendParkedOrderActionRequest();
 		else {

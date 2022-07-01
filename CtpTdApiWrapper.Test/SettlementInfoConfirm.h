@@ -4,73 +4,85 @@
 #include <string>
 #include <gtest/gtest.h>
 #include "Login.h"
+class SettlementInfoConfirm;
+
+void OnRspSettlementInfoConfirm(
+	CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm,
+	CThostFtdcRspInfoField* pRspInfo,
+	int nRequestID,
+	bool bIsLast)
+{
+	bool bResult = pRspInfo && pRspInfo->ErrorID != 0;
+	if (!bResult)
+	{
+
+		TestBase->NotifySuccess();
+		//((SettlementInfoConfirm*)TestBase)->SaveSettlementResult();
+
+		if (pSettlementInfoConfirm == nullptr)
+			pSettlementInfoConfirm = new CThostFtdcSettlementInfoConfirmField();
+
+		std::cout << "请求结算响应" << std::endl;
+		std::cout << "经济公司代码： " << pSettlementInfoConfirm->BrokerID << std::endl;
+		std::cout << "投资者代码： " << pSettlementInfoConfirm->InvestorID << std::endl;
+		std::cout << "确认日期： " << pSettlementInfoConfirm->ConfirmDate << std::endl;
+		std::cout << "确认时间： " << pSettlementInfoConfirm->ConfirmTime << std::endl;
+		std::cout << "结算编号： " << pSettlementInfoConfirm->SettlementID << std::endl;
+		std::cout << "投资者账号： " << pSettlementInfoConfirm->AccountID << std::endl;
+		std::cout << "币种代码： " << pSettlementInfoConfirm->CurrencyID << std::endl;
+	}
+	else
+	{
+		TestBase->NotifyFailed();
+		std::cerr << "errCode = " << pRspInfo->ErrorID << ", errMsg = " << pRspInfo->ErrorMsg << std::endl;
+	}
+};
+
+
+
 
 // 结算确认（在每天开仓前需要先确认上一个交易日的结算信息）
-class SettlementInfoConfirmCtp : public Login
+class SettlementInfoConfirm : public Login
 {
 
 public:
-	virtual void OnRspSettlementInfoConfirm(
-		CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm, 
-		CThostFtdcRspInfoField* pRspInfo, 
-		int nRequestID, 
-		bool bIsLast) 
-	{
-		bool bResult = pRspInfo && pRspInfo->ErrorID != 0;
-		if (!bResult) {
-
-			NotifySuccess();
-			SaveSettlementResult();
-
-			if (pSettlementInfoConfirm == nullptr)
-				pSettlementInfoConfirm = new CThostFtdcSettlementInfoConfirmField();
-
-			std::cout << "请求结算响应" << std::endl;
-			std::cout << "经济公司代码： " << pSettlementInfoConfirm->BrokerID << std::endl;
-			std::cout << "投资者代码： " << pSettlementInfoConfirm->InvestorID << std::endl;
-			std::cout << "确认日期： " << pSettlementInfoConfirm->ConfirmDate << std::endl;
-			std::cout << "确认时间： " << pSettlementInfoConfirm->ConfirmTime << std::endl;
-			std::cout << "结算编号： " << pSettlementInfoConfirm->SettlementID << std::endl;
-			std::cout << "投资者账号： " << pSettlementInfoConfirm->AccountID << std::endl;
-			std::cout << "币种代码： " << pSettlementInfoConfirm->CurrencyID << std::endl;
-		}
-		else 
-		{
-			NotifyFailed();
-			std::cerr << "errCode = " << pRspInfo->ErrorID << ", errMsg = " << pRspInfo->ErrorMsg << std::endl;
-		}
-	};
-
-	virtual void Run() 
+	virtual void Run()
 	{
 		Login::Run();
-		bool loginOK =  Login::CheckIsOK();
-		if (loginOK) {
-			if (CheckIsSettlement()) {  // 已经结算过直接通知
+
+		RegOnRspSettlementInfoConfirm(m_pTdSpi, OnRspSettlementInfoConfirm);
+
+		bool loginOK = Login::CheckIsOK();
+		if (loginOK)
+		{
+			if (CheckIsSettlement())
+			{  // 已经结算过直接通知
 				NotifySuccess();
 			}
-			else {
+			else
+			{
 				SendSettlementInfoConfirmRequest();
-			}			
+			}
 		}
-		else {
+		else
+		{
 			NotifyFailed();
 			std::cerr << "登录失败，请检查瞪了的用户名和密码" << std::endl;
 		}
 	}
 
-private:
+public:
 	// 发送结算确认请求
-	void SendSettlementInfoConfirmRequest() 
+	void SendSettlementInfoConfirmRequest()
 	{
 		CThostFtdcSettlementInfoConfirmField confirm = { '\0' };
 		strcpy_s(confirm.BrokerID, gBrokerID);
 		strcpy_s(confirm.InvestorID, gInvesterID);
 
-		int rf = m_pTdApi->ReqSettlementInfoConfirm(&confirm, 0);
+		int rf = ReqSettlementInfoConfirm(m_pTdApi, &confirm, 0);
 		if (!rf)
 			std::cout << "发送结算确认请求消息成功" << std::endl;
-		else 
+		else
 		{
 			NotifyFailed();
 			std::cerr << "发送结算确认请求消息失败" << std::endl;
@@ -97,6 +109,7 @@ private:
 		ofsfile.open(dbFile, ios::out);
 		ofsfile << content << std::endl;
 		ofsfile.close();
+		
 	}
 
 	// 检测是否已经结算
@@ -150,7 +163,8 @@ private:
 
 TEST(CtpApiTest, 04SettlementInfoConfirm)
 {
-	SettlementInfoConfirmCtp  confirmCtp;
+	SettlementInfoConfirm  confirmCtp;
+	TestBase = &confirmCtp;
 	confirmCtp.Run();
 	bool isOK = confirmCtp.CheckIsOK();
 	EXPECT_TRUE(isOK);

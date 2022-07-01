@@ -123,6 +123,7 @@ extern "C"  // 以C的方式导出函数名
 	///请求查询行情
 	TDAPI_API int		ReqQryDepthMarketData(CThostFtdcTraderApi* pApi, CThostFtdcQryDepthMarketDataField* pQryDepthMarketData, int nRequestID);
 
+#pragma region Order management
 	///报单录入请求
 	TDAPI_API int		ReqOrderInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputOrderField* pInputOrder, int nRequestID);
 	///请求查询报单
@@ -133,9 +134,6 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API int		ReqOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputOrderActionField* pInputOrderAction, int nRequestID);
 	///批量报单操作请求
 	TDAPI_API int		ReqBatchOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputBatchOrderActionField* pInputBatchOrderAction, int nRequestID);
-
-	///请求查询成交
-	TDAPI_API int		ReqQryTrade(CThostFtdcTraderApi* pApi, CThostFtdcQryTradeField* pQryTrade, int nRequestID);
 
 	///预埋单录入请求
 	TDAPI_API int		ReqParkedOrderInsert(CThostFtdcTraderApi* pApi, CThostFtdcParkedOrderField* pParkedOrder, int nRequestID);
@@ -150,7 +148,12 @@ extern "C"  // 以C的方式导出函数名
 	///请求查询预埋撤单
 	TDAPI_API int		ReqQryParkedOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcQryParkedOrderActionField* pQryParkedOrderAction, int nRequestID);
 
-	///请求查询客户通知
+#pragma endregion
+
+	///请求查询成交
+	TDAPI_API int		ReqQryTrade(CThostFtdcTraderApi* pApi, CThostFtdcQryTradeField* pQryTrade, int nRequestID);
+
+		///请求查询客户通知
 	TDAPI_API int		ReqQryNotice(CThostFtdcTraderApi* pApi, CThostFtdcQryNoticeField* pQryNotice, int nRequestID);
 	///请求查询交易通知
 	TDAPI_API int		ReqQryTradingNotice(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingNoticeField* pQryTradingNotice, int nRequestID);
@@ -193,14 +196,18 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API int		ReqQryInvestor(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestorField* pQryInvestor, int nRequestID);
 	///请求查询交易编码
 	TDAPI_API int		ReqQryTradingCode(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingCodeField* pQryTradingCode, int nRequestID);
+	///请求查询投资单元
+	TDAPI_API int		ReqQryInvestUnit(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestUnitField* pQryInvestUnit, int nRequestID);
+
+
+#pragma region 结算
 	///请求查询投资者结算结果
 	TDAPI_API int		ReqQrySettlementInfo(CThostFtdcTraderApi* pApi, CThostFtdcQrySettlementInfoField* pQrySettlementInfo, int nRequestID);
 	///请求查询结算信息确认
 	TDAPI_API int		ReqQrySettlementInfoConfirm(CThostFtdcTraderApi* pApi, CThostFtdcQrySettlementInfoConfirmField* pQrySettlementInfoConfirm, int nRequestID);
 	///投资者结算结果确认
 	TDAPI_API int		ReqSettlementInfoConfirm(CThostFtdcTraderApi* pApi, CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm, int nRequestID);
-	///请求查询投资单元
-	TDAPI_API int		ReqQryInvestUnit(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestUnitField* pQryInvestUnit, int nRequestID);
+#pragma endregion
 
 
 #pragma region product/Instrument
@@ -324,6 +331,7 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegOnRspAuthenticate(TraderSpi* pSpi, CBOnRspAuthenticate cb);
 
 	TDAPI_API void RegOnRspUserLogin(TraderSpi* pSpi, CBOnRspUserLogin cb);	//登录请求响应
+	TDAPI_API void RegOnRspSettlementInfoConfirm(TraderSpi* pSpi, CBOnRspSettlementInfoConfirm cb);	//投资者结算结果确认响应
 	TDAPI_API void RegOnRspUserLogout(TraderSpi* pSpi, CBOnRspUserLogout cb);	//登出请求响应
 
 	TDAPI_API void RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb);	//用户口令更新请求响应
@@ -331,17 +339,16 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspUserAuthMethod(TraderSpi* pSpi, CBRspUserAuthMethod cb);	//查询用户当前支持的认证模式的回复
 	TDAPI_API void RegRspGenUserCaptcha(TraderSpi* pSpi, CBRspGenUserCaptcha cb);	//获取图形验证码请求的回复
 	TDAPI_API void RegRspGenUserText(TraderSpi* pSpi, CBRspGenUserText cb);	//获取短信验证码请求的回复
-	TDAPI_API void RegRspOrderInsert(TraderSpi* pSpi, CBRspOrderInsert cb);	//报单录入请求响应
+	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//报单录入请求响应
 	TDAPI_API void RegRspParkedOrderInsert(TraderSpi* pSpi, CBRspParkedOrderInsert cb);	//预埋单录入请求响应
 	TDAPI_API void RegRspParkedOrderAction(TraderSpi* pSpi, CBRspParkedOrderAction cb);	//预埋撤单录入请求响应
 	TDAPI_API void RegRspOrderAction(TraderSpi* pSpi, CBRspOrderAction cb);	//报单操作请求响应
 	TDAPI_API void RegRspQueryMaxOrderVolume(TraderSpi* pSpi, CBRspQueryMaxOrderVolume cb);	//查询最大报单数量响应
-	TDAPI_API void RegRspSettlementInfoConfirm(TraderSpi* pSpi, CBRspSettlementInfoConfirm cb);	//投资者结算结果确认响应
 	TDAPI_API void RegRspRemoveParkedOrder(TraderSpi* pSpi, CBRspRemoveParkedOrder cb);	//删除预埋单响应
 	TDAPI_API void RegRspRemoveParkedOrderAction(TraderSpi* pSpi, CBRspRemoveParkedOrderAction cb);	//删除预埋撤单响应
 	TDAPI_API void RegBatchOrderAction(TraderSpi* pSpi, CBRspBatchOrderAction cb);	//批量报单操作请求响应
 	TDAPI_API void RegCombActionInsert(TraderSpi* pSpi, CBRspCombActionInsert cb);	//申请组合录入请求响应
-	TDAPI_API void RegRspQryOrder(TraderSpi* pSpi, CBRspQryOrder cb);	//请求查询报单响应
+	TDAPI_API void RegOnRspQryOrder(TraderSpi* pSpi, CBOnRspQryOrder cb);	//请求查询报单响应
 	TDAPI_API void RegRspQryTrade(TraderSpi* pSpi, CBRspQryTrade cb);	//请求查询成交响应
 	TDAPI_API void RegRspQryInvestorPosition(TraderSpi* pSpi, CBRspQryInvestorPosition cb);	//请求查询投资者持仓响应
 	TDAPI_API void RegRspQryTradingAccount(TraderSpi* pSpi, CBRspQryTradingAccount cb);	//请求查询资金账户响应
@@ -383,7 +390,7 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspQryCombInstrumentGuard(TraderSpi* pSpi, CBRspQryCombInstrumentGuard cb);	//请求查询组合合约安全系数响应
 	TDAPI_API void RegRspQryCombAction(TraderSpi* pSpi, CBRspQryCombAction cb);	//请求查询申请组合响应
 	TDAPI_API void RegRspQryTransferSerial(TraderSpi* pSpi, CBRspQryTransferSerial cb);	//请求查询转帐流水响应
-	TDAPI_API void RegRspQryAccountregister(TraderSpi* pSpi, CBRspQryAccountregister cb);	//请求查询银期签约关系响应
+	TDAPI_API void RegOnRspQryAccountregister(TraderSpi* pSpi, CBOnRspQryAccountregister cb);	//请求查询银期签约关系响应
 	TDAPI_API void RegRtnOrder(TraderSpi* pSpi, CBRtnOrder cb);	//报单通知
 	TDAPI_API void RegRtnTrade(TraderSpi* pSpi, CBRtnTrade cb);	//成交通知
 	TDAPI_API void RegErrRtnOrderInsert(TraderSpi* pSpi, CBErrRtnOrderInsert cb);	//报单录入错误回报

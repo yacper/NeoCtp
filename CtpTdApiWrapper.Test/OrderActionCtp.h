@@ -1,12 +1,12 @@
 #pragma once
 #include<string>
-#include "OrderInsertCtp.h"
+#include "OrderInsert.h"
 
 // 撤单操作（只能先报单，然后再撤单）
-class OrderActionCtp : public OrderInsertCtp 
+class OrderActionCtp : public OrderInsert 
 {
 public:
-	OrderActionCtp(std::string instrument, std::string exchange, double price, int volume):OrderInsertCtp(instrument, exchange, price, volume)
+	OrderActionCtp(std::string instrument, std::string exchange, double price, int volume):OrderInsert(instrument, exchange, price, volume)
 	{
 
 	}
@@ -46,8 +46,8 @@ public:
 
 	virtual void Run() 
 	{
-		OrderInsertCtp::Run();
-		bool orderInsertOK = OrderInsertCtp::CheckIsOK();
+		OrderInsert::Run();
+		bool orderInsertOK = OrderInsert::CheckIsOK();
 		if (orderInsertOK)
 			SendOrderActionRequest();
 		else {

@@ -48,16 +48,16 @@
     <ClInclude Include="LogoutCtp.h" />
     <ClInclude Include="OperateEnum.h" />
     <ClInclude Include="OrderActionCtp.h" />
-    <ClInclude Include="OrderInsertCtp.h" />
+    <ClInclude Include="OrderInsert.h" />
     <ClInclude Include="ParkedOrderActionCtp.h" />
     <ClInclude Include="ParkedOrderInsertCtp.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="QryAccountregisterCtp.h" />
-    <ClInclude Include="QryOrderCtp.h" />
+    <ClInclude Include="QryAccountregister.h" />
+    <ClInclude Include="QryOrder.h" />
     <ClInclude Include="QryParkedOrderCtp.h" />
     <ClInclude Include="RemoveParkedOrderActionCtp.h" />
     <ClInclude Include="RemoveParkedOrderCtp.h" />
-    <ClInclude Include="SettlementInfoConfirmCtp.h" />
+    <ClInclude Include="SettlementInfoConfirm.h" />
     <ClInclude Include="TestConstants.h" />
   </ItemGroup>
   <ItemGroup>

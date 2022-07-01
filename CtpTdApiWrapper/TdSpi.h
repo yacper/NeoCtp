@@ -37,7 +37,7 @@ typedef void (WINAPI *CBRspGenUserCaptcha)(CThostFtdcRspGenUserCaptchaField *pRs
 ///获取短信验证码请求的回复
 typedef void (WINAPI *CBRspGenUserText)(CThostFtdcRspGenUserTextField *pRspGenUserText, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///报单录入请求响应
-typedef void (WINAPI *CBRspOrderInsert)(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspOrderInsert)(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///预埋单录入请求响应
 typedef void (WINAPI *CBRspParkedOrderInsert)(CThostFtdcParkedOrderField *pParkedOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///预埋撤单录入请求响应
@@ -47,7 +47,7 @@ typedef void (WINAPI *CBRspOrderAction)(CThostFtdcInputOrderActionField *pInputO
 ///查询最大报单数量响应
 typedef void (WINAPI *CBRspQueryMaxOrderVolume)(CThostFtdcQueryMaxOrderVolumeField *pQueryMaxOrderVolume, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///投资者结算结果确认响应
-typedef void (WINAPI *CBRspSettlementInfoConfirm)(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspSettlementInfoConfirm)(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///删除预埋单响应
 typedef void (WINAPI *CBRspRemoveParkedOrder)(CThostFtdcRemoveParkedOrderField *pRemoveParkedOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///删除预埋撤单响应
@@ -71,7 +71,7 @@ typedef void (WINAPI *CBRspOptionSelfCloseAction)(CThostFtdcInputOptionSelfClose
 ///申请组合录入请求响应
 typedef void (WINAPI *CBRspCombActionInsert)(CThostFtdcInputCombActionField *pInputCombAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询报单响应
-typedef void (WINAPI *CBRspQryOrder)(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspQryOrder)(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询成交响应
 typedef void (WINAPI *CBRspQryTrade)(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询投资者持仓响应
@@ -155,7 +155,7 @@ typedef void (WINAPI *CBRspQryCombAction)(CThostFtdcCombActionField *pCombAction
 ///请求查询转帐流水响应
 typedef void (WINAPI *CBRspQryTransferSerial)(CThostFtdcTransferSerialField *pTransferSerial, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询银期签约关系响应
-typedef void (WINAPI *CBRspQryAccountregister)(CThostFtdcAccountregisterField *pAccountregister, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspQryAccountregister)(CThostFtdcAccountregisterField *pAccountregister, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///错误应答
 typedef void (WINAPI *CBOnRspError)(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///报单通知
@@ -281,12 +281,12 @@ public:
 	CBRspUserAuthMethod cbRspUserAuthMethod = 0; ///查询用户当前支持的认证模式的回复
 	CBRspGenUserCaptcha cbRspGenUserCaptcha = 0; ///获取图形验证码请求的回复
 	CBRspGenUserText cbRspGenUserText = 0; ///获取短信验证码请求的回复
-	CBRspOrderInsert cbRspOrderInsert = 0;	///报单录入请求响应
+	CBOnRspOrderInsert cbRspOrderInsert = 0;	///报单录入请求响应
 	CBRspParkedOrderInsert cbRspParkedOrderInsert = 0;	///预埋单录入请求响应
 	CBRspParkedOrderAction cbRspParkedOrderAction = 0;	///预埋撤单录入请求响应
 	CBRspOrderAction cbRspOrderAction = 0;	///报单操作请求响应
 	CBRspQueryMaxOrderVolume cbRspQueryMaxOrderVolume = 0;	///查询最大报单数量响应
-	CBRspSettlementInfoConfirm cbRspSettlementInfoConfirm = 0;	///投资者结算结果确认响应
+	CBOnRspSettlementInfoConfirm cbRspSettlementInfoConfirm = 0;	///投资者结算结果确认响应
 	CBRspRemoveParkedOrder cbRspRemoveParkedOrder = 0;	///删除预埋单响应
 	CBRspRemoveParkedOrderAction cbRspRemoveParkedOrderAction = 0;	///删除预埋撤单响应
 	CBRspExecOrderInsert cbRspExecOrderInsert = 0;	///执行宣告录入请求响应
@@ -298,7 +298,7 @@ public:
 	CBRspOptionSelfCloseInsert cbRspOptionSelfCloseInsert = 0;	///期权自对冲录入请求响应
 	CBRspOptionSelfCloseAction cbRspOptionSelfCloseAction = 0; ///期权自对冲操作请求响应
 	CBRspCombActionInsert cbRspCombActionInsert = 0;	///申请组合录入请求响应
-	CBRspQryOrder cbRspQryOrder = 0;	///请求查询报单响应
+	CBOnRspQryOrder cbRspQryOrder = 0;	///请求查询报单响应
 	CBRspQryTrade cbRspQryTrade = 0;	///请求查询成交响应
 	CBRspQryInvestorPosition cbRspQryInvestorPosition = 0;	///请求查询投资者持仓响应
 	CBRspQryTradingAccount cbRspQryTradingAccount = 0;	///请求查询资金账户响应
@@ -340,7 +340,7 @@ public:
 	CBRspQryCombInstrumentGuard cbRspQryCombInstrumentGuard = 0;	///请求查询组合合约安全系数响应
 	CBRspQryCombAction cbRspQryCombAction = 0;	///请求查询申请组合响应
 	CBRspQryTransferSerial cbRspQryTransferSerial = 0;	///请求查询转帐流水响应
-	CBRspQryAccountregister cbRspQryAccountregister = 0;///请求查询银期签约关系响应
+	CBOnRspQryAccountregister cbRspQryAccountregister = 0;///请求查询银期签约关系响应
 	CBOnRspError cbRspError = 0;	///错误应答
 	CBRtnOrder cbRtnOrder = 0;	///报单通知
 	CBRtnTrade cbRtnTrade = 0;	///成交通知

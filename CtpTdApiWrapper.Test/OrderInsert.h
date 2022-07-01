@@ -1,9 +1,9 @@
 #pragma once
 #include<gtest/gtest.h>
-#include "SettlementInfoConfirmCtp.h"
+#include "SettlementInfoConfirm.h"
 
 // 报单请求（由于在报单请求之前必须确认昨日的结算才能发送报单请求）
-class OrderInsertCtp : public SettlementInfoConfirmCtp 
+class OrderInsert : public SettlementInfoConfirm 
 {
 public:
 
@@ -192,8 +192,8 @@ public:
 
 	virtual void Run() 
 	{
-		SettlementInfoConfirmCtp::Run();
-		bool settlementOK = SettlementInfoConfirmCtp::CheckIsOK();
+		SettlementInfoConfirm::Run();
+		bool settlementOK = SettlementInfoConfirm::CheckIsOK();
 		if (settlementOK) 
 			SendOrderInsertRequest();		
 		else {
@@ -207,7 +207,7 @@ public:
 		return m_orderSysID;
 	}
 
-	OrderInsertCtp() 
+	OrderInsert() 
 	{
 		strcpy_s(m_instrumentID, "ag2206");
 		strcpy_s(m_exchangeID, "SHFE");
@@ -215,7 +215,7 @@ public:
 		m_volume = 1;
 	}
 
-	OrderInsertCtp(string instrument, string exchange, double price, int volume)
+	OrderInsert(string instrument, string exchange, double price, int volume)
 	{
 		strcpy_s(m_instrumentID, instrument.c_str());
 		strcpy_s(m_exchangeID, exchange.c_str());
@@ -267,7 +267,7 @@ protected:
 
 TEST(CtpApiTest, 06OrderInsert)
 {
-	OrderInsertCtp orderInsertCtp;
+	OrderInsert orderInsertCtp;
 	orderInsertCtp.Run();
 	bool isOK = orderInsertCtp.CheckIsOK();
 	EXPECT_TRUE(isOK);

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="TdApi_Test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CombActionInsertCtp.h" />
+    <ClInclude Include="TdApiTestBase.h" />
+    <ClInclude Include="Connect.h" />
+    <ClInclude Include="Login.h" />
+    <ClInclude Include="LogoutCtp.h" />
+    <ClInclude Include="OperateEnum.h" />
+    <ClInclude Include="OrderActionCtp.h" />
+    <ClInclude Include="ParkedOrderActionCtp.h" />
+    <ClInclude Include="ParkedOrderInsertCtp.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="QryParkedOrderCtp.h" />
+    <ClInclude Include="RemoveParkedOrderActionCtp.h" />
+    <ClInclude Include="RemoveParkedOrderCtp.h" />
+    <ClInclude Include="TestConstants.h" />
+    <ClInclude Include="QryAccountregister.h">
+      <Filter>Banking</Filter>
+    </ClInclude>
+    <ClInclude Include="SettlementInfoConfirm.h">
+      <Filter>Settlement</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderInsert.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+    <ClInclude Include="QryOrder.h">
+      <Filter>Order</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Banking">
+      <UniqueIdentifier>{641e35e0-8420-4137-acc8-4326807020b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settlement">
+      <UniqueIdentifier>{8f4048b3-5c76-42fe-abb9-81841a5f2cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Order">
+      <UniqueIdentifier>{09223de4-0a10-4632-9151-cb8414a67419}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
