@@ -24,7 +24,7 @@ namespace SharpCtp.Test
 
 			public void		OnFrontDisconnected(int nReason)
 			{
-				Trace.WriteLine($"OnFrontDisconnected Error:{CtpHelper.GetError(nReason)?.prompt}");
+				Trace.WriteLine($"OnFrontDisconnected Error:{CtpError.GetError(nReason)?.prompt}");
 			}
 
 			public void		OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -55,8 +55,8 @@ namespace SharpCtp.Test
                 Trace.WriteLine($"TradingDay:	{pRspUserLogin.TradingDay}");
                 Trace.WriteLine($"LoginTime:	{pRspUserLogin.LoginTime}");
                 Trace.WriteLine($"SystemName:	{pRspUserLogin.SystemName}");
-                Trace.WriteLine($"FrontID:	{pRspUserLogin.FrontID}");
-                Trace.WriteLine($"SessionID:	{pRspUserLogin.SessionID}");
+                Trace.WriteLine($"FrontId:	{pRspUserLogin.FrontID}");
+                Trace.WriteLine($"SessionId:	{pRspUserLogin.SessionID}");
                 Trace.WriteLine($"MaxOrderRef:{pRspUserLogin.MaxOrderRef}");
                 Trace.WriteLine($"SHFETime:	{pRspUserLogin.SHFETime}");
                 Trace.WriteLine($"DCETime:	{pRspUserLogin.DCETime}");

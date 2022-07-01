@@ -1,6 +1,6 @@
 /********************************************************************
     created:	2020-07-30 19:52:49
-    author:		joshua
+    author:		rush
     email:		
 	
     purpose:	
@@ -163,8 +163,8 @@ namespace NeoCtp
 
 		public int          ReqUserLogin(ref CThostFtdcReqUserLoginField pReqUserLoginField, int nRequestID)
 		{	
-			//BrokerId = pReqUserLoginField.BrokerID;
-			//UserId = pReqUserLoginField.UserID;
+			//BrokerId = pReqUserLoginField.BrokerId;
+			//UserId = pReqUserLoginField.UserId;
 			//Password = pReqUserLoginField.Password;
 
 			return MdApiCalls.ReqUserLogin(_ApiHandle, ref pReqUserLoginField, nRequestID);
@@ -322,8 +322,8 @@ namespace NeoCtp
             //}
             //else
             //{
-            //    FrontID = pRspUserLogin.FrontID;
-            //    SessionID = pRspUserLogin.SessionID;
+            //    FrontId = pRspUserLogin.FrontId;
+            //    SessionId = pRspUserLogin.SessionId;
             //    MaxOrderRef = pRspUserLogin.MaxOrderRef;
             //    result.IsSuccess = true;
             //}

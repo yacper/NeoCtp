@@ -17,8 +17,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Exception = System.Exception;
 
-namespace NeoCtp
+namespace NeoCtp.Imp
 {
     public static class JsonEx
     {
@@ -42,7 +43,7 @@ namespace NeoCtp
                 File.WriteAllText(path, str);
                 return true;
             }
-            catch (Exception)
+            catch (System.Exception)
             {
             }
 

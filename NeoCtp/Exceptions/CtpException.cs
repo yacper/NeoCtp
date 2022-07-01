@@ -12,8 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoCtp.Api;
 
-namespace NeoCtp.Exception
+namespace NeoCtp.Exceptions
 {
 public class CtpException : System.Exception
 {

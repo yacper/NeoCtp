@@ -6,9 +6,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using NeoCtp.Api;
+using NeoCtp.Enums;
+using NeoCtp.Exceptions;
 using Timer = System.Timers.Timer;
 
-namespace NeoCtp
+namespace NeoCtp.Imp
 {
 	public class CtpTdApi:CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 	{
@@ -16,43 +19,51 @@ namespace NeoCtp
 
 		public void OnFrontConnected()
 		{
-			IsConnected = true;
-
-			CtpRsp rsp = new CtpRsp
-			{
-			};
-
-            _ExecuteCallback(-1, rsp);
-
+            OnFrontConnectedEvent?.Invoke(this, null);
+   //         IsConnected = true;
+			//((Action<bool>)_GetCallback(-1))?.Invoke(true);
 		}
 
-		public void OnFrontDisconnected(int nReason)
-		{}
+        private event EventHandler OnFrontConnectedEvent;
 
+		public void OnFrontDisconnected(int nReason)
+		{
+            IsConnected = false;
+
+			OnFrontDisconnectedEvent?.Invoke(this, (EFrontDisconnectedReason)nReason);
+		}
+
+        public event EventHandler<CtpRsp> OnRspErrorEvent;
+        ///错误应答
+        public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+
+			OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
+        }
+
+        public event EventHandler<int> OnHeartBeatWarningEvent;
 		public void OnHeartBeatWarning(int nTimeLapse)
-		{}
+		{
+			OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse);
+		}
+
+
+	    public event EventHandler<CtpRsp<CThostFtdcRspUserLoginField>> OnRspUserLoginEvent;
+		public void OnRspUserLogin(ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		{
+			OnRspUserLoginEvent?.Invoke(this, new (pRspUserLogin, pRspInfo, nRequestID, bIsLast));
+		}
+
+        public event EventHandler<CtpRsp<CThostFtdcUserLogoutField>> OnRspUserLogoutEvent;
+		public void OnRspUserLogout(ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		{
+            OnRspUserLogoutEvent?.Invoke(this, new(pUserLogout, pRspInfo, nRequestID, bIsLast));
+		}
 
 
 		public void OnRspAuthenticate(ref CThostFtdcRspAuthenticateField pRspAuthenticateField, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{}
 
-		public void OnRspUserLogin(ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo,
-			int nRequestID, bool bIsLast)
-		{
-
-			IsLogined = true;
-
-			CtpRsp<CThostFtdcRspUserLoginField> rsp = new CtpRsp<CThostFtdcRspUserLoginField>
-			{
-				Rsp = pRspInfo,
-				Rsp2 = pRspUserLogin
-			};
-
-            _ExecuteCallback(-3, rsp);
-
-		}
-		public void OnRspUserLogout(ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-		{}
 
 		public void OnRspUserPasswordUpdate(ref CThostFtdcUserPasswordUpdateField pUserPasswordUpdate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{}
@@ -72,13 +83,13 @@ namespace NeoCtp
 		public void OnRspSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm,
 			ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
-			CtpRsp<CThostFtdcSettlementInfoConfirmField> rsp = new CtpRsp<CThostFtdcSettlementInfoConfirmField>
-			{
-				Rsp = pRspInfo,
-				Rsp2 = pSettlementInfoConfirm
-			};
+			//CtpRsp<CThostFtdcSettlementInfoConfirmField> rsp = new CtpRsp<CThostFtdcSettlementInfoConfirmField>
+			//{
+			//	Rsp = pRspInfo,
+			//	Rsp2 = pSettlementInfoConfirm
+			//};
 
-            _ExecuteCallback(nRequestID, rsp);
+   //         _ExecuteCallback(nRequestID, rsp);
 		}
 
 
@@ -89,13 +100,13 @@ namespace NeoCtp
 		public void OnRspOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo,
 			int nRequestID, bool bIsLast)
 		{
-			CtpRsp<CThostFtdcInputOrderField> rsp = new CtpRsp<CThostFtdcInputOrderField>
-			{
-				Rsp = pRspInfo,
-				Rsp2 =pInputOrder 
-			};
+			//CtpRsp<CThostFtdcInputOrderField> rsp = new CtpRsp<CThostFtdcInputOrderField>
+			//{
+			//	Rsp = pRspInfo,
+			//	Rsp2 =pInputOrder 
+			//};
 
-            _ExecuteCallback(nRequestID, rsp);
+   //         _ExecuteCallback(nRequestID, rsp);
 		}
 		///预埋单录入请求响应
 		public void OnRspParkedOrderInsert(ref CThostFtdcParkedOrderField pParkedOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast){}
@@ -152,48 +163,48 @@ namespace NeoCtp
 		public void OnRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition,
 			ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
-			CtpRsp<List<CThostFtdcInvestorPositionField>> rsp = null;
+			//CtpRsp<List<CThostFtdcInvestorPositionField>> rsp = null;
 
-			if (!bIsLast)
-			{
-				object o;
-				if (_dataDict.TryGetValue(nRequestID, out o))
-				{
-					rsp = (CtpRsp<List<CThostFtdcInvestorPositionField>>)o;
-				}
-				else
-				{
-					rsp = new CtpRsp<List<CThostFtdcInvestorPositionField>>
-					{
-						Rsp = pRspInfo,
-						Rsp2 = new List<CThostFtdcInvestorPositionField>() { pInvestorPosition },
-					};
+			//if (!bIsLast)
+			//{
+			//	object o;
+			//	if (_dataDict.TryGetValue(nRequestID, out o))
+			//	{
+			//		rsp = (CtpRsp<List<CThostFtdcInvestorPositionField>>)o;
+			//	}
+			//	else
+			//	{
+			//		rsp = new CtpRsp<List<CThostFtdcInvestorPositionField>>
+			//		{
+			//			Rsp = pRspInfo,
+			//			Rsp2 = new List<CThostFtdcInvestorPositionField>() { pInvestorPosition },
+			//		};
 
-					_dataDict.TryAdd(nRequestID, rsp);
-				}
+			//		_dataDict.TryAdd(nRequestID, rsp);
+			//	}
 
-				rsp.Rsp2.Add(pInvestorPosition);
-			}
-			else
-			{
+			//	rsp.Rsp2.Add(pInvestorPosition);
+			//}
+			//else
+			//{
 
-				object o;
-				if (_dataDict.TryRemove(nRequestID, out o))
-				{
-					rsp = (CtpRsp<List<CThostFtdcInvestorPositionField>>)o;
-				}
-				else
-				{
-					rsp = new CtpRsp<List<CThostFtdcInvestorPositionField>>
-					{
-						Rsp = pRspInfo,
-						Rsp2 = new List<CThostFtdcInvestorPositionField>() { pInvestorPosition },
-					};
+			//	object o;
+			//	if (_dataDict.TryRemove(nRequestID, out o))
+			//	{
+			//		rsp = (CtpRsp<List<CThostFtdcInvestorPositionField>>)o;
+			//	}
+			//	else
+			//	{
+			//		rsp = new CtpRsp<List<CThostFtdcInvestorPositionField>>
+			//		{
+			//			Rsp = pRspInfo,
+			//			Rsp2 = new List<CThostFtdcInvestorPositionField>() { pInvestorPosition },
+			//		};
 
-				}
+			//	}
 
-				_ExecuteCallback(nRequestID, rsp);
-			}
+			//	_ExecuteCallback(nRequestID, rsp);
+			//}
 			
 		}
 
@@ -202,13 +213,13 @@ namespace NeoCtp
 			ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 
-			CtpRsp<CThostFtdcTradingAccountField> rsp = new CtpRsp<CThostFtdcTradingAccountField>
-			{
-				Rsp = pRspInfo,
-				Rsp2 =pTradingAccount 
-			};
+			//CtpRsp<CThostFtdcTradingAccountField> rsp = new CtpRsp<CThostFtdcTradingAccountField>
+			//{
+			//	Rsp = pRspInfo,
+			//	Rsp2 =pTradingAccount 
+			//};
 
-            _ExecuteCallback(nRequestID, rsp);
+   //         _ExecuteCallback(nRequestID, rsp);
 
 		}
 
@@ -236,13 +247,13 @@ namespace NeoCtp
 			int nRequestID, bool bIsLast)
 		{
 
-			CtpRsp<CThostFtdcInstrumentField> rsp = new CtpRsp<CThostFtdcInstrumentField>
-			{
-				Rsp = pRspInfo,
-				Rsp2 =pInstrument 
-			};
+			//CtpRsp<CThostFtdcInstrumentField> rsp = new CtpRsp<CThostFtdcInstrumentField>
+			//{
+			//	Rsp = pRspInfo,
+			//	Rsp2 =pInstrument 
+			//};
 
-            _ExecuteCallback(nRequestID, rsp);
+   //         _ExecuteCallback(nRequestID, rsp);
 
 		}
 
@@ -346,10 +357,6 @@ namespace NeoCtp
 		///请求查询银期签约关系响应
 		public void OnRspQryAccountregister(ref CThostFtdcAccountregisterField pAccountregister, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast){}
 
-
-
-		///错误应答
-		public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast){}
 
 		///报单通知
 		public void OnRtnOrder(ref CThostFtdcOrderField pOrder){}
@@ -516,7 +523,7 @@ namespace NeoCtp
         {
 	        get { return _IsConnected; }
 
-			protected set { Set("IsConnected", ref _IsConnected, value); }
+			protected set { SetProperty(ref _IsConnected, value); }
 
         }
 
@@ -528,62 +535,159 @@ namespace NeoCtp
 				return _IsLogined;
 			}
 
-			protected set { Set("IsLogined", ref _IsLogined, value); }
+			protected set { SetProperty(ref _IsLogined, value); }
 		}
 
 
+		public int					TimeoutMilliseconds { get; set; }
        
 
-        public void			Connect(string frontAddr, Action<CtpRsp> callback)
+         public Task			ConnectAsync()
         {
-            RegisterSpi(this);
+            if (IsLogined)
+                return Task.CompletedTask;
 
-            RegisterFront(frontAddr);
-            _AddCallback(callback, -1);
-            this.Init();
+            var taskSource = new TaskCompletionSource();
+
+            EventHandler onFrontConnectedHandler = null;
+            onFrontConnectedHandler = (s, e) =>
+            {
+                OnFrontConnectedEvent -= onFrontConnectedHandler;
+                IsConnected           =  true;
+                taskSource.TrySetResult();
+            };
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                OnFrontConnectedEvent -= onFrontConnectedHandler;
+                taskSource.TrySetCanceled();
+            });
+
+            this.OnFrontConnectedEvent += onFrontConnectedHandler;
+    
+            Init();
+            return taskSource.Task;
         }
 
-        public event Action<EFrontDisconnectedReason> FrontDisconnected;
+        public event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
 
 
 
-		public void			ReqUserLogin(string brokerID, string user, string psw, Action<CtpRsp<CThostFtdcRspUserLoginField>> callback)
+	   public Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync()
 		{
-			BrokerID = brokerID;
-			UserID = user;
-			Password = psw;
+            var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcRspUserLoginField>>();
+            var reqId      = GetNextRequestId();
 
 
-			int requestID = _AddCallback(callback, -3);
-            _AddMethod(requestID, new Action(() =>
+            EventHandler<CtpRsp<CThostFtdcRspUserLoginField>> onRspUserLoginHandler = null;
+            EventHandler<CtpRsp>                              onRspErrorHandler     = null;
+            onRspUserLoginHandler = (s, e) =>
             {
-				CThostFtdcReqUserLoginField field = new CThostFtdcReqUserLoginField()
-				{
-					BrokerID = brokerID,
-					UserID = user,
-					Password = psw
-				};
+				clearHandler();
 
-				int ret = ReqUserLogin(ref field, requestID);
-                _RemoveMethod(requestID, ret);
-            }));
+                taskSource.TrySetResult(e);
+            };
+            onRspErrorHandler = (s, e) =>
+            {
+                if (e.RequestId == reqId)
+                {
+					clearHandler();
+
+                    taskSource.TrySetException(new CtpException(e));
+                }
+            };
+
+            void clearHandler()
+            {
+                OnRspUserLoginEvent -= onRspUserLoginHandler;
+                OnRspErrorEvent -= onRspErrorHandler;
+            }
+       
+
+			CThostFtdcReqUserLoginField field = new CThostFtdcReqUserLoginField()
+			{
+				BrokerID = BrokerId,
+				UserID = UserId,
+				Password = Password
+			};
+
+			ECtpRtn ret = (ECtpRtn)ReqUserLogin(ref field, reqId);
+            if (ret != ECtpRtn.Sucess)
+            {
+                taskSource.TrySetResult(new(ret));
+            }
+            else
+            {
+                OnRspUserLoginEvent += onRspUserLoginHandler;
+                OnRspErrorEvent += onRspErrorHandler;
+
+                CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+                tokenSource.Token.Register(() =>
+                {
+					clearHandler();
+                    taskSource.TrySetCanceled();
+                });
+            }
+
+            return taskSource.Task;
 		}
 
-		public void			ReqUserLogout(Action<CtpRsp<CThostFtdcUserLogoutField>> callback)
+        public Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync()
 		{
-			int requestID = _AddCallback(callback, -4);
-            _AddMethod(requestID, new Action(() =>
-            {
-				CThostFtdcUserLogoutField field = new CThostFtdcUserLogoutField()
-				{
-					BrokerID = BrokerID,
-					UserID = UserID
-				};
+            var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcUserLogoutField>>();
+            var reqId      = GetNextRequestId();
 
-				int ret = ReqUserLogout(ref field, requestID);
-                _RemoveMethod(requestID, ret);
-            }));
-		}
+            EventHandler<CtpRsp<CThostFtdcUserLogoutField>> onRspUserLogoutHandler = null;
+            EventHandler<CtpRsp>                              onRspErrorHandler     = null;
+            onRspUserLogoutHandler = (s, e) =>
+            {
+				clearHandler();
+
+                taskSource.TrySetResult(e);
+            };
+            onRspErrorHandler = (s, e) =>
+            {
+                if (e.RequestId == reqId)
+                {
+					clearHandler();
+
+                    taskSource.TrySetException(new CtpException(e));
+                }
+            };
+
+            void clearHandler()
+            {
+                OnRspUserLogoutEvent -= onRspUserLogoutHandler;
+                OnRspErrorEvent -= onRspErrorHandler;
+            }
+       
+			CThostFtdcUserLogoutField field = new CThostFtdcUserLogoutField()
+			{
+				BrokerID = BrokerId,
+				UserID = UserId
+			};
+
+			ECtpRtn ret = (ECtpRtn)ReqUserLogout(ref field, reqId);
+            if (ret != ECtpRtn.Sucess)
+            {
+                taskSource.TrySetResult(new(ret));
+            }
+            else
+            {
+                OnRspUserLogoutEvent += onRspUserLogoutHandler;
+                OnRspErrorEvent += onRspErrorHandler;
+
+                CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+                tokenSource.Token.Register(() =>
+                {
+					clearHandler();
+                    taskSource.TrySetCanceled();
+                });
+            }
+
+            return taskSource.Task;
+        }
 
 
 		///投资者结算结果确认
@@ -594,8 +698,8 @@ namespace NeoCtp
             {
 				CThostFtdcSettlementInfoConfirmField filed = new CThostFtdcSettlementInfoConfirmField()
 				{
-					BrokerID = BrokerID,
-					InvestorID = UserID
+					BrokerID = BrokerId,
+					InvestorID = UserId
 				};
 
 				int ret = ReqSettlementInfoConfirm(ref filed, requestID);
@@ -612,8 +716,8 @@ namespace NeoCtp
             {
 				CThostFtdcQryTradingAccountField filed = new CThostFtdcQryTradingAccountField()
 				{
-					BrokerID = BrokerID,
-					InvestorID = UserID
+					BrokerID = BrokerId,
+					InvestorID = UserId
 				};
 
 				int ret = ReqQryTradingAccount(ref filed, requestID);
@@ -631,8 +735,8 @@ namespace NeoCtp
             {
 				CThostFtdcQryInvestorPositionField filed = new CThostFtdcQryInvestorPositionField()
 				{
-					BrokerID = BrokerID,
-					InvestorID = UserID,
+					BrokerID = BrokerId,
+					InvestorID = UserId,
 					InstrumentID = instrumentID
 				};
 
@@ -662,9 +766,9 @@ namespace NeoCtp
 
 		public void			ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback)
 		{
-			pInputOrder.BrokerID = BrokerID;
-			pInputOrder.InvestorID = UserID;
-			pInputOrder.UserID = UserID;
+			pInputOrder.BrokerID = BrokerId;
+			pInputOrder.InvestorID = UserId;
+			pInputOrder.UserID = UserId;
 			pInputOrder.OrderRef = MaxOrderRef;
 
 
@@ -894,7 +998,7 @@ namespace NeoCtp
 				//object callback;
 				//if (_dataCallbackDict.TryGetValue(requestID, out callback))
 				//	(callback as CtpRsp).Rtn = (ECtpRtn)ret;
-				_ExecuteCallback(requestID, new CtpRsp(){Rtn = (ECtpRtn)ret});
+				_ExecuteCallback(requestID, new CtpRsp((ECtpRtn)ret));
 			}
 
 
@@ -936,6 +1040,7 @@ namespace NeoCtp
 
 
 
+        protected int GetNextRequestId()=> Interlocked.Increment(ref _RequestID);
 
 		#region Members
 

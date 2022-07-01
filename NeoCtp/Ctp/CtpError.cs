@@ -1,6 +1,6 @@
 /********************************************************************
     created:	2020-08-06 11:53:10
-    author:		joshua
+    author:		rush
     email:		
 	
     purpose:	
@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Resources;
-using RLib.Base;
+using NeoCtp.Imp;
 
 namespace NeoCtp
 {
@@ -24,7 +24,7 @@ namespace NeoCtp
 		public string		prompt { get; set; }
 	}
 
-	public static class CtpHelper
+	public static class CtpError
 	{
         static Dictionary<int, Error> _Errors = new Dictionary<int, Error>();
 

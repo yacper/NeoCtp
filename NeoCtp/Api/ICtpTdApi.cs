@@ -1,6 +1,6 @@
 ﻿/********************************************************************
     created:	2020-11-11 22:40:38
-    author:		joshua
+    author:		rush
     email:		
 	
     purpose:	
@@ -10,27 +10,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoCtp.Api;
+using NeoCtp.Enums;
 
 namespace NeoCtp
 {
 	public interface ICtpTdApi
 	{
         string              FrontAddress { get; }
-        int                 SessionID { get; }                              /// 会话编号
+        int                 SessionId { get; }                              /// 会话编号
         string              MaxOrderRef { get;  }                           /// 最大报单引用
 
-        string              BrokerID { get; }
-        string              UserID { get; }
+        string              BrokerId { get; }
+        string              UserId { get; }
         string              Password { get; }
 
+		int					TimeoutMilliseconds { get; set; }
+
+        event EventHandler<CtpRsp> OnRspErrorEvent;
+        event EventHandler<int> OnHeartBeatWarningEvent;
+
         bool                IsConnected { get; }
-		void 				Connect(string frontAddr, Action<CtpRsp> callback);
-        event Action<EFrontDisconnectedReason> FrontDisconnected;
+		Task				ConnectAsync();
+//		Task				Disconnect();
+        event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
 
 
-		bool				IsLogined { get; }
-		void				ReqUserLogin(string brokerID, string user, string psw, Action<CtpRsp<CThostFtdcRspUserLoginField>> callback);
-		void				ReqUserLogout(Action<CtpRsp<CThostFtdcUserLogoutField>> callback);
+		bool                                      IsLogined { get; }
+        Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync();
+        Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
+
 
 
 		///投资者结算结果确认

@@ -12,75 +12,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoCtp.Api;
+using NeoCtp.Enums;
 
 namespace NeoCtp
 {
-	public enum ECtpRtn  // 本地失败原因
-	{
-		Sucess = 0,				// 成功
-		NetworkFailure = -1,	// 网络连接失败
-		ExceedUnHandled= -2,	// 未处理请求超过许可数
-		ExceedPerSeceond = -3,	// 每秒发送请求超过许可数
-	}
-
-	public enum EFrontDisconnectedReason
-	{
-		NetworkReadFail =       0x1001, //  网络读失败
-		NetworkWriteFail =        0x1002, // 网络写失败
-		HeartbeatTimeout=        0x2001, // 接收心跳超时
-		SendHeartbeatFail=        0x2002, // 发送心跳失败
-		RcvWrongPacket =       0x2003, // 收到错误报文
-	}
-
-
-	public class CtpRsp
-	{
-		// 本地返回信息
-		public ECtpRtn                Rtn       { get; protected set; } // 调用函数后直接返回
-
-		// 服务器返回信息
-		public int                    RequestId { get; protected set; }
-		public bool                   IsLast    { get; protected set; }
-		public CThostFtdcRspInfoField Rsp       { get; protected set; }
-
-        public CtpRsp(ECtpRtn rtn)
-        {
-            Rtn       = rtn;
-        }
-
-        public CtpRsp(CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
-        {
-            Rsp       = rsp;
-            RequestId = nRequestID;
-            IsLast    = bIsLast;
-        }
-	}
-
-	public class CtpRsp<T2>:CtpRsp
-	{
-		public T2 Rsp2 { get; set; }
-
-        public CtpRsp(ECtpRtn rtn)
-			:base(rtn)
-        {
-        }
-        public CtpRsp(T2 rsp2, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
-            : base(rsp, nRequestID, bIsLast)
-        {
-            Rsp2 = rsp2;
-        }
-	}
-
-	public class CtpRsp<T2, T3>:CtpRsp<T2>
-	{
-		public T3 Rsp3 { get; set; }
-        public CtpRsp(T3 rsp3, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast, T2 rsp2)
-            : base(rsp2, rsp, nRequestID, bIsLast)
-        {
-            Rsp3 = rsp3;
-        }
-	}
-
 	public interface ICtpMdApi:INotifyPropertyChanged
 	{
         string              FrontAddress { get; }
@@ -89,8 +25,8 @@ namespace NeoCtp
         string              UserId { get; }
         string              Password { get; }
 
-        //int                 FrontID { get; }                                /// 前置编号
-        //int                 SessionID { get; }                              /// 会话编号
+        //int                 FrontId { get; }                                /// 前置编号
+        //int                 SessionId { get; }                              /// 会话编号
         //string              MaxOrderRef { get;  }                           /// 最大报单引用
 
 		int					TimeoutMilliseconds { get; set; }

@@ -1,6 +1,6 @@
 /********************************************************************
     created:	2020-09-01 2:23:59
-    author:		joshua
+    author:		rush
     email:		
 	
     purpose:	
@@ -14,63 +14,59 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
-namespace NeoCtp
+namespace NeoCtp.Imp
 {
 	public partial class CtpTdApiBase:ObservableObject, ICtpTdApiBase
 	{
-
-
-
-
-		public string       BrokerID
+		public string       BrokerId
 		{
 			get { return _BrokerID;}
 			protected set
 			{
-				Set("BrokerId", ref _BrokerID, value);
+				SetProperty(ref _BrokerID, value);
 			}
 		}
-		public string       UserID
+		public string       UserId
 		{
 			get { return _UserID;}
 			protected set
 			{
-				Set("UserId", ref _UserID, value);
+				SetProperty( ref _UserID, value);
 			} }
 		public string       Password
 		{
 			get { return _Password;}
 			protected set
 			{
-				Set("Password", ref _Password, value);
+				SetProperty(ref _Password, value);
 			} }
 		public string       FrontAddress
 		{
 			get { return _FrontAddress;}
 			protected set
 			{
-				Set("FrontAddress", ref _FrontAddress, value);
+				SetProperty( ref _FrontAddress, value);
 
 			} }
 
 		/// <summary>
 		/// 前置编号
 		/// </summary>
-		public int          FrontID
+		public int          FrontId
 		{
 			get { return _FrontID;}
 			protected set
 			{
-				Set("FrontID", ref _FrontID, value);
+				SetProperty(ref _FrontID, value);
 			} }
 
 		/// <summary>
 		/// 会话编号
 		/// </summary>
-		public int			SessionID
+		public int			SessionId
 		{
 			get { return _SessionID;}
-			protected set { Set("SessionID", ref _SessionID, value); }
+			protected set { SetProperty(ref _SessionID, value); }
 		}
 
         public string              MaxOrderRef { get; set; }                           /// 最大报单引用
@@ -92,11 +88,6 @@ namespace NeoCtp
 		//	get { return _LoginTime; }
 		//	protected set{Set("LoginTime", ref _LoginTime, value); }
 		//}								// 登录时间
-
-		public IReadonlyObservableCollection<CThostFtdcRspInfoField> Erros
-		{
-			get { return _Erros; }
-		} // 错误
 
 
 		/// 是否已登录
@@ -170,8 +161,8 @@ namespace NeoCtp
 		///@param pFensUserInfo：用户信息。
 		public void RegisterFensUserInfo(ref CThostFtdcFensUserInfoField pFensUserInfo)
 		{
-			BrokerID = pFensUserInfo.BrokerID;
-			UserID = pFensUserInfo.UserID;
+			BrokerId = pFensUserInfo.BrokerID;
+			UserId = pFensUserInfo.UserID;
 			TdApiCalls.RegisterFensUserInfo(_ApiHandle, ref pFensUserInfo);
 		}
 
@@ -756,8 +747,8 @@ namespace NeoCtp
 
 			TdApiCalls.RegRspAuthenticate(_SpiHandle, _CBRspAuthenticate);
 
-			TdApiCalls.RegRspUserLogin(_SpiHandle, _OnRspUserLogin);
-			TdApiCalls.RegRspUserLogout(_SpiHandle, _OnRspUserLogout);
+			TdApiCalls.RegOnRspUserLogin(_SpiHandle, _OnRspUserLogin);
+			TdApiCalls.RegOnRspUserLogout(_SpiHandle, _OnRspUserLogout);
 
 			TdApiCalls.RegRspUserPasswordUpdate(_SpiHandle, _CBRspUserPasswordUpdate);  //用户口令更新请求响应
 			TdApiCalls.RegRspTradingAccountPasswordUpdate(_SpiHandle, _CBRspTradingAccountPasswordUpdate);			
@@ -905,8 +896,8 @@ namespace NeoCtp
 
 			//BrokerId = pRspUserLogin.BrokerId;
 			//UserId = pRspUserLogin.UserId;
-			//FrontID = pRspUserLogin.FrontID;
-			//SessionID = pRspUserLogin.SessionID;
+			//FrontId = pRspUserLogin.FrontId;
+			//SessionId = pRspUserLogin.SessionId;
 			//LoginTime = DateTime.Parse(pRspUserLogin.LoginTime);
 
 			//IsLogined = true;
@@ -1568,8 +1559,6 @@ namespace NeoCtp
 		private IntPtr _ApiHandle = IntPtr.Zero;
         private IntPtr _SpiHandle = IntPtr.Zero;   // C++ MdSpi Wrapper class
 
-
-        protected RObservableCollection<CThostFtdcRspInfoField> _Erros = new RObservableCollection<CThostFtdcRspInfoField>();
 
       /// <summary>
         /// 回调方法字典

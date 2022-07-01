@@ -1,6 +1,6 @@
 /********************************************************************
     created:	2020-09-01 0:53:16
-    author:		joshua
+    author:		rush
     email:		
 	
     purpose:	
@@ -12,9 +12,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using RLib.Base;
 
-namespace NeoCtp
+namespace NeoCtp.Imp
 {
 	public partial class CtpTdApiBase
 	{
@@ -28,19 +27,14 @@ namespace NeoCtp
 
 	public interface ICtpTdApiBase:IDisposable, INotifyPropertyChanged
 	{
-        string              BrokerID { get; }
-        string              UserID { get; }
+        string              BrokerId { get; }
+        string              UserId { get; }
         string              Password { get; }
         string              FrontAddress { get; }
 
-        int                 FrontID { get; }                                /// 前置编号
-        int                 SessionID { get; }                              /// 会话编号
+        int                 FrontId { get; }                                /// 前置编号
+        int                 SessionId { get; }                              /// 会话编号
         string              MaxOrderRef { get;  }                           /// 最大报单引用
-
-
-		IReadonlyObservableCollection<CThostFtdcRspInfoField> Erros { get; } // 错误
-
-
 
 
 		///注册回调接口

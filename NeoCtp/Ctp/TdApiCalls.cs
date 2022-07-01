@@ -1,6 +1,6 @@
 /********************************************************************
     created:	2020-08-11 15:18:04
-    author:		joshua
+    author:		rush
     email:		
 	
     purpose:	([(])(.+)([*])  $1 ref $2
@@ -67,10 +67,10 @@ namespace NeoCtp
 
 
 		//发送用户登录请求
-		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLoginAsync", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static int ReqUserLogin(IntPtr pApi, ref CThostFtdcReqUserLoginField pReqUserLoginField, int nRequestID);
 		//发送登出请求
-		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLogoutAsync", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static int ReqUserLogout(IntPtr pApi, ref CThostFtdcUserLogoutField pUserLogout, int nRequestID);
 
 
@@ -386,9 +386,9 @@ namespace NeoCtp
 		///客户端认证响应
 		internal delegate void CBRspAuthenticate(ref CThostFtdcRspAuthenticateField pRspAuthenticateField, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///登录请求响应
-		internal delegate void CBRspUserLogin( ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspUserLogin( ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///登出请求响应
-		internal delegate void CBRspUserLogout( ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspUserLogout( ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///用户口令更新请求响应
 		internal delegate void CBRspUserPasswordUpdate( ref CThostFtdcUserPasswordUpdateField pUserPasswordUpdate, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///资金账户口令更新请求响应
@@ -641,12 +641,12 @@ namespace NeoCtp
 		internal extern static void
 			RegRspAuthenticate(IntPtr pSpi, CBRspAuthenticate cb);
 
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
-			RegRspUserLogin(IntPtr pSpi, CBRspUserLogin cb);    //登录请求响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+			RegOnRspUserLogin(IntPtr pSpi, CBOnRspUserLogin cbOn);    //登录请求响应
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
-			RegRspUserLogout(IntPtr pSpi, CBRspUserLogout cb);  //登出请求响应
+			RegOnRspUserLogout(IntPtr pSpi, CBOnRspUserLogout cbOn);  //登出请求响应
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspUserPasswordUpdate", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
