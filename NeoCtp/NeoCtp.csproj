@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>True</UseWPF>
+		<Platforms>x64</Platforms>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Resources\error.dtd" />
+	  <None Remove="Resources\error.xml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\error.dtd" />
+	  <EmbeddedResource Include="Resources\error.xml" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Doc\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+</Project>
