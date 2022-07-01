@@ -1,74 +1,101 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using NUnit.Framework;
+﻿/********************************************************************
+    created:	2020-11-11 20:21:44
+    author:		joshua
+    email:		
+	
+    purpose:	
+*********************************************************************/
 
-//namespace SharpCtp.Test
-//{
-//	public class CtpTdApi_Test
-//	{
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using NeoCtp.Enums;
+using NUnit.Framework;
+using NeoCtp.Imp;
+using NeoCtp.Tests;
+using NLog;
+using NLog.Config;
 
-//		private static ICtpTdApi2 _api;
-
-//		private static string _frontAddr = "tcp://180.168.146.187:10130"; // 24h
-//		//private static string _frontAddr = "tcp://180.168.146.187:10100";
-//		private static string _brokerID = "9999";
-//		private static string _UserID = "097266";
-//		private static string _password = "hello@123";
-
-//		//[ClassInitialize]
-//		public static void Initialize(TestContext context)
-//		{
-//			_api = new CtpTdApi2();
-//			_api.Connect(_frontAddr, (rsp) =>
-//			{
-//				if (rsp.Rtn == ECtpRtn.Sucess)
-//				{
-//					_api.ReqUserLogin(_brokerID, _UserID, _password, (rsp2) =>
-//					{
-//						if (rsp2.Rtn == ECtpRtn.Sucess && rsp2.Rsp.ErrorID == 0)
-//						{
-//							_api.ReqSettlementInfoConfirm((rsp3) =>
-//							{
-//								Console.WriteLine("投资者结算结果确认成功");
-//								Console.WriteLine("确认日期:"+rsp3.Rsp1.ConfirmDate);
-//								Console.WriteLine("确认时间:"+rsp3.Rsp1.ConfirmTime);
-
-//								_api.ReqQryTradingAccount((rsp4) =>
-//								{
-//									Console.WriteLine("投资者账户");
-//									Console.WriteLine("投资者账户可用资金" + rsp4.Rsp1.Available);
+namespace NeoCtp.Test;
+public class CtpTdApi_Test
+{
+    private ICtpTdApi client = null;
 
 
+    [OneTimeSetUp]
+    public async Task Setup()
+    {
+        ILogger defaultLogger = null;
+        LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
+        defaultLogger            = LogManager.GetCurrentClassLogger();
+
+        /// connect
+        client = new CtpTdApi(TestConstants.MdFrontAddr, TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
+        var connected = await client.ConnectAsync();
+        connected.Should().BeTrue();
+
+        var logined = await client.ReqUserLoginAsync();
+        client.IsLogined.Should().BeTrue();
 
 
-//								});
+        Debug.WriteLine(client.Dump());
+    }
 
+    [OneTimeTearDown]
+    public async Task TearDown()
+    {
+        await client.DisconnectAsync();
 
+        client.ConnectionState.Should().Be(EConnectionState.Disconnected);
+        Debug.WriteLine(client.Dump());
+    }
 
+    [Test]
+    public async Task Reconnect_Test()
+    {
+        await client.DisconnectAsync();
+        client.ConnectionState.Should().Be(EConnectionState.Disconnected);
+        Debug.WriteLine(client.Dump());
 
-//							});
+        /// reconnect
+        bool connected = await client.ConnectAsync();
+        connected.Should().BeTrue();
+        Debug.WriteLine(client.Dump());
 
-//						}
+        // wait some time for account info
+        await Task.Delay(5000);
+    }
 
-//					});
+#region User
 
-//				}
+    //[Test]
+    //public async Task SubMarketDataAsync_Test()
+    //{
+    //    List<string> instruments = new() { "rb2210", "hc2210" };
 
+    //    var marketDataFields = new List<CThostFtdcDepthMarketDataField>();
+    //    client.OnRtnDepthMarketDataEvent += (s, e) =>
+    //    {
+    //        marketDataFields.Add(e);
+    //        Debug.WriteLine(e);
+    //    };
 
-//			});
+    //    await client.SubMarketDataAsync(instruments.ToArray());
+    //    //await client.SubMarketDataAsync(instruments.ToArray());
 
+    //    client.Subscribed.Should().NotBeEmpty();
+    //    marketDataFields.Should().NotBeEmpty();
 
+    //    // cancel
+    //    await client.UnSubMarketDataAsync(instruments.ToArray());
+    //    client.Subscribed.Should().BeEmpty();
+    //    await Task.Delay(5000);
+    //}
 
-
-
-//			Thread.Sleep(2000);
-//		}
-
-
-
-//	}
-//}
+#endregion
+}

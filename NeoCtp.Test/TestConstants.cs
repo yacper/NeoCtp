@@ -1,4 +1,6 @@
-﻿namespace NeoCtp.Tests
+﻿using System;
+
+namespace NeoCtp.Tests
 {
     internal class TestConstants
     {
@@ -6,6 +8,15 @@
         //public const string MdFrontAddr = "tcp://180.168.146.187:10211"; // 模拟行情
         public const string MdFrontAddr = "tcp://180.168.146.187:10131"; // 模拟行情24小时
 
+        public static string GetProperMdFrontAddr()
+        {
+            throw new NotImplementedException();
+            //DateTime now = DateTime.Now;
+
+
+            //if(now)
+
+        }
 
        /// <summary>
         /// 连接地址

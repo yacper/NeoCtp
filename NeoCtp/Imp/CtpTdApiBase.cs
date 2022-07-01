@@ -89,6 +89,14 @@ namespace NeoCtp.Imp
 		//	protected set{Set("LoginTime", ref _LoginTime, value); }
 		//}								// 登录时间
 
+        public CtpTdApiBase(string frontAddress, string brokerId, string userId, string password)
+        {
+			FrontAddress = frontAddress;
+            BrokerId     = brokerId;
+			UserId = userId;
+			Password = password;
+        }
+
 
 		/// 是否已登录
 
