@@ -70,7 +70,7 @@ namespace SharpCtp.Test
 						Trace.WriteLine("");
 						Trace.WriteLine($"//-------OnRspUserLogin------");
 						Trace.WriteLine($"BrockerID:	{pRspUserLogin.BrokerID}");
-						Trace.WriteLine($"UserID:		{pRspUserLogin.UserID}");
+						Trace.WriteLine($"UserId:		{pRspUserLogin.UserID}");
 						Trace.WriteLine("");
 						Trace.WriteLine($"TradingDay:	{pRspUserLogin.TradingDay}");
 						Trace.WriteLine($"LoginTime:	{pRspUserLogin.LoginTime}");

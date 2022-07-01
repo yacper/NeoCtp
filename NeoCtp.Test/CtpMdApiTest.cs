@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using NeoCtp;
 using NUnit.Framework;
 
 namespace SharpCtp.Test
@@ -18,7 +19,7 @@ namespace SharpCtp.Test
                     UserID = _UserID,
                     Password = _password
 				};
-				_api.ReqUserLogin(ref f, 1);
+				_apiBase.ReqUserLogin(ref f, 1);
 			}
 
 			public void		OnFrontDisconnected(int nReason)
@@ -49,7 +50,7 @@ namespace SharpCtp.Test
 				Trace.WriteLine("");
                 Trace.WriteLine($"//-------OnRspUserLogin------");
                 Trace.WriteLine($"BrockerID:	{pRspUserLogin.BrokerID}");
-                Trace.WriteLine($"UserID:		{pRspUserLogin.UserID}");
+                Trace.WriteLine($"UserId:		{pRspUserLogin.UserID}");
 				Trace.WriteLine("");
                 Trace.WriteLine($"TradingDay:	{pRspUserLogin.TradingDay}");
                 Trace.WriteLine($"LoginTime:	{pRspUserLogin.LoginTime}");
@@ -68,7 +69,7 @@ namespace SharpCtp.Test
 
 				//string instrumentID = "au2012";
 				string instrumentID = "1";
-                int a = _api.SubscribeMarketData(instrumentID);
+                int a = _apiBase.SubscribeMarketData(instrumentID);
 
 			}
 
@@ -90,7 +91,7 @@ namespace SharpCtp.Test
 					//Assert.AreEqual(instrumentID, pSpecificInstrument.InstrumentID);
 
 					//退订行情
-					//_api.UnsubscribeMarketData(instrumentID);
+					//_apiBase.UnsubscribeMarketData(instrumentID);
 					//Thread.Sleep(50);
 				}
 				else
@@ -107,7 +108,7 @@ namespace SharpCtp.Test
 					//Assert.AreEqual(instrumentID, pSpecificInstrument.InstrumentID);
 
 					//退订行情
-					//_api.UnsubscribeMarketData(instrumentID);
+					//_apiBase.UnsubscribeMarketData(instrumentID);
 					//Thread.Sleep(50);
 				}
 				else
@@ -124,7 +125,7 @@ namespace SharpCtp.Test
 					//Assert.AreEqual(instrumentID, pSpecificInstrument.InstrumentID);
 
 					//退订行情
-					//_api.UnsubscribeMarketData(instrumentID);
+					//_apiBase.UnsubscribeMarketData(instrumentID);
 					//Thread.Sleep(50);
 				}
 				else
@@ -141,7 +142,7 @@ namespace SharpCtp.Test
 					//Assert.AreEqual(instrumentID, pSpecificInstrument.InstrumentID);
 
 					//退订行情
-					//_api.UnsubscribeMarketData(instrumentID);
+					//_apiBase.UnsubscribeMarketData(instrumentID);
 					//Thread.Sleep(50);
 				}
 				else
@@ -185,7 +186,7 @@ namespace SharpCtp.Test
 		/// <summary>
 		/// 行情接口实例
 		/// </summary>
-		private static ICtpMdApi _api;
+		private static ICtpMdApiBase _apiBase;
         private static ICtpMdSpi _spi;
 
         /// <summary>
@@ -224,11 +225,11 @@ namespace SharpCtp.Test
         /// </summary>
         public static void Initialize(TestContext context)
         {
-			_api = new CtpMdApi();
+			_apiBase = new CtpMdApiBase();
             _spi = new TestCtpMdSpi();
-            _api.RegisterSpi(_spi);
-            _api.RegisterFront(_frontAddr);
-            _api.Init();
+            _apiBase.RegisterSpi(_spi);
+            _apiBase.RegisterFront(_frontAddr);
+            _apiBase.Init();
 
 			Thread.Sleep(2000);
 		}
@@ -241,11 +242,11 @@ namespace SharpCtp.Test
         {
             //if (_isLogin)
             //{
-            //    _api.UserLogout(-4);
+            //    _apiBase.UserLogout(-4);
             //}
             //else if (_isConnected)
             //{
-            //    _api.Disconnect();
+            //    _apiBase.Disconnect();
             //}
             //Thread.Sleep(100);
         }
@@ -256,7 +257,7 @@ namespace SharpCtp.Test
         [Test]
         public void TestGetApiVersion()
         {
-            string result = CtpMdApi.GetApiVersion();
+            string result = CtpMdApiBase.GetApiVersion();
             Assert.IsTrue(!string.IsNullOrEmpty(result));
         }
 
@@ -266,7 +267,7 @@ namespace SharpCtp.Test
         [Test]
         public void TestGetTradingDay()
         {
-			string result = _api.GetTradingDay();
+			string result = _apiBase.GetTradingDay();
 			Assert.AreEqual(8, result.Length);
 		}
 
@@ -277,31 +278,31 @@ namespace SharpCtp.Test
         public void TestSubscribeMarketData()
         {
 			string instrumentID = "au2012";
-			//_api.OnRspSubMarketData += new MarketApi.RspSubMarketData((ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
+			//_apiBase.OnRspSubMarketData += new MarketApi.RspSubMarketData((ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
 			//ref CThostFtdcRspInfoField pRspInfo, int nRequestID, byte bIsLast) =>
 			//{
 			//	Console.WriteLine("订阅{0}成功", instrumentID);
 			//	Assert.AreEqual(instrumentID, pSpecificInstrument.InstrumentID);
 
 			//	//退订行情
-			//	_api.UnsubscribeMarketData(instrumentID);
+			//	_apiBase.UnsubscribeMarketData(instrumentID);
 			//	Thread.Sleep(50);
 			//});
-			//_api.OnRspUnSubMarketData += new MarketApi.RspUnSubMarketData((ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
+			//_apiBase.OnRspUnSubMarketData += new MarketApi.RspUnSubMarketData((ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
 			//ref CThostFtdcRspInfoField pRspInfo, int nRequestID, byte bIsLast) =>
 			//{
 			//	Console.WriteLine("退订{0}成功", instrumentID);
 			//	Assert.AreEqual(instrumentID, pSpecificInstrument.InstrumentID);
 			//});
 
-			//_api.OnRtnDepthMarketData += new MarketApi.RtnDepthMarketData((ref CThostFtdcDepthMarketDataField pDepthMarketData) =>
+			//_apiBase.OnRtnDepthMarketData += new MarketApi.RtnDepthMarketData((ref CThostFtdcDepthMarketDataField pDepthMarketData) =>
 			//{
 			//	Console.WriteLine("昨收价：{0}，现价：{1}", pDepthMarketData.PreClosePrice, pDepthMarketData.LastPrice);
 			//	Assert.AreEqual(instrumentID, pDepthMarketData.InstrumentID);
 			//});
 
 			//订阅行情
-			_api.SubscribeMarketData(instrumentID);
+			_apiBase.SubscribeMarketData(instrumentID);
 			//Thread.Sleep(2000);
 
         }
@@ -313,7 +314,7 @@ namespace SharpCtp.Test
 
 	  //      return;
 
-	        _api.Join();
+	        _apiBase.Join();
 
 			Assert.AreEqual(2, 2);
         }
