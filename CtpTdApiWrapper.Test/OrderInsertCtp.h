@@ -228,11 +228,11 @@ private:
 	void SendOrderInsertRequest() 
 	{
 		CThostFtdcInputOrderField ord = { '\0' };
-		strcpy_s(ord.BrokerID, m_brokerID);
-		strcpy_s(ord.InvestorID, m_investerID);
+		strcpy_s(ord.BrokerID, gBrokerID);
+		strcpy_s(ord.InvestorID, gInvesterID);
 		strcpy_s(ord.ExchangeID, m_exchangeID);
 		strcpy_s(ord.InstrumentID, m_instrumentID);
-		strcpy_s(ord.UserID, m_investerID);
+		strcpy_s(ord.UserID, gInvesterID);
 		ord.OrderPriceType = THOST_FTDC_OPT_LimitPrice;//ÏÞ¼Û
 		ord.Direction = THOST_FTDC_D_Buy;//Âò
 		ord.CombOffsetFlag[0] = THOST_FTDC_OF_Open;//¿ª

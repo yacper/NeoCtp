@@ -4,17 +4,39 @@
 using namespace std;
 
 
+void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
+{
+	bool bResult = pRspInfo && (pRspInfo->ErrorID != 0);
+	if (bResult)
+	{
+		char buf[512] = { '\0' };
+		sprintf(buf, "返回错误--->>> RequestID=%d ErrorID=%d, ErrorMsg=%s", nRequestID, pRspInfo->ErrorID, pRspInfo->ErrorMsg);
+		std::cout << buf << std::endl;
+
+		{// 通知阻塞
+			//g_Condition.notify_one();
+		}
+	}
+}
+
+void OnHeartBeatWarning(int nTimeLapse)
+{
+	char errorLog[128] = { '\0' };
+	sprintf(errorLog, "OnHeartBeatWarning =====网络心跳超时===== 距上次连接时间：%d", nTimeLapse);
+	std::cout << errorLog << std::endl;
+}
+
 class TdApiTestBase 
 {
 public:
 
 	void InitTdApi()
 	{
-		strcpy(m_tradeFrontAddr, gTradeFrontAddr);
+		//strcpy(m_tradeFrontAddr, gTradeFrontAddr);
 
-		strcpy(m_brokerID, gBrokerID);
-		strcpy(m_investerID, gInvesterID);
-		strcpy(m_investerPassword, gInvesterPassword);
+	/*	strcpy(gBrokerID, gBrokerID);
+		strcpy(gInvesterID, gInvesterID);
+		strcpy(m_investerPassword, gInvesterPassword);*/
 
 
 		cout << "连接交易服务器..." << endl;
@@ -24,10 +46,13 @@ public:
 			m_pTdSpi = CreateTraderSpi();
 			RegisterSpi(m_pTdApi, m_pTdSpi);
 
+			RegOnRspError(m_pTdSpi, OnRspError);
+			RegOnHeartBeatWarning(m_pTdSpi, OnHeartBeatWarning);
+
 			SubscribePublicTopic(m_pTdApi, THOST_TERT_RESUME);
 			SubscribePrivateTopic(m_pTdApi, THOST_TERT_RESUME);
 
-			RegisterFront(m_pTdApi, m_tradeFrontAddr);
+			RegisterFront(m_pTdApi, gTradeFrontAddr);
 
 			Init(m_pTdApi);
 		}
@@ -80,16 +105,16 @@ private:
 	}
 
 public:
-	// 公共参数
-	TThostFtdcBrokerIDType m_brokerID = "9999";								 // 模拟经纪商代码
-	TThostFtdcInvestorIDType m_investerID = "180935";                         // 投资者账户名
-	TThostFtdcPasswordType m_investerPassword = "hello@123";                  // 投资者密码
+	//// 公共参数
+	//TThostFtdcBrokerIDType gBrokerID = "9999";								 // 模拟经纪商代码
+	//TThostFtdcInvestorIDType gInvesterID = "180935";                         // 投资者账户名
+	//TThostFtdcPasswordType m_investerPassword = "hello@123";                  // 投资者密码
 
 	// 行情参数
 	CThostFtdcTraderApi* m_pTdApi = nullptr;											// 行情指针
 	TraderSpi* m_pTdSpi = nullptr;											 // spi
 
-	char m_tradeFrontAddr[28] = { '\0' };				 // 模拟交易前置地址 第一组
+//	char m_tradeFrontAddr[28] = { '\0' };				 // 模拟交易前置地址 第一组
 
 private:
 	bool m_isCheckOK = false;

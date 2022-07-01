@@ -1,11 +1,11 @@
 #pragma once
-#include "LoginCtp.h"
+#include "Login.h"
 
 // 预埋单。
 // TODO：1.检测预埋单的状态，已发送/未发送 
 //		 2.已经发送状态后预埋单会走报单流程吗？ 
 //		 3.预埋单撤单是否能撤已发送的订单/撤未发送订单
-class ParkedOrderInsertCtp : public LoginCtp 
+class ParkedOrderInsertCtp : public Login 
 {
 public:
 
@@ -58,8 +58,8 @@ public:
 
 	virtual void Run() 
 	{
-		LoginCtp::Run();
-		bool loginOK = LoginCtp::CheckIsOK();
+		Login::Run();
+		bool loginOK = Login::CheckIsOK();
 		if (loginOK)
 			SendParkedOrderInsertRequest();
 		else {
@@ -72,10 +72,10 @@ private:
 	void SendParkedOrderInsertRequest() 
 	{
 		CThostFtdcParkedOrderField order = { 0 };
-		strcpy(order.BrokerID, m_brokerID);
-		strcpy(order.InvestorID, m_investerID);
+		strcpy(order.BrokerID, gBrokerID);
+		strcpy(order.InvestorID, gInvesterID);
 		strcpy(order.InstrumentID, m_instrumentID);
-		strcpy(order.UserID, m_investerID);
+		strcpy(order.UserID, gInvesterID);
 		strcpy(order.ExchangeID, m_exchangeID);
 		order.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
 		order.Direction = THOST_FTDC_D_Buy;

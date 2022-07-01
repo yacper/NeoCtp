@@ -3,10 +3,10 @@
 #include<filesystem>
 #include <string>
 #include <gtest/gtest.h>
-#include "LoginCtp.h"
+#include "Login.h"
 
 // 结算确认（在每天开仓前需要先确认上一个交易日的结算信息）
-class SettlementInfoConfirmCtp : public LoginCtp
+class SettlementInfoConfirmCtp : public Login
 {
 
 public:
@@ -43,8 +43,8 @@ public:
 
 	virtual void Run() 
 	{
-		LoginCtp::Run();
-		bool loginOK =  LoginCtp::CheckIsOK();
+		Login::Run();
+		bool loginOK =  Login::CheckIsOK();
 		if (loginOK) {
 			if (CheckIsSettlement()) {  // 已经结算过直接通知
 				NotifySuccess();
@@ -64,8 +64,8 @@ private:
 	void SendSettlementInfoConfirmRequest() 
 	{
 		CThostFtdcSettlementInfoConfirmField confirm = { '\0' };
-		strcpy_s(confirm.BrokerID, m_brokerID);
-		strcpy_s(confirm.InvestorID, m_investerID);
+		strcpy_s(confirm.BrokerID, gBrokerID);
+		strcpy_s(confirm.InvestorID, gInvesterID);
 
 		int rf = m_pTdApi->ReqSettlementInfoConfirm(&confirm, 0);
 		if (!rf)
@@ -89,9 +89,9 @@ private:
 
 		string localTime = GetLocalTime();
 		if (strlen(content) == 0)  // 文件内容格式，年月日,账号A-账号B-账号C
-			sprintf(content, "%s,%s", localTime.c_str(), m_investerID);
+			sprintf(content, "%s,%s", localTime.c_str(), gInvesterID);
 		else
-			sprintf(content, "%s-%s", content, m_investerID);
+			sprintf(content, "%s-%s", content, gInvesterID);
 
 		ofstream ofsfile;
 		ofsfile.open(dbFile, ios::out);
@@ -131,7 +131,7 @@ private:
 	// 检测当前账号是否已经结算
 	bool CheckAccountIsSettlement(const char* content)
 	{
-		return strstr(content, m_investerID) != nullptr;
+		return strstr(content, gInvesterID) != nullptr;
 	}
 
 	// 获取当前的年月日 

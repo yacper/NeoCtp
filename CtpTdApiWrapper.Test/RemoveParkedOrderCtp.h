@@ -44,8 +44,8 @@ private:
 	void SendRemoveParkedOrderRequest() 
 	{
 		CThostFtdcRemoveParkedOrderField order = { 0 };
-		strcpy_s(order.BrokerID, m_brokerID);
-		strcpy_s(order.InvestorID, m_investerID);
+		strcpy_s(order.BrokerID, gBrokerID);
+		strcpy_s(order.InvestorID, gInvesterID);
 		strcpy_s(order.ParkedOrderID, m_parkedOrderID);
 
 		int rf = m_pTdApi->ReqRemoveParkedOrder(&order, 0);

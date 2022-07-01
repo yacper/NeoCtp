@@ -21,8 +21,8 @@
 #include "ThostFtdcUserApiDataType.h"   // 最新6.3.19版本 
 #include "ThostFtdcUserApiStruct.h"   // 最新6.3.19版本 
 
-#include "..\CtpTdApiWrapper\TraderApi.h"
-#include "..\CtpTdApiWrapper\TraderSpi.h"
+#include "..\CtpTdApiWrapper\TdApi.h"
+#include "..\CtpTdApiWrapper\TdSpi.h"
 
 #pragma comment (lib, "CtpTdApiWrapper.lib")
 

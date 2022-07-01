@@ -1,14 +1,14 @@
 #pragma once
-#include "LoginCtp.h"
+#include "Login.h"
 
-class LogoutCtp : public LoginCtp
+class LogoutCtp : public Login
 {
 public:
 
 	virtual void Run() 
 	{
-		LoginCtp::Run();
-		bool isLogin = LoginCtp::CheckIsOK();
+		Login::Run();
+		bool isLogin = Login::CheckIsOK();
 		if (isLogin)		
 			SendLogoutRequest();		
 		else {
@@ -39,8 +39,8 @@ public:
 	void SendLogoutRequest() 
 	{
 		CThostFtdcUserLogoutField logoutField = { '\0' };
-		strcpy_s(logoutField.BrokerID, m_brokerID);
-		strcpy_s(logoutField.UserID, m_investerID);
+		strcpy_s(logoutField.BrokerID, gBrokerID);
+		strcpy_s(logoutField.UserID, gInvesterID);
 
 		int rf = m_pTdApi->ReqUserLogout(&logoutField, 0);
 		if (!rf)

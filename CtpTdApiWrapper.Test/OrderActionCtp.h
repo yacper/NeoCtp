@@ -60,9 +60,9 @@ private:
 	void SendOrderActionRequest() 
 	{
 		CThostFtdcInputOrderActionField action = { '\0' };
-		strcpy_s(action.BrokerID, m_brokerID);
-		strcpy_s(action.InvestorID, m_investerID);
-		strcpy_s(action.UserID, m_investerID);
+		strcpy_s(action.BrokerID, gBrokerID);
+		strcpy_s(action.InvestorID, gInvesterID);
+		strcpy_s(action.UserID, gInvesterID);
 		strcpy_s(action.OrderSysID, m_orderSysID);
 		strcpy_s(action.ExchangeID, m_exchangeID);
 		strcpy_s(action.InstrumentID, m_instrumentID);

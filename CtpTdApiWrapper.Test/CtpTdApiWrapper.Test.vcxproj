@@ -44,7 +44,7 @@
     <ClInclude Include="CombActionInsertCtp.h" />
     <ClInclude Include="TdApiTestBase.h" />
     <ClInclude Include="Connect.h" />
-    <ClInclude Include="LoginCtp.h" />
+    <ClInclude Include="Login.h" />
     <ClInclude Include="LogoutCtp.h" />
     <ClInclude Include="OperateEnum.h" />
     <ClInclude Include="OrderActionCtp.h" />

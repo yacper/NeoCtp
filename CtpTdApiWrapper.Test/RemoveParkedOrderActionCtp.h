@@ -50,8 +50,8 @@ private:
 	void SendRemoveParkedOrderActionRequest() 
 	{
 		CThostFtdcRemoveParkedOrderActionField orderAction = { 0 };
-		strcpy_s(orderAction.BrokerID, m_brokerID);
-		strcpy_s(orderAction.InvestorID, m_investerID);
+		strcpy_s(orderAction.BrokerID, gBrokerID);
+		strcpy_s(orderAction.InvestorID, gInvesterID);
 		strcpy_s(orderAction.ParkedOrderActionID, m_parkedOrderActionID.c_str());
 
 		int rf = m_pTdApi->ReqRemoveParkedOrderAction(&orderAction, 0);

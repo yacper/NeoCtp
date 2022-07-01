@@ -1,7 +1,7 @@
 #pragma once
-#include "LoginCtp.h"
+#include "Login.h"
 
-class CombActionInsertCtp : public LoginCtp 
+class CombActionInsertCtp : public Login 
 {
 public:
 
@@ -24,8 +24,8 @@ public:
 
 	virtual void Run() 
 	{
-		LoginCtp::Run();
-		bool loginOK = LoginCtp::CheckIsOK();
+		Login::Run();
+		bool loginOK = Login::CheckIsOK();
 		if (loginOK)
 			SendCombActionInstallRequest();
 		else 

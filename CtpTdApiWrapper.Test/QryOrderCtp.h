@@ -1,8 +1,8 @@
 #pragma once
-#include "LoginCtp.h"
+#include "Login.h"
 
 // 查询报单
-class QryOrderCtp : public LoginCtp 
+class QryOrderCtp : public Login 
 {
 public:
 	// 查询报单响应
@@ -40,8 +40,8 @@ public:
 
 	virtual void Run() 
 	{
-		LoginCtp::Run();
-		bool loginOK = LoginCtp::CheckIsOK();
+		Login::Run();
+		bool loginOK = Login::CheckIsOK();
 		if (loginOK)
 			SendQryOrderRequest();
 		else {
@@ -64,8 +64,8 @@ private:
 	void SendQryOrderRequest() 
 	{
 		CThostFtdcQryOrderField order = { '\0' };
-		strcpy_s(order.BrokerID, m_brokerID);
-		strcpy_s(order.InvestorID, m_investerID);
+		strcpy_s(order.BrokerID, gBrokerID);
+		strcpy_s(order.InvestorID, gInvesterID);
 		strcpy_s(order.ExchangeID, m_exchange.c_str());
 
 		int rf = m_pTdApi->ReqQryOrder(&order, 0);

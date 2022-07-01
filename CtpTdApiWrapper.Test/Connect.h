@@ -3,9 +3,15 @@
 
 void OnFrontConnected()
 {
-	std::cout << "连接网络成功" << std::endl;
+	std::cout << "OnFrontConnected 连接网络成功" << std::endl;
 	TestBase->NotifySuccess();
 }
+
+void OnFrontDisconnected(int nReason)
+{
+	std::cout << "OnFrontDisconnected 网络连接断开" << std::endl;
+	std::cerr << "nReason： " << nReason << std::endl;
+};
 
 
 class Connect : public TdApiTestBase
@@ -15,15 +21,8 @@ public:
 	{
 		InitTdApi();
 		RegOnFrontConnected(m_pTdSpi, OnFrontConnected);
+		RegOnFrontDisconnected(m_pTdSpi, OnFrontDisconnected);
 	}
-
-
-	virtual void OnFrontDisconnected(int nReason)
-	{
-		std::cout << "网络连接断开" << std::endl;
-		std::cerr << "nReason： " << nReason << std::endl;
-	};
-
 };
 
 TEST(CtpApiTest, 01Connect)

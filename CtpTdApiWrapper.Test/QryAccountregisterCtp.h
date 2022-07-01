@@ -1,8 +1,8 @@
 #pragma once
 #include <gtest/gtest.h>
-#include "LoginCtp.h"
+#include "Login.h"
 
-class QryAccountregisterCtp : public LoginCtp 
+class QryAccountregisterCtp : public Login 
 {
 public:
 	virtual void OnRspQryAccountregister(
@@ -37,8 +37,8 @@ public:
 
 	virtual void Run() 
 	{
-		LoginCtp::Run();
-		bool loginOK = LoginCtp::CheckIsOK();
+		Login::Run();
+		bool loginOK = Login::CheckIsOK();
 		if (loginOK) 
 			SendQryAccountregisterRequest();
 		else
@@ -53,8 +53,8 @@ private:
 	void SendQryAccountregisterRequest() 
 	{
 		CThostFtdcQryAccountregisterField accountregisterField = { 0 };
-		strcpy_s(accountregisterField.BrokerID, m_brokerID);
-		strcpy_s(accountregisterField.AccountID, m_investerID);
+		strcpy_s(accountregisterField.BrokerID, gBrokerID);
+		strcpy_s(accountregisterField.AccountID, gInvesterID);
 		strcpy_s(accountregisterField.BankID, "1");
 		strcpy_s(accountregisterField.CurrencyID, "CNY");
 
