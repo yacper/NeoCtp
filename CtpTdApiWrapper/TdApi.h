@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "TraderSpi.h"
+#include "TdSpi.h"
 
 extern "C"  // 以C的方式导出函数名
 {
@@ -315,14 +315,16 @@ extern "C"  // 以C的方式导出函数名
 #pragma region 注册回调函数
 	//========================================
 	//==================================== 回调函数 =======================================
+	TDAPI_API void RegOnRspError(TraderSpi* pSpi, CBOnRspError cb);	//错误应答
+	TDAPI_API void RegOnHeartBeatWarning(TraderSpi* pSpi, CBOnHeartBeatWarning cb);		//心跳超时警告。当长时间未收到报文时，该方法被调用。
 
 	TDAPI_API void RegOnFrontConnected(TraderSpi* pSpi, CBOnFrontConnected cb);		//当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	TDAPI_API void RegOnFrontDisconnected(TraderSpi* pSpi, CBOnFrontDisconnected cb);		//当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
-	TDAPI_API void RegOnHeartBeatWarning(TraderSpi* pSpi, CBOnHeartBeatWarning cb);		//心跳超时警告。当长时间未收到报文时，该方法被调用。
-	TDAPI_API void RegRspAuthenticate(TraderSpi* pSpi, CBRspAuthenticate cb);
 
-	TDAPI_API void RegRspUserLogin(TraderSpi* pSpi, CBRspUserLogin cb);	//登录请求响应
-	TDAPI_API void RegRspUserLogout(TraderSpi* pSpi, CBRspUserLogout cb);	//登出请求响应
+	TDAPI_API void RegOnRspAuthenticate(TraderSpi* pSpi, CBOnRspAuthenticate cb);
+
+	TDAPI_API void RegOnRspUserLogin(TraderSpi* pSpi, CBOnRspUserLogin cb);	//登录请求响应
+	TDAPI_API void RegOnRspUserLogout(TraderSpi* pSpi, CBOnRspUserLogout cb);	//登出请求响应
 
 	TDAPI_API void RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb);	//用户口令更新请求响应
 	TDAPI_API void RegRspTradingAccountPasswordUpdate(TraderSpi* pSpi, CBRspTradingAccountPasswordUpdate cb);	//资金账户口令更新请求响应
@@ -382,7 +384,6 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspQryCombAction(TraderSpi* pSpi, CBRspQryCombAction cb);	//请求查询申请组合响应
 	TDAPI_API void RegRspQryTransferSerial(TraderSpi* pSpi, CBRspQryTransferSerial cb);	//请求查询转帐流水响应
 	TDAPI_API void RegRspQryAccountregister(TraderSpi* pSpi, CBRspQryAccountregister cb);	//请求查询银期签约关系响应
-	TDAPI_API void RegRspError(TraderSpi* pSpi, CBRspError cb);	//错误应答
 	TDAPI_API void RegRtnOrder(TraderSpi* pSpi, CBRtnOrder cb);	//报单通知
 	TDAPI_API void RegRtnTrade(TraderSpi* pSpi, CBRtnTrade cb);	//成交通知
 	TDAPI_API void RegErrRtnOrderInsert(TraderSpi* pSpi, CBErrRtnOrderInsert cb);	//报单录入错误回报

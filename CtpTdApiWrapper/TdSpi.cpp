@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "TraderSpi.h"
+#include "TdSpi.h"
 
 
 #pragma region //回调函数
 //extern CBOnFrontConnected cbOnFrontConnected;		///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 //extern CBOnFrontDisconnected cbOnFrontDisconnected;		///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
 //extern CBOnHeartBeatWarning cbOnHeartBeatWarning;		///心跳超时警告。当长时间未收到报文时，该方法被调用。
-//extern CBRspAuthenticate cbRspAuthenticate;		///客户端认证响应
-//extern CBRspUserLogin cbRspUserLogin;	///登录请求响应
-//extern CBRspUserLogout cbRspUserLogout;	///登出请求响应
+//extern CBOnRspAuthenticate cbOnRspAuthenticate;		///客户端认证响应
+//extern CBOnRspUserLogin cbOnRspUserLogin;	///登录请求响应
+//extern CBOnRspUserLogout cbOnRspUserLogout;	///登出请求响应
 //extern CBRspUserPasswordUpdate cbRspUserPasswordUpdate;	///用户口令更新请求响应
 //extern CBRspTradingAccountPasswordUpdate cbRspTradingAccountPasswordUpdate;	///资金账户口令更新请求响应
 //extern CBRspUserAuthMethod cbRspUserAuthMethod; ///查询用户当前支持的认证模式的回复
@@ -74,7 +74,7 @@
 //extern CBRspQryCombAction cbRspQryCombAction;	///请求查询申请组合响应
 //extern CBRspQryTransferSerial cbRspQryTransferSerial;	///请求查询转帐流水响应
 //extern CBRspQryAccountregister cbRspQryAccountregister;///请求查询银期签约关系响应
-//extern CBRspError cbRspError;	///错误应答
+//extern CBOnRspError cbRspError;	///错误应答
 //extern CBRtnOrder cbRtnOrder;	///报单通知
 //extern CBRtnTrade cbRtnTrade;	///成交通知
 //extern CBErrRtnOrderInsert cbErrRtnOrderInsert;	///报单录入错误回报
@@ -143,48 +143,48 @@ void TraderSpi::OnHeartBeatWarning(int nTimeLapse) { if (cbOnHeartBeatWarning !=
 ///客户端认证响应
 void TraderSpi::OnRspAuthenticate(CThostFtdcRspAuthenticateField* pRspAuthenticateField, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (cbRspAuthenticate != NULL)
+	if (cbOnRspAuthenticate != NULL)
 	{
 		if (pRspAuthenticateField == NULL)
 		{
 			CThostFtdcRspAuthenticateField req;
 			memset(&req, 0, sizeof(req));
-			cbRspAuthenticate(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
+			cbOnRspAuthenticate(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
 		}
 		else
-			cbRspAuthenticate(pRspAuthenticateField, repareInfo(pRspInfo), nRequestID, bIsLast);
+			cbOnRspAuthenticate(pRspAuthenticateField, repareInfo(pRspInfo), nRequestID, bIsLast);
 	}
 }
 
 ///登录请求响应
 void TraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (cbRspUserLogin != NULL)
+	if (cbOnRspUserLogin != NULL)
 	{
 		if (pRspUserLogin == NULL)
 		{
 			CThostFtdcRspUserLoginField req;
 			memset(&req, 0, sizeof(req));
-			cbRspUserLogin(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
+			cbOnRspUserLogin(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
 		}
 		else
-			cbRspUserLogin(pRspUserLogin, repareInfo(pRspInfo), nRequestID, bIsLast);
+			cbOnRspUserLogin(pRspUserLogin, repareInfo(pRspInfo), nRequestID, bIsLast);
 	}
 }
 
 ///登出请求响应
 void TraderSpi::OnRspUserLogout(CThostFtdcUserLogoutField* pUserLogout, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
-	if (cbRspUserLogout != NULL)
+	if (cbOnRspUserLogout != NULL)
 	{
 		if (pUserLogout == NULL)
 		{
 			CThostFtdcUserLogoutField req;
 			memset(&req, 0, sizeof(req));
-			cbRspUserLogout(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
+			cbOnRspUserLogout(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
 		}
 		else
-			cbRspUserLogout(pUserLogout, repareInfo(pRspInfo), nRequestID, bIsLast);
+			cbOnRspUserLogout(pUserLogout, repareInfo(pRspInfo), nRequestID, bIsLast);
 	}
 }
 

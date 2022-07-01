@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "TraderApi.h"
+#include "TdApi.h"
 
 #include <filesystem>
 using namespace std;
@@ -1479,18 +1479,18 @@ TDAPI_API void   RegOnHeartBeatWarning(TraderSpi* pSpi, CBOnHeartBeatWarning cb)
 	pSpi->cbOnHeartBeatWarning = cb;
 }
 
-TDAPI_API void   RegRspAuthenticate(TraderSpi* pSpi, CBRspAuthenticate cb)
+TDAPI_API void   RegOnRspAuthenticate(TraderSpi* pSpi, CBOnRspAuthenticate cb)
 {
-	pSpi->cbRspAuthenticate = cb;
+	pSpi->cbOnRspAuthenticate = cb;
 }
 
-TDAPI_API void   RegRspUserLogin(TraderSpi* pSpi, CBRspUserLogin cb)	//登录请求响应
+TDAPI_API void   RegOnRspUserLogin(TraderSpi* pSpi, CBOnRspUserLogin cb)	//登录请求响应
 {
-	pSpi->cbRspUserLogin = cb;
+	pSpi->cbOnRspUserLogin = cb;
 }
-TDAPI_API void   RegRspUserLogout(TraderSpi* pSpi, CBRspUserLogout cb)	//登出请求响应
+TDAPI_API void   RegOnRspUserLogout(TraderSpi* pSpi, CBOnRspUserLogout cb)	//登出请求响应
 {
-	pSpi->cbRspUserLogout = cb;
+	pSpi->cbOnRspUserLogout = cb;
 }
 TDAPI_API void   RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb)	//用户口令更新请求响应
 {
@@ -1724,7 +1724,7 @@ TDAPI_API void   RegRspQryAccountregister(TraderSpi* pSpi, CBRspQryAccountregist
 {
 	pSpi->cbRspQryAccountregister = cb;
 }
-TDAPI_API void   RegRspError(TraderSpi* pSpi, CBRspError cb)	//错误应答
+TDAPI_API void   RegOnRspError(TraderSpi* pSpi, CBOnRspError cb)	//错误应答
 {
 	pSpi->cbRspError = cb;
 }

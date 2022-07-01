@@ -24,10 +24,10 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TraderSpi.h">
+    <ClInclude Include="TdSpi.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="TraderApi.h">
+    <ClInclude Include="TdApi.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\CtpApi\ThostFtdcUserApiStruct.h">
@@ -50,10 +50,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TraderSpi.cpp">
+    <ClCompile Include="TdSpi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TraderApi.cpp">
+    <ClCompile Include="TdApi.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

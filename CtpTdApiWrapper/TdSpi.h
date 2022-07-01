@@ -21,11 +21,11 @@ typedef void (WINAPI *CBOnFrontDisconnected)(int nReason);
 ///心跳超时警告。当长时间未收到报文时，该方法被调用。
 typedef void (WINAPI *CBOnHeartBeatWarning)(int nTimeLapse);
 ///客户端认证响应
-typedef void (WINAPI *CBRspAuthenticate)(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspAuthenticate)(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///登录请求响应
-typedef void (WINAPI *CBRspUserLogin)(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspUserLogin)(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///登出请求响应
-typedef void (WINAPI *CBRspUserLogout)(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspUserLogout)(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///用户口令更新请求响应
 typedef void (WINAPI *CBRspUserPasswordUpdate)(CThostFtdcUserPasswordUpdateField *pUserPasswordUpdate, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///资金账户口令更新请求响应
@@ -157,7 +157,7 @@ typedef void (WINAPI *CBRspQryTransferSerial)(CThostFtdcTransferSerialField *pTr
 ///请求查询银期签约关系响应
 typedef void (WINAPI *CBRspQryAccountregister)(CThostFtdcAccountregisterField *pAccountregister, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///错误应答
-typedef void (WINAPI *CBRspError)(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspError)(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///报单通知
 typedef void (WINAPI *CBRtnOrder)(CThostFtdcOrderField *pOrder);
 ///成交通知
@@ -273,9 +273,9 @@ public:
 	CBOnFrontConnected cbOnFrontConnected = 0;		///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 	CBOnFrontDisconnected cbOnFrontDisconnected = 0;		///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
 	CBOnHeartBeatWarning cbOnHeartBeatWarning = 0;		///心跳超时警告。当长时间未收到报文时，该方法被调用。
-	CBRspAuthenticate cbRspAuthenticate = 0;	///客户端认证响应
-	CBRspUserLogin cbRspUserLogin = 0;	///登录请求响应
-	CBRspUserLogout cbRspUserLogout = 0;	///登出请求响应
+	CBOnRspAuthenticate cbOnRspAuthenticate = 0;	///客户端认证响应
+	CBOnRspUserLogin cbOnRspUserLogin = 0;	///登录请求响应
+	CBOnRspUserLogout cbOnRspUserLogout = 0;	///登出请求响应
 	CBRspUserPasswordUpdate cbRspUserPasswordUpdate = 0;	///用户口令更新请求响应
 	CBRspTradingAccountPasswordUpdate cbRspTradingAccountPasswordUpdate = 0;	///资金账户口令更新请求响应
 	CBRspUserAuthMethod cbRspUserAuthMethod = 0; ///查询用户当前支持的认证模式的回复
@@ -341,7 +341,7 @@ public:
 	CBRspQryCombAction cbRspQryCombAction = 0;	///请求查询申请组合响应
 	CBRspQryTransferSerial cbRspQryTransferSerial = 0;	///请求查询转帐流水响应
 	CBRspQryAccountregister cbRspQryAccountregister = 0;///请求查询银期签约关系响应
-	CBRspError cbRspError = 0;	///错误应答
+	CBOnRspError cbRspError = 0;	///错误应答
 	CBRtnOrder cbRtnOrder = 0;	///报单通知
 	CBRtnTrade cbRtnTrade = 0;	///成交通知
 	CBErrRtnOrderInsert cbErrRtnOrderInsert = 0;	///报单录入错误回报
