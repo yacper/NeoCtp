@@ -747,7 +747,7 @@ namespace NeoCtp.Imp
 
         private void        _BindEvents()
 		{
-			//TdApiCalls.RegOnRspError(_SpiHandle, _OnRspError);
+			//TdApiCalls.RegOnRspError(SpiHandle_, _OnRspError);
 			TdApiCalls.RegOnHeartBeatWarning(_SpiHandle, _CbOnHeartBeatWarning);
 
 			TdApiCalls.RegOnFrontConnected(_SpiHandle, _OnFrontConnected);

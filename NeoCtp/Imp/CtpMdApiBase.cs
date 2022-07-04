@@ -51,6 +51,13 @@ namespace NeoCtp
 
 			} }
 
+        public string FlowPath    { get => FlowPath_;    set => SetProperty(ref FlowPath_, value); }
+        public bool   IsUsingUdp  { get => IsUsingUdp_;  set => SetProperty(ref IsUsingUdp_, value); }
+        public bool   IsMulticast { get => IsMulticast_; set => SetProperty(ref IsMulticast_, value); }
+
+        protected string FlowPath_;
+
+
 		/// <summary>
 		/// 前置编号
 		/// </summary>
@@ -102,26 +109,26 @@ namespace NeoCtp
 
 		public void Release()
 		{
-			MdApiCalls.Release(_ApiHandle);
+			MdApiCalls.Release(ApiHandle_);
 		}
 
 		///初始化
 		///@remark 初始化运行环境,只有调用后,接口才开始工作
 		public void Init()
 		{
-			MdApiCalls.Init(_ApiHandle);
+			MdApiCalls.Init(ApiHandle_);
 		}
 
 		///等待接口线程结束运行
 		///@return 线程退出代码
 		public int Join()
 		{
-			return MdApiCalls.Join(_ApiHandle);
+			return MdApiCalls.Join(ApiHandle_);
 		}
 
 		public string GetTradingDay()
 		{
-			IntPtr ptr = MdApiCalls.GetTradingDay(_ApiHandle);
+			IntPtr ptr = MdApiCalls.GetTradingDay(ApiHandle_);
 
 			return Marshal.PtrToStringAnsi(ptr);
 		}
@@ -130,7 +137,7 @@ namespace NeoCtp
 		public void         RegisterFront(string pszFrontAddress)
 		{
 			FrontAddress = pszFrontAddress;
-			MdApiCalls.RegisterFront(_ApiHandle, pszFrontAddress);
+			MdApiCalls.RegisterFront(ApiHandle_, pszFrontAddress);
 		}
 
 		///注册名字服务器网络地址
@@ -140,7 +147,7 @@ namespace NeoCtp
 		///@remark RegisterNameServer优先于RegisterFront
 		public void         RegisterNameServer(string pszNsAddress)
 		{
-			MdApiCalls.RegisterFront(_ApiHandle, pszNsAddress);
+			MdApiCalls.RegisterFront(ApiHandle_, pszNsAddress);
 		}
 
 		///注册名字服务器用户信息
@@ -149,7 +156,7 @@ namespace NeoCtp
 		{
 			BrokerId = pFensUserInfo.BrokerID;
 			UserId = pFensUserInfo.UserID;
-			MdApiCalls.RegisterFensUserInfo(_ApiHandle, ref pFensUserInfo);
+			MdApiCalls.RegisterFensUserInfo(ApiHandle_, ref pFensUserInfo);
 		}
 
 
@@ -160,7 +167,7 @@ namespace NeoCtp
 			//UserId = pReqUserLoginField.UserId;
 			//Password = pReqUserLoginField.Password;
 
-			return MdApiCalls.ReqUserLogin(_ApiHandle, ref pReqUserLoginField, nRequestID);
+			return MdApiCalls.ReqUserLogin(ApiHandle_, ref pReqUserLoginField, nRequestID);
 		}
 
 		/// <summary>
@@ -169,32 +176,32 @@ namespace NeoCtp
 		/// <param name="callback">登出回调</param>
 		public int          ReqUserLogout(ref CThostFtdcUserLogoutField pUserLogout, int nRequestID)
 		{
-			return MdApiCalls.ReqUserLogout(_ApiHandle, ref pUserLogout, nRequestID);
+			return MdApiCalls.ReqUserLogout(ApiHandle_, ref pUserLogout, nRequestID);
 		}
 		
 
 		public int          SubscribeForQuoteRsp(params string[] instruments)
 		{
-			return MdApiCalls.SubscribeForQuoteRsp(_ApiHandle, instruments, instruments == null ? 0 : instruments.Length);
+			return MdApiCalls.SubscribeForQuoteRsp(ApiHandle_, instruments, instruments == null ? 0 : instruments.Length);
 		}
 
 		public int          UnSubscribeForQuoteRsp(params string[] instruments)
 		{
-			return MdApiCalls.UnSubscribeForQuoteRsp(_ApiHandle, instruments, instruments == null ? 0 : instruments.Length);
+			return MdApiCalls.UnSubscribeForQuoteRsp(ApiHandle_, instruments, instruments == null ? 0 : instruments.Length);
 		}
 
 		public int          SubscribeMarketData(params string[] instruments)
 		{
-			return MdApiCalls.SubscribeMarketData(_ApiHandle, instruments, instruments == null ? 0 : instruments.Length);
+			return MdApiCalls.SubscribeMarketData(ApiHandle_, instruments, instruments == null ? 0 : instruments.Length);
 		}
 		public int          UnSubscribeMarketData(params string[] instruments)
 		{
-			return MdApiCalls.UnSubscribeMarketData(_ApiHandle, instruments, instruments == null ? 0 : instruments.Length);
+			return MdApiCalls.UnSubscribeMarketData(ApiHandle_, instruments, instruments == null ? 0 : instruments.Length);
 		}
 
 		public int          ReqQryMulticastInstrument(ref CThostFtdcQryMulticastInstrumentField pQryMulticastInstrument, int nRequestID)
 		{
-			return MdApiCalls.ReqQryMulticastInstrument(_ApiHandle, ref pQryMulticastInstrument, nRequestID);
+			return MdApiCalls.ReqQryMulticastInstrument(ApiHandle_, ref pQryMulticastInstrument, nRequestID);
 		}
 
 
@@ -210,37 +217,36 @@ namespace NeoCtp
             UserId       = userId;
             Password     = password;
 
-	        _ApiHandle = MdApiCalls.CreateFtdcMdApi(pszFlowPath, bIsUsingUdp, bIsMulticast);
-			_SpiHandle = MdApiCalls.CreateMdSpi();
+            FlowPath    = pszFlowPath;
+            IsUsingUdp  = bIsUsingUdp;
+            IsMulticast = bIsMulticast;
 
-			MdApiCalls.RegisterSpi(_ApiHandle, _SpiHandle);
-            _BindEvents();
-		}
+        }
 #endregion
 
-        private void        _BindEvents()
+        protected void        BindEvents_()
 		{
-			MdApiCalls.RegOnRspError(_SpiHandle, _OnRspError);
-			MdApiCalls.RegOnHeartBeatWarning(_SpiHandle, _CbOnHeartBeatWarning);
+			MdApiCalls.RegOnRspError(SpiHandle_, _OnRspError);
+			MdApiCalls.RegOnHeartBeatWarning(SpiHandle_, _CbOnHeartBeatWarning);
 
-			MdApiCalls.RegOnFrontConnected(_SpiHandle, _OnFrontConnected);
-			MdApiCalls.RegOnFrontDisconnected(_SpiHandle, _OnFrontDisconnected);
+			MdApiCalls.RegOnFrontConnected(SpiHandle_, _OnFrontConnected);
+			MdApiCalls.RegOnFrontDisconnected(SpiHandle_, _OnFrontDisconnected);
 
-			MdApiCalls.RegOnRspUserLogin(_SpiHandle, _OnRspUserLogin);
-			MdApiCalls.RegOnRspUserLogout(_SpiHandle, _OnRspUserLogout);
+			MdApiCalls.RegOnRspUserLogin(SpiHandle_, _OnRspUserLogin);
+			MdApiCalls.RegOnRspUserLogout(SpiHandle_, _OnRspUserLogout);
 
-			MdApiCalls.RegOnRspSubMarketData(_SpiHandle, _OnRspSubMarketData);
-			MdApiCalls.RegOnRspUnSubMarketData(_SpiHandle, _OnRspUnSubMarketData);
+			MdApiCalls.RegOnRspSubMarketData(SpiHandle_, _OnRspSubMarketData);
+			MdApiCalls.RegOnRspUnSubMarketData(SpiHandle_, _OnRspUnSubMarketData);
 
-			MdApiCalls.RegOnRspSubForQuoteRsp(_SpiHandle, _OnRspSubForQuoteRsp);
-			MdApiCalls.RegOnRspUnSubForQuoteRsp(_SpiHandle, _OnRspUnSubForQuoteRsp);
+			MdApiCalls.RegOnRspSubForQuoteRsp(SpiHandle_, _OnRspSubForQuoteRsp);
+			MdApiCalls.RegOnRspUnSubForQuoteRsp(SpiHandle_, _OnRspUnSubForQuoteRsp);
 
-			MdApiCalls.RegOnRspQryMulticastInstrument(_SpiHandle, _OnRspQryMulticastInstrument);
+			MdApiCalls.RegOnRspQryMulticastInstrument(SpiHandle_, _OnRspQryMulticastInstrument);
 
             /// 通知
-			MdApiCalls.RegOnRtnDepthMarketData(_SpiHandle, _OnRtnDepthMarketData);
+			MdApiCalls.RegOnRtnDepthMarketData(SpiHandle_, _OnRtnDepthMarketData);
 
-			MdApiCalls.RegOnRtnForQuoteRsp(_SpiHandle, _OnRtnForQuoteRsp);
+			MdApiCalls.RegOnRtnForQuoteRsp(SpiHandle_, _OnRtnForQuoteRsp);
         }
 
 		/// <summary>
@@ -815,12 +821,12 @@ namespace NeoCtp
         /// <summary>
         /// 交易类句柄
         /// </summary>
-        private IntPtr _ApiHandle = IntPtr.Zero;
-        private IntPtr _SpiHandle = IntPtr.Zero;   // C++ MdSpi Wrapper class
+        protected IntPtr ApiHandle_ = IntPtr.Zero;
+        protected IntPtr SpiHandle_ = IntPtr.Zero;   // C++ MdSpi Wrapper class
 
 
 
-        private ICtpMdSpi _MdSpi;
+        protected ICtpMdSpi _MdSpi;
 
 
         protected string    _BrokerID;
@@ -843,9 +849,10 @@ namespace NeoCtp
 		/// </summary>
 		protected string    _MaxOrderRef;
 
+        private bool IsUsingUdp_;
+        private bool IsMulticast_;
 
-
-		#endregion
+#endregion
 
 
 	}

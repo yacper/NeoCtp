@@ -45,7 +45,11 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     public event EventHandler<CtpRsp> OnRspErrorEvent;
 
-    public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast)); }
+    public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    {
+        Logger?.Error(pRspInfo.Dump());
+        OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
+    }
 
     public event EventHandler<int> OnHeartBeatWarningEvent;
     public void                    OnHeartBeatWarning(int nTimeLapse) { OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse); }
@@ -110,9 +114,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
     {
         Logger = logger;
 
-        RegisterSpi(this);
-        RegisterFront(FrontAddress);
-    }
+        }
 
     public    EConnectionState ConnectionState { get => ConnectionState_; set => SetProperty(ref ConnectionState_, value); }
     protected EConnectionState ConnectionState_;
@@ -141,6 +143,16 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             return Task.FromResult(true);
 
         ConnectionState = EConnectionState.Connecting;
+
+        ApiHandle_ = MdApiCalls.CreateFtdcMdApi(FlowPath, IsUsingUdp, IsMulticast);
+        SpiHandle_ = MdApiCalls.CreateMdSpi();
+
+        MdApiCalls.RegisterSpi(ApiHandle_, SpiHandle_);
+        BindEvents_();
+
+        RegisterSpi(this);
+        RegisterFront(FrontAddress);
+
         var taskSource = new TaskCompletionSource<bool>();
 
         EventHandler onFrontConnectedHandler = null;
@@ -190,31 +202,11 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
         ConnectionState = EConnectionState.Disconnecting;
 
-        var taskSource = new TaskCompletionSource();
-        //EventHandler connectionClosedHandler = null;
-        //connectionClosedHandler = (s, e) =>
-        //{
-        //    TwsCallbackHandler_.ConnectionClosedEvent -= connectionClosedHandler;
+        Release();
 
-        //// Abort the reader thread
-        //ThreadRunning_ = false;
+        OnDisconnected_();
 
-        //    OnDisconnected();
-        //    taskSource.TrySetResult();
-        //};
-        //this.TwsCallbackHandler_.ConnectionClosedEvent += connectionClosedHandler;
-
-        //// Set the operation to cancel after 5 seconds
-        //CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
-        //tokenSource.Token.Register(() =>
-        //{
-        //    TwsCallbackHandler_.ConnectionClosedEvent -= connectionClosedHandler;
-        //    taskSource.TrySetCanceled();
-        //});
-
-        //this.ClientSocket_.eDisconnect();
-
-        return taskSource.Task;
+        return Task.CompletedTask;
     }
 
 
@@ -225,7 +217,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         ConnectionState = EConnectionState.Connected;
     }
 
-    protected void OnDisconnected()
+    protected void OnDisconnected_()
     {
         Logger?.Info($"DisConnected:{this.Dump()}");
 
@@ -234,6 +226,12 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         //TickByTickSubscriptionReqs_.Clear();
         //TickByTickSubscriptions_.Clear();
         //ReqContracts.Clear();
+
+        IsLogined    = false;
+
+        ApiHandle_ = IntPtr.Zero;
+        SpiHandle_ = IntPtr.Zero;
+        _MdSpi     = null;
 
         ConnectionState = EConnectionState.Disconnected;
     }
@@ -416,10 +414,10 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         ConcurrentBag<string> instrumentsBag = new ConcurrentBag<string>();
         var                   reqId          = GetNextRequestId();
 
-        EventHandler<CtpRsp<CThostFtdcSpecificInstrumentField>> OnRspUnSubMarketDataEvent = null;
+        EventHandler<CtpRsp<CThostFtdcSpecificInstrumentField>> onRspUnSubMarketDataEvent = null;
         EventHandler<CtpRsp>                                    onRspErrorHandler         = null;
 
-        OnRspUnSubMarketDataEvent = (s, e) =>
+        onRspUnSubMarketDataEvent = (s, e) =>
         {
             instrumentsBag.Add(e.Rsp2.InstrumentID);
 
@@ -443,7 +441,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
         void clearHandler()
         {
-            OnRspSubMarketDataEvent -= OnRspUnSubMarketDataEvent;
+            OnRspUnSubMarketDataEvent -= onRspUnSubMarketDataEvent;
             OnRspErrorEvent         -= onRspErrorHandler;
         }
 
@@ -451,7 +449,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
-            OnRspSubMarketDataEvent += OnRspUnSubMarketDataEvent;
+            OnRspUnSubMarketDataEvent += onRspUnSubMarketDataEvent;
             OnRspErrorEvent         += onRspErrorHandler;
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
@@ -537,7 +535,6 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
     protected ObservableCollection<string> Subscribed_ = new();
 
     protected bool _IsLogined;
-    protected bool _IsConnected;
 
     protected int _RequestID = 0;
 

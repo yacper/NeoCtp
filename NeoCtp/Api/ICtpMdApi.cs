@@ -25,6 +25,11 @@ namespace NeoCtp
         string              UserId { get; }
         string              Password { get; }
 
+        string              FlowPath    { get; }
+        bool                IsUsingUdp  { get; }
+        bool                IsMulticast { get; }
+
+
         //int                 FrontId { get; }                                /// 前置编号
         //int                 SessionId { get; }                              /// 会话编号
         //string              MaxOrderRef { get;  }                           /// 最大报单引用
@@ -44,7 +49,6 @@ namespace NeoCtp
         event EventHandler<int> OnHeartBeatWarningEvent;
 
         EConnectionState ConnectionState { get; }
-        //bool             IsConnected     { get; }
 		Task<bool>          ConnectAsync();
 		Task				DisconnectAsync();
         event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
