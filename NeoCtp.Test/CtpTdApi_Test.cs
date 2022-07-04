@@ -39,8 +39,8 @@ public class CtpTdApi_Test
         var connected = await client.ConnectAsync();
         connected.Should().BeTrue();
 
-        var logined = await client.ReqUserLoginAsync();
-        client.IsLogined.Should().BeTrue();
+        //var logined = await client.ReqUserLoginAsync();
+        //client.IsLogined.Should().BeTrue();
 
 
         Debug.WriteLine(client.Dump());
@@ -72,6 +72,14 @@ public class CtpTdApi_Test
     }
 
 #region User
+    [Test]
+    public async Task Login_Test()
+    {
+        var logined = await client.ReqUserLoginAsync();
+        client.IsLogined.Should().BeTrue();
+
+    }
+
 
     //[Test]
     //public async Task SubMarketDataAsync_Test()

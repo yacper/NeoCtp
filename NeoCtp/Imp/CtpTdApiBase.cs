@@ -178,7 +178,7 @@ namespace NeoCtp.Imp
 		///@remark 该方法要在Init方法前调用。若不调用则不会收到私有流的数据。
 		public void SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType)
 		{
-			TdApiCalls.SubscribePrivateTopic(nResumeType);
+			TdApiCalls.SubscribePrivateTopic(ApiHandle_, nResumeType);
 		}
 
 		///订阅公共流。
@@ -189,7 +189,7 @@ namespace NeoCtp.Imp
 		///@remark 该方法要在Init方法前调用。若不调用则不会收到公共流的数据。
 		public void SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType)
 		{
-			TdApiCalls.SubscribePublicTopic(nResumeType);
+			TdApiCalls.SubscribePublicTopic(ApiHandle_, nResumeType);
 		}
 
 		///客户端认证请求

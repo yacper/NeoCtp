@@ -45,9 +45,9 @@ namespace NeoCtp
 		internal extern static void RegisterFensUserInfo(IntPtr api, ref CThostFtdcFensUserInfoField pFensUserInfo);
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "SubscribePrivateTopic", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void SubscribePrivateTopic(THOST_TE_RESUME_TYPE nResumeType);
+		internal extern static void SubscribePrivateTopic(IntPtr api, THOST_TE_RESUME_TYPE nResumeType);
 		[DllImport("CtpTdApiWrapper", EntryPoint = "SubscribePublicTopic", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType);
+		internal extern static void SubscribePublicTopic(IntPtr api, THOST_TE_RESUME_TYPE nResumeType);
 
 		#region Login/out
 

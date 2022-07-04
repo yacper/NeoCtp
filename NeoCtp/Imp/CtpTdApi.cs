@@ -547,6 +547,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         TdApiCalls.RegisterSpi(ApiHandle_, SpiHandle_);
         BindEvents_();
         RegisterSpi(this);
+        SubscribePublicTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
+        SubscribePrivateTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
         RegisterFront(FrontAddress);
 
 
