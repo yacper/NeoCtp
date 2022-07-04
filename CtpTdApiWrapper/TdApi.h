@@ -7,7 +7,7 @@ extern "C"  // 以C的方式导出函数名
 #pragma  region Api
 
 	TDAPI_API CThostFtdcTraderApi* CreateFtdcTraderApi(const char* pszFlowPath = "CtpFlow/");
-	TDAPI_API TraderSpi*	CreateTraderSpi();
+	TDAPI_API TraderSpi*	CreateTdSpi();
 	TDAPI_API void			RegisterSpi(CThostFtdcTraderApi* api, TraderSpi* pSpi);
 
 	//获取接口版本
@@ -325,8 +325,8 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegOnRspError(TraderSpi* pSpi, CBOnRspError cb);	//错误应答
 	TDAPI_API void RegOnHeartBeatWarning(TraderSpi* pSpi, CBOnHeartBeatWarning cb);		//心跳超时警告。当长时间未收到报文时，该方法被调用。
 
-	TDAPI_API void RegOnFrontConnected(TraderSpi* pSpi, CBOnFrontConnected cb);		//当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
-	TDAPI_API void RegOnFrontDisconnected(TraderSpi* pSpi, CBOnFrontDisconnected cb);		//当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
+	TDAPI_API void RegOnRspFrontConnected(TraderSpi* pSpi, CBOnRspFrontConnected cb);		//当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
+	TDAPI_API void RegOnRspFrontDisconnected(TraderSpi* pSpi, CBOnRspFrontDisconnected cb);		//当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
 
 	TDAPI_API void RegOnRspAuthenticate(TraderSpi* pSpi, CBOnRspAuthenticate cb);
 
@@ -334,12 +334,16 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegOnRspSettlementInfoConfirm(TraderSpi* pSpi, CBOnRspSettlementInfoConfirm cb);	//投资者结算结果确认响应
 	TDAPI_API void RegOnRspUserLogout(TraderSpi* pSpi, CBOnRspUserLogout cb);	//登出请求响应
 
+
+
+	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//报单录入请求响应
+
+
 	TDAPI_API void RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb);	//用户口令更新请求响应
 	TDAPI_API void RegRspTradingAccountPasswordUpdate(TraderSpi* pSpi, CBRspTradingAccountPasswordUpdate cb);	//资金账户口令更新请求响应
 	TDAPI_API void RegRspUserAuthMethod(TraderSpi* pSpi, CBRspUserAuthMethod cb);	//查询用户当前支持的认证模式的回复
 	TDAPI_API void RegRspGenUserCaptcha(TraderSpi* pSpi, CBRspGenUserCaptcha cb);	//获取图形验证码请求的回复
 	TDAPI_API void RegRspGenUserText(TraderSpi* pSpi, CBRspGenUserText cb);	//获取短信验证码请求的回复
-	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//报单录入请求响应
 	TDAPI_API void RegRspParkedOrderInsert(TraderSpi* pSpi, CBRspParkedOrderInsert cb);	//预埋单录入请求响应
 	TDAPI_API void RegRspParkedOrderAction(TraderSpi* pSpi, CBRspParkedOrderAction cb);	//预埋撤单录入请求响应
 	TDAPI_API void RegRspOrderAction(TraderSpi* pSpi, CBRspOrderAction cb);	//报单操作请求响应

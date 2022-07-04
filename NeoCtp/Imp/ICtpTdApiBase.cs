@@ -32,6 +32,8 @@ namespace NeoCtp.Imp
         string              Password { get; }
         string              FrontAddress { get; }
 
+        string              FlowPath    { get; }
+
         int                 FrontId { get; }                                /// 前置编号
         int                 SessionId { get; }                              /// 会话编号
         string              MaxOrderRef { get;  }                           /// 最大报单引用

@@ -6,8 +6,8 @@ using namespace std;
 //extern CBOnRspError cbOnRspError;
 //extern CBOnHeartBeatWarning cbOnHeartBeatWarning;
 //
-//extern CBOnFrontConnected cbOnFrontConnected;
-//extern CBOnFrontDisconnected cbOnFrontDisconnected;
+//extern CBOnRspFrontConnected cbOnFrontConnected;
+//extern CBOnRspFrontDisconnected cbOnFrontDisconnected;
 //
 //extern CBOnRspUserLogin cbOnRspUserLogin;
 //extern CBOnRspUserLogout cbOnRspUserLogout;

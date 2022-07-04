@@ -178,8 +178,8 @@ TEST(CtpMdApiWrapperTest, 01_Connect)
 	ASSERT_TRUE(g_pMdUserApi != NULL);
 	ASSERT_TRUE(g_pMdSpi != NULL);
 
-	RegOnFrontConnected(g_pMdSpi, OnFrontConnected);
-	RegOnFrontDisconnected(g_pMdSpi, OnFrontDisconnected);
+	RegOnRspFrontConnected(g_pMdSpi, OnFrontConnected);
+	RegOnRspFrontDisconnected(g_pMdSpi, OnFrontDisconnected);
 
 	Init(g_pMdUserApi);                                // 连接运行
 

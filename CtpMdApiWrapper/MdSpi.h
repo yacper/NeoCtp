@@ -14,8 +14,8 @@
 	typedef void (WINAPI* CBOnRspError)(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 	typedef void (WINAPI* CBOnHeartBeatWarning)(int nTimeLapse);
 
-	typedef void (WINAPI* CBOnFrontConnected)(void);
-	typedef void (WINAPI* CBOnFrontDisconnected)(int nReason);
+	typedef void (WINAPI* CBOnRspFrontConnected)(void);
+	typedef void (WINAPI* CBOnRspFrontDisconnected)(int nReason);
 
 	typedef void (WINAPI* CBOnRspUserLogin)(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 	typedef void (WINAPI* CBOnRspUserLogout)(CThostFtdcUserLogoutField* pUserLogout, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
@@ -40,8 +40,8 @@ public:
 	CBOnRspError cbOnRspError = nullptr;
 	CBOnHeartBeatWarning cbOnHeartBeatWarning = 0;
 
-	CBOnFrontConnected cbOnFrontConnected = 0;
-	CBOnFrontDisconnected cbOnFrontDisconnected = 0;
+	CBOnRspFrontConnected cbOnFrontConnected = 0;
+	CBOnRspFrontDisconnected cbOnFrontDisconnected = 0;
 
 	CBOnRspUserLogin cbOnRspUserLogin = 0;
 	CBOnRspUserLogout cbOnRspUserLogout = 0;

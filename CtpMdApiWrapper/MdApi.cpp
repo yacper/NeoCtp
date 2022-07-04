@@ -147,12 +147,12 @@ MDAPI_API void				RegOnHeartBeatWarning(MdSpi* spi, CBOnHeartBeatWarning cb)
 }
 
 //连接应答
-MDAPI_API void				RegOnFrontConnected(MdSpi* spi, CBOnFrontConnected cb)
+MDAPI_API void				RegOnRspFrontConnected(MdSpi* spi, CBOnRspFrontConnected cb)
 {
 	spi->cbOnFrontConnected = cb;
 }
 //连接断开
-MDAPI_API void				RegOnFrontDisconnected(MdSpi* spi, CBOnFrontDisconnected cb)
+MDAPI_API void				RegOnRspFrontDisconnected(MdSpi* spi, CBOnRspFrontDisconnected cb)
 {
 	spi->cbOnFrontDisconnected = cb;
 }

@@ -88,9 +88,9 @@ namespace NeoCtp
         [DllImport("CtpMdApiWrapper", EntryPoint = "RegOnHeartBeatWarning", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void      RegOnHeartBeatWarning(IntPtr spi, CbOnHeartBeatWarning cb);
 
-        [DllImport("CtpMdApiWrapper", EntryPoint = "RegOnFrontConnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("CtpMdApiWrapper", EntryPoint = "RegOnRspFrontConnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void      RegOnFrontConnected(IntPtr spi, CbOnFrontConnected cb);
-        [DllImport("CtpMdApiWrapper", EntryPoint = "RegOnFrontDisconnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("CtpMdApiWrapper", EntryPoint = "RegOnRspFrontDisconnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
         internal extern static void      RegOnFrontDisconnected(IntPtr spi, CbOnFrontDisconnected cb);
 
         [DllImport("CtpMdApiWrapper", EntryPoint = "RegOnRspUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]

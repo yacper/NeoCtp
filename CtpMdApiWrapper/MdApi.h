@@ -48,8 +48,8 @@ extern "C"  // 以C的方式导出函数名
 	MDAPI_API void			RegOnRspError(MdSpi* spi, CBOnRspError cb);
 	MDAPI_API void			RegOnHeartBeatWarning(MdSpi* spi, CBOnHeartBeatWarning cb);
 
-	MDAPI_API void			RegOnFrontConnected(MdSpi* spi, CBOnFrontConnected cb);
-	MDAPI_API void			RegOnFrontDisconnected(MdSpi* spi, CBOnFrontDisconnected cb);
+	MDAPI_API void			RegOnRspFrontConnected(MdSpi* spi, CBOnRspFrontConnected cb);
+	MDAPI_API void			RegOnRspFrontDisconnected(MdSpi* spi, CBOnRspFrontDisconnected cb);
 
 	MDAPI_API void			RegOnRspUserLogin(MdSpi* spi, CBOnRspUserLogin cb);
 	MDAPI_API void			RegOnRspUserLogout(MdSpi* spi, CBOnRspUserLogout cb);

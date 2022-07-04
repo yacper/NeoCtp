@@ -31,8 +31,8 @@ public class CtpTdApi_Test
     public async Task Setup()
     {
         ILogger defaultLogger = null;
-        LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
-        defaultLogger            = LogManager.GetCurrentClassLogger();
+        //LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
+        //defaultLogger            = LogManager.GetCurrentClassLogger();
 
         /// connect
         client = new CtpTdApi(TestConstants.MdFrontAddr, TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
@@ -55,7 +55,7 @@ public class CtpTdApi_Test
         Debug.WriteLine(client.Dump());
     }
 
-    [Test]
+    //[Test]
     public async Task Reconnect_Test()
     {
         await client.DisconnectAsync();

@@ -19,10 +19,10 @@ namespace NeoCtp
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "CreateFtdcTraderApi", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static IntPtr CreateFtdcTraderApi(string pszFlowPath = "");
-		[DllImport("CtpTdApiWrapper", EntryPoint = "CreateSpi", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static IntPtr CreateSpi();
+		[DllImport("CtpTdApiWrapper", EntryPoint = "CreateTdSpi", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static IntPtr CreateTdSpi();
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegisterSpi", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void RegisterSpi(IntPtr api, IntPtr pSpi);
+		internal extern static void		RegisterSpi(IntPtr api, IntPtr pSpi);
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "GetApiVersion", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static IntPtr GetApiVersion();
@@ -376,7 +376,7 @@ namespace NeoCtp
 		//========================================
 
 		///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
-		internal delegate void CBOnFrontConnected();
+		internal delegate void CBOnRspFrontConnected();
 
 		///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
 		internal delegate void CBOnFrontDisconnected(int nReason);
@@ -384,7 +384,7 @@ namespace NeoCtp
 		///心跳超时警告。当长时间未收到报文时，该方法被调用。
 		internal delegate void CBOnHeartBeatWarning(int nTimeLapse);
 		///客户端认证响应
-		internal delegate void CBRspAuthenticate(ref CThostFtdcRspAuthenticateField pRspAuthenticateField, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspAuthenticate(ref CThostFtdcRspAuthenticateField pRspAuthenticateField, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///登录请求响应
 		internal delegate void CBOnRspUserLogin( ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///登出请求响应
@@ -400,7 +400,7 @@ namespace NeoCtp
 		///获取短信验证码请求的回复
 		internal delegate void CBRspGenUserText( ref CThostFtdcRspGenUserTextField pRspGenUserText, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///报单录入请求响应
-		internal delegate void CBRspOrderInsert( ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspOrderInsert( ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///预埋单录入请求响应
 		internal delegate void CBRspParkedOrderInsert( ref CThostFtdcParkedOrderField pParkedOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///预埋撤单录入请求响应
@@ -520,7 +520,7 @@ namespace NeoCtp
 		///请求查询银期签约关系响应
 		internal delegate void CBRspQryAccountregister( ref CThostFtdcAccountregisterField pAccountregister, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///错误应答
-		internal delegate void CBRspError( ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspError( ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///报单通知
 		internal delegate void CBRtnOrder( ref CThostFtdcOrderField pOrder);
 		///成交通知
@@ -627,26 +627,29 @@ namespace NeoCtp
 
 
 		//==================================== 回调函数 =======================================
-
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnFrontConnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegOnFrontConnected(IntPtr pSpi, CBOnFrontConnected cb);        //当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnFrontDisconnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegOnFrontDisconnected(IntPtr pSpi, CBOnFrontDisconnected cb);      //当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspError", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspError(IntPtr pSpi, CBOnRspError cbOn); //错误应答
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnHeartBeatWarning", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void
-			RegOnHeartBeatWarning(IntPtr pSpi, CBOnHeartBeatWarning cb);        //心跳超时警告。当长时间未收到报文时，该方法被调用。
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspAuthenticate", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void
-			RegRspAuthenticate(IntPtr pSpi, CBRspAuthenticate cb);
+		internal extern static void RegOnHeartBeatWarning(IntPtr pSpi, CBOnHeartBeatWarning cb); //心跳超时警告。当长时间未收到报文时，该方法被调用。
+	
+
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspFrontConnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspFrontConnected(IntPtr pSpi, CBOnRspFrontConnected cb); //当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspFrontDisconnected", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspFrontDisconnected(IntPtr pSpi, CBOnFrontDisconnected cb); //当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
+
+	    [DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspAuthenticate", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspAuthenticate(IntPtr pSpi, CBOnRspAuthenticate cbOn);
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegOnRspUserLogin(IntPtr pSpi, CBOnRspUserLogin cbOn);    //登录请求响应
+		internal extern static void RegOnRspUserLogin(IntPtr pSpi, CBOnRspUserLogin cbOn); //登录请求响应
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegOnRspUserLogout(IntPtr pSpi, CBOnRspUserLogout cbOn);  //登出请求响应
+		internal extern static void RegOnRspUserLogout(IntPtr pSpi, CBOnRspUserLogout cbOn); //登出请求响应
+
+
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspOrderInsert(IntPtr pSpi, CBOnRspOrderInsert cbOn); //报单录入请求响应
+
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspUserPasswordUpdate", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
@@ -663,9 +666,7 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspGenUserText", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspGenUserText(IntPtr pSpi, CBRspGenUserText cb);    //获取短信验证码请求的回复
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspOrderInsert(IntPtr pSpi, CBRspOrderInsert cb);    //报单录入请求响应
+
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspParkedOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspParkedOrderInsert(IntPtr pSpi, CBRspParkedOrderInsert cb);    //预埋单录入请求响应
@@ -822,10 +823,7 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryAccountregister", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspQryAccountregister(IntPtr pSpi, CBRspQryAccountregister cb);  //请求查询银期签约关系响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspError", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspError(IntPtr pSpi, CBRspError cb);    //错误应答
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRtnOrder(IntPtr pSpi, CBRtnOrder cb);    //报单通知
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]

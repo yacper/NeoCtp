@@ -20,6 +20,23 @@ namespace NeoCtp
 {
 	public partial class CtpMdApiBase : ObservableObject, ICtpMdApiBase
 	{
+#region C&D
+        public              CtpMdApiBase(string frontAddress, string brokerId, string userId, string password,
+            string pszFlowPath = "CtpMdFlow/", bool bIsUsingUdp = false, bool bIsMulticast = false)
+        {
+            FrontAddress = frontAddress;
+            BrokerId     = brokerId;
+            UserId       = userId;
+            Password     = password;
+
+            FlowPath    = pszFlowPath;
+            IsUsingUdp  = bIsUsingUdp;
+            IsMulticast = bIsMulticast;
+
+        }
+#endregion
+
+
 		public string       BrokerId
 		{
 			get { return _BrokerID;}
@@ -208,21 +225,6 @@ namespace NeoCtp
 	
 
 
-#region C&D
-        public              CtpMdApiBase(string frontAddress, string brokerId, string userId, string password,
-            string pszFlowPath = "CtpFlow", bool bIsUsingUdp = false, bool bIsMulticast = false)
-        {
-            FrontAddress = frontAddress;
-            BrokerId     = brokerId;
-            UserId       = userId;
-            Password     = password;
-
-            FlowPath    = pszFlowPath;
-            IsUsingUdp  = bIsUsingUdp;
-            IsMulticast = bIsMulticast;
-
-        }
-#endregion
 
         protected void        BindEvents_()
 		{
@@ -510,8 +512,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspError OnRspError
 //        {
-//            add { rspError += value; regOnRspError(_Spi, rspError); }
-//            remove { rspError -= value; regOnRspError(_Spi, rspError); }
+//            add { rspError += value; regOnRspError(TdSpi_, rspError); }
+//            remove { rspError -= value; regOnRspError(TdSpi_, rspError); }
 //        }
 
 //        #endregion
@@ -530,8 +532,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event HeartBeatWarning OnHeartBeatWarning
 //        {
-//            add { heartBeatWarning += value; regOnHeartBeatWarning(_Spi, heartBeatWarning); }
-//            remove { heartBeatWarning -= value; regOnHeartBeatWarning(_Spi, heartBeatWarning); }
+//            add { heartBeatWarning += value; regOnHeartBeatWarning(TdSpi_, heartBeatWarning); }
+//            remove { heartBeatWarning -= value; regOnHeartBeatWarning(TdSpi_, heartBeatWarning); }
 //        }
 
 //        #endregion
@@ -550,8 +552,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event FrontConnected OnFrontConnected
 //        {
-//            add { frontConnected += value; regOnFrontConnected(_Spi, frontConnected); }
-//            remove { frontConnected -= value; regOnFrontConnected(_Spi, frontConnected); }
+//            add { frontConnected += value; regOnFrontConnected(TdSpi_, frontConnected); }
+//            remove { frontConnected -= value; regOnFrontConnected(TdSpi_, frontConnected); }
 //        }
 
 //        #endregion
@@ -570,8 +572,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event FrontDisconnected OnFrontDisconnected
 //        {
-//            add { frontDisconnected += value; regOnFrontDisconnected(_Spi, frontDisconnected); }
-//            remove { frontDisconnected -= value; regOnFrontDisconnected(_Spi, frontDisconnected); }
+//            add { frontDisconnected += value; regOnFrontDisconnected(TdSpi_, frontDisconnected); }
+//            remove { frontDisconnected -= value; regOnFrontDisconnected(TdSpi_, frontDisconnected); }
 //        }
 
 //        #endregion
@@ -590,8 +592,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspUserLogin OnRspUserLogin
 //        {
-//            add { rspUserLogin += value; regOnRspUserLogin(_Spi, rspUserLogin); }
-//            remove { rspUserLogin -= value; regOnRspUserLogin(_Spi, rspUserLogin); }
+//            add { rspUserLogin += value; regOnRspUserLogin(TdSpi_, rspUserLogin); }
+//            remove { rspUserLogin -= value; regOnRspUserLogin(TdSpi_, rspUserLogin); }
 //        }
 
 //        #endregion
@@ -615,8 +617,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspUserLogout OnRspUserLogout
 //        {
-//            add { rspUserLogout += value; regOnRspUserLogout(_Spi, rspUserLogout); }
-//            remove { rspUserLogout -= value; regOnRspUserLogout(_Spi, rspUserLogout); }
+//            add { rspUserLogout += value; regOnRspUserLogout(TdSpi_, rspUserLogout); }
+//            remove { rspUserLogout -= value; regOnRspUserLogout(TdSpi_, rspUserLogout); }
 //        }
 
 //        #endregion
@@ -636,8 +638,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspSubMarketData OnRspSubMarketData
 //        {
-//            add { rspSubMarketData += value; regOnRspSubMarketData(_Spi, rspSubMarketData); }
-//            remove { rspSubMarketData -= value; regOnRspSubMarketData(_Spi, rspSubMarketData); }
+//            add { rspSubMarketData += value; regOnRspSubMarketData(TdSpi_, rspSubMarketData); }
+//            remove { rspSubMarketData -= value; regOnRspSubMarketData(TdSpi_, rspSubMarketData); }
 //        }
 
 //        #endregion
@@ -661,8 +663,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspUnSubMarketData OnRspUnSubMarketData
 //        {
-//            add { rspUnSubMarketData += value; regOnRspUnSubMarketData(_Spi, rspUnSubMarketData); }
-//            remove { rspUnSubMarketData -= value; regOnRspUnSubMarketData(_Spi, rspUnSubMarketData); }
+//            add { rspUnSubMarketData += value; regOnRspUnSubMarketData(TdSpi_, rspUnSubMarketData); }
+//            remove { rspUnSubMarketData -= value; regOnRspUnSubMarketData(TdSpi_, rspUnSubMarketData); }
 //        }
 
 //        #endregion
@@ -687,8 +689,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspSubForQuoteRsp OnRspSubForQuoteRsp
 //        {
-//            add { rspSubForQuoteRsp += value; regOnRspSubForQuoteRsp(_Spi, rspSubForQuoteRsp); }
-//            remove { rspSubForQuoteRsp -= value; regOnRspSubForQuoteRsp(_Spi, rspSubForQuoteRsp); }
+//            add { rspSubForQuoteRsp += value; regOnRspSubForQuoteRsp(TdSpi_, rspSubForQuoteRsp); }
+//            remove { rspSubForQuoteRsp -= value; regOnRspSubForQuoteRsp(TdSpi_, rspSubForQuoteRsp); }
 //        }
 
 //        #endregion
@@ -711,8 +713,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RspUnSubForQuoteRsp OnRspUnSubForQuoteRsp
 //        {
-//            add { rspUnSubForQuoteRsp += value; regOnRspUnSubForQuoteRsp(_Spi, rspUnSubForQuoteRsp); }
-//            remove { rspUnSubForQuoteRsp -= value; regOnRspUnSubForQuoteRsp(_Spi, rspUnSubForQuoteRsp); }
+//            add { rspUnSubForQuoteRsp += value; regOnRspUnSubForQuoteRsp(TdSpi_, rspUnSubForQuoteRsp); }
+//            remove { rspUnSubForQuoteRsp -= value; regOnRspUnSubForQuoteRsp(TdSpi_, rspUnSubForQuoteRsp); }
 //        }
 
 //        #endregion
@@ -733,8 +735,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RtnDepthMarketData OnRtnDepthMarketData
 //        {
-//            add { rtnDepthMarketData += value; regOnRtnDepthMarketData(_Spi, rtnDepthMarketData); }
-//            remove { rtnDepthMarketData -= value; regOnRtnDepthMarketData(_Spi, rtnDepthMarketData); }
+//            add { rtnDepthMarketData += value; regOnRtnDepthMarketData(TdSpi_, rtnDepthMarketData); }
+//            remove { rtnDepthMarketData -= value; regOnRtnDepthMarketData(TdSpi_, rtnDepthMarketData); }
 //        }
 
 //        #endregion
@@ -754,8 +756,8 @@ namespace NeoCtp
 //        /// </summary>
 //        public event RtnForQuoteRsp OnRtnForQuoteRsp
 //        {
-//            add { rtnForQuoteRsp += value; regOnRtnForQuoteRsp(_Spi, rtnForQuoteRsp); }
-//            remove { rtnForQuoteRsp -= value; regOnRtnForQuoteRsp(_Spi, rtnForQuoteRsp); }
+//            add { rtnForQuoteRsp += value; regOnRtnForQuoteRsp(TdSpi_, rtnForQuoteRsp); }
+//            remove { rtnForQuoteRsp -= value; regOnRtnForQuoteRsp(TdSpi_, rtnForQuoteRsp); }
 //        }
 
 //        #endregion

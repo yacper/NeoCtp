@@ -13,10 +13,10 @@
 #pragma region 回调委托声明
 
 ///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
-typedef void (WINAPI *CBOnFrontConnected)();
+typedef void (WINAPI *CBOnRspFrontConnected)();
 
 ///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
-typedef void (WINAPI *CBOnFrontDisconnected)(int nReason);
+typedef void (WINAPI *CBOnRspFrontDisconnected)(int nReason);
 
 ///心跳超时警告。当长时间未收到报文时，该方法被调用。
 typedef void (WINAPI *CBOnHeartBeatWarning)(int nTimeLapse);
@@ -270,8 +270,8 @@ class TraderSpi : public CThostFtdcTraderSpi
 public:
 #pragma region 回调委托实例
 	///委托实例
-	CBOnFrontConnected cbOnFrontConnected = 0;		///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
-	CBOnFrontDisconnected cbOnFrontDisconnected = 0;		///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
+	CBOnRspFrontConnected cbOnFrontConnected = 0;		///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
+	CBOnRspFrontDisconnected cbOnFrontDisconnected = 0;		///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
 	CBOnHeartBeatWarning cbOnHeartBeatWarning = 0;		///心跳超时警告。当长时间未收到报文时，该方法被调用。
 	CBOnRspAuthenticate cbOnRspAuthenticate = 0;	///客户端认证响应
 	CBOnRspUserLogin cbOnRspUserLogin = 0;	///登录请求响应

@@ -20,8 +20,8 @@ public:
 	virtual void Run()
 	{
 		InitTdApi();
-		RegOnFrontConnected(m_pTdSpi, OnFrontConnected);
-		RegOnFrontDisconnected(m_pTdSpi, OnFrontDisconnected);
+		RegOnRspFrontConnected(m_pTdSpi, OnFrontConnected);
+		RegOnRspFrontDisconnected(m_pTdSpi, OnFrontDisconnected);
 	}
 };
 

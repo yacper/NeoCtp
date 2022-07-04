@@ -15,7 +15,7 @@ TDAPI_API CThostFtdcTraderApi* CreateFtdcTraderApi(const char* pszFlowPath)
 	CThostFtdcTraderApi* pApi = CThostFtdcTraderApi::CreateFtdcTraderApi(pszFlowPath);			// 创建UserApi	
 	return pApi;
 }
-TDAPI_API TraderSpi* CreateTraderSpi()
+TDAPI_API TraderSpi* CreateTdSpi()
 {
 	TraderSpi* ret = new TraderSpi();
 	return ret;
@@ -1464,12 +1464,12 @@ TDAPI_API int		ReqQryCFMMCTradingAccountKey(CThostFtdcTraderApi* pApi, CThostFtd
 //========================================
 //==================================== 回调函数 =======================================
 
-TDAPI_API void   RegOnFrontConnected(TraderSpi* pSpi, CBOnFrontConnected cb)		//当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
+TDAPI_API void   RegOnRspFrontConnected(TraderSpi* pSpi, CBOnRspFrontConnected cb)		//当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
 {
 	pSpi->cbOnFrontConnected = cb;
 }
 
-TDAPI_API void   RegOnFrontDisconnected(TraderSpi* pSpi, CBOnFrontDisconnected cb)		//当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
+TDAPI_API void   RegOnRspFrontDisconnected(TraderSpi* pSpi, CBOnRspFrontDisconnected cb)		//当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
 {
 	pSpi->cbOnFrontDisconnected = cb;
 }
