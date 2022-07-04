@@ -59,10 +59,10 @@ namespace NeoCtp
         [DllImport("CtpMdApiWrapper", EntryPoint = "UnSubscribeForQuoteRsp", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int      UnSubscribeForQuoteRsp(IntPtr api, string[] instruments, int count);
 
-        [DllImport("CtpMdApiWrapper", EntryPoint = "ReqUserLoginAsync", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("CtpMdApiWrapper", EntryPoint = "ReqUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int      ReqUserLogin(IntPtr api, ref CThostFtdcReqUserLoginField pReqUserLoginField, int nRequestID);
 
-        [DllImport("CtpMdApiWrapper", EntryPoint = "ReqUserLogoutAsync", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("CtpMdApiWrapper", EntryPoint = "ReqUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
         internal extern static int      ReqUserLogout(IntPtr api, ref CThostFtdcUserLogoutField pUserLogout, int nRequestID);
 
         [DllImport("CtpMdApiWrapper", EntryPoint = "ReqQryMulticastInstrument", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]

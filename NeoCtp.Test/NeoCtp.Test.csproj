@@ -26,4 +26,11 @@
   <ItemGroup>
     <ProjectReference Include="..\NeoCtp\NeoCtp.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y ..\CtpApi\thostmduserapi_se.dll $(OutDir)" />
+    <Exec Command="xcopy /y ..\CtpApi\thosttraderapi_se.dll $(OutDir)" />
+    <Exec Command="xcopy /y ..\CtpMdApiWrapper\Bin\$(Configuration)\CtpMdApiWrapper.dll $(OutDir)" />
+    <Exec Command="xcopy /y ..\CtpTdApiWrapper\Bin\$(Configuration)\CtpTdApiWrapper.dll $(OutDir)" />
+  </Target>
 </Project>

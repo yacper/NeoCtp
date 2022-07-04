@@ -32,8 +32,8 @@ public class CtpMdApi_Test
     public async Task Setup()
     {
         ILogger defaultLogger = null;
-        LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
-        defaultLogger            = LogManager.GetCurrentClassLogger();
+        //LogManager.Configuration = new XmlLoggingConfiguration("NLog.config");
+        //defaultLogger            = LogManager.GetCurrentClassLogger();
 
         /// connect
         client = new CtpMdApi(TestConstants.MdFrontAddr, TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
@@ -56,7 +56,7 @@ public class CtpMdApi_Test
         Debug.WriteLine(client.Dump());
     }
 
-    [Test]
+    //[Test]
     public async Task Reconnect_Test()
     {
         await client.DisconnectAsync();
@@ -86,14 +86,18 @@ public class CtpMdApi_Test
             Debug.WriteLine(e);
         };
 
-        await client.SubMarketDataAsync(instruments.ToArray());
+        var subs = await client.SubMarketDataAsync(instruments.ToArray());
+        subs.Rsp2.Count.Should().Be(2);
         //await client.SubMarketDataAsync(instruments.ToArray());
 
         client.Subscribed.Should().NotBeEmpty();
+        await Task.Delay(5000); // wait 5s for marketdata
         marketDataFields.Should().NotBeEmpty();
 
         // cancel
-        await client.UnSubMarketDataAsync(instruments.ToArray());
+        var unsubs = await client.UnSubMarketDataAsync(instruments.ToArray());
+        unsubs.Rsp2.Count.Should().Be(2);
+
         client.Subscribed.Should().BeEmpty();
         await Task.Delay(5000);
     }

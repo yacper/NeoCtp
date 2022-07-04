@@ -85,14 +85,7 @@ namespace NeoCtp
 		}
 
 
-        public CtpMdApiBase(string frontAddress, string brokerId, string userId, string password)
-        {
-            FrontAddress = frontAddress;
-            BrokerId     = brokerId;
-            UserId       = userId;
-            Password     = password;
-        }
-
+      
 		public void         RegisterSpi(ICtpMdSpi spi)
 		{
 			lock (this)
@@ -209,24 +202,20 @@ namespace NeoCtp
 
 
 #region C&D
-        public              CtpMdApiBase(string pszFlowPath = "CtpFiles", bool bIsUsingUdp = false, bool bIsMulticast = false)
+        public              CtpMdApiBase(string frontAddress, string brokerId, string userId, string password,
+            string pszFlowPath = "CtpFlow", bool bIsUsingUdp = false, bool bIsMulticast = false)
         {
+            FrontAddress = frontAddress;
+            BrokerId     = brokerId;
+            UserId       = userId;
+            Password     = password;
+
 	        _ApiHandle = MdApiCalls.CreateFtdcMdApi(pszFlowPath, bIsUsingUdp, bIsMulticast);
 			_SpiHandle = MdApiCalls.CreateMdSpi();
 
 			MdApiCalls.RegisterSpi(_ApiHandle, _SpiHandle);
             _BindEvents();
 		}
-
-  //      public              CtpMdApiBase(string frontAddr, string brokerID, string account, string psw)
-	 //       : this()
-		//{
-		//	RegisterFront(frontAddr);
-
-		//	BrokerId = brokerID;
-		//	UserId = account;
-		//	Password = psw;
-		//}
 #endregion
 
         private void        _BindEvents()
