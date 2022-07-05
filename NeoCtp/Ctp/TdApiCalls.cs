@@ -67,10 +67,10 @@ namespace NeoCtp
 
 
 		//发送用户登录请求
-		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLoginAsync", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLogin", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static int ReqUserLogin(IntPtr pApi, ref CThostFtdcReqUserLoginField pReqUserLoginField, int nRequestID);
 		//发送登出请求
-		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLogoutAsync", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static int ReqUserLogout(IntPtr pApi, ref CThostFtdcUserLogoutField pUserLogout, int nRequestID);
 
 

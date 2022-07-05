@@ -109,7 +109,7 @@ void CustomTradeSpi::OnRspQryInstrument(
 	int nRequestID,
 	bool bIsLast)
 {
-	if (!isErrorRspInfo(pRspInfo))
+	if (!isErrorRspInfo(pRspInfo) && pInstrument!=NULL) // 当发送了错误合约的时候，返回null
 	{
 		std::cout << "=====查询合约结果成功=====" << std::endl;
 		std::cout << "交易所代码： " << pInstrument->ExchangeID << std::endl;

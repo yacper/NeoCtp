@@ -43,7 +43,7 @@ public:
 		if (m_pTdApi == NULL)
 		{
 			m_pTdApi = CreateFtdcTraderApi();									// 创建行情实例		
-			m_pTdSpi = CreateTraderSpi();
+			m_pTdSpi = CreateTdSpi();
 			RegisterSpi(m_pTdApi, m_pTdSpi);
 
 			RegOnRspError(m_pTdSpi, OnRspError);

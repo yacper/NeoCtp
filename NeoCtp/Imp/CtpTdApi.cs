@@ -30,6 +30,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnFrontDisconnected(int nReason)
     {
         ConnectionState = EConnectionState.Disconnected;
+        IsLogined       = false;
 
         OnFrontDisconnectedEvent?.Invoke(this, (EFrontDisconnectedReason)nReason);
     }
@@ -37,10 +38,17 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public event EventHandler<CtpRsp> OnRspErrorEvent;
 
     ///错误应答
-    public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast)); }
+    public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    {
+        OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
+    }
 
     public event EventHandler<int> OnHeartBeatWarningEvent;
-    public void                    OnHeartBeatWarning(int nTimeLapse) { OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse); }
+
+    public void OnHeartBeatWarning(int nTimeLapse)
+    {
+        OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse);
+    }
 
 
     public event EventHandler<CtpRsp<CThostFtdcRspUserLoginField>> OnRspUserLoginEvent;
@@ -532,7 +540,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
 
 
-    public int TimeoutMilliseconds { get; set; }
+    public int TimeoutMilliseconds { get; set; } = 5000;
 
 
     public Task<bool> ConnectAsync()
@@ -547,8 +555,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         TdApiCalls.RegisterSpi(ApiHandle_, SpiHandle_);
         BindEvents_();
         RegisterSpi(this);
-        SubscribePublicTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
-        SubscribePrivateTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESTART);
+        SubscribePublicTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESUME);
+        SubscribePrivateTopic(THOST_TE_RESUME_TYPE.THOST_TERT_RESUME);
         RegisterFront(FrontAddress);
 
 
@@ -579,8 +587,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
                 if (ConnectionState == EConnectionState.Connecting)
                 {
                     //todo: 待验证
-                    Release();
-                    ConnectionState = EConnectionState.Disconnected;
+                    OnDisconnected_();
                 }
 
                 taskSource.TrySetCanceled();
@@ -600,7 +607,6 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         ConnectionState = EConnectionState.Disconnecting;
 
-        Release();
 
         OnDisconnected_();
 
@@ -624,6 +630,9 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         //TickByTickSubscriptionReqs_.Clear();
         //TickByTickSubscriptions_.Clear();
         //ReqContracts.Clear();
+
+        if (ApiHandle_ != IntPtr.Zero)
+            Release();
 
         IsLogined = false;
 
@@ -649,6 +658,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         onRspUserLoginHandler = (s, e) =>
         {
             clearHandler();
+            IsLogined = true;
 
             taskSource.TrySetResult(e);
         };
@@ -703,6 +713,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         EventHandler<CtpRsp>                            onRspErrorHandler      = null;
         onRspUserLogoutHandler = (s, e) =>
         {
+            IsLogined = false;
             clearHandler();
 
             taskSource.TrySetResult(e);

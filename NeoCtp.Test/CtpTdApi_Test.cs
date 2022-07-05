@@ -39,11 +39,15 @@ public class CtpTdApi_Test
         var connected = await client.ConnectAsync();
         connected.Should().BeTrue();
 
-        //var logined = await client.ReqUserLoginAsync();
-        //client.IsLogined.Should().BeTrue();
+        var logined = await client.ReqUserLoginAsync();
+        client.IsLogined.Should().BeTrue();
 
 
         Debug.WriteLine(client.Dump());
+
+
+
+
     }
 
     [OneTimeTearDown]

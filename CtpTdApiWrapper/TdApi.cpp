@@ -270,40 +270,40 @@ TDAPI_API int		ReqUserLoginWithOTP(CThostFtdcTraderApi* pApi, CThostFtdcReqUserL
 //	strcpy_s(req.OldPassword, oldPassword);
 //	return pApi->ReqTradingAccountPasswordUpdate(&req, requestID);
 //}
-//安全登录请求
-TDAPI_API int ReqUserSafeLogin(CThostFtdcTraderApi* pApi, int requestID, TThostFtdcBrokerIDType brokerID, TThostFtdcUserIDType userID,
-								  TThostFtdcPasswordType password, TThostFtdcPasswordType oneTimePassword, TThostFtdcMacAddressType macAddress, TThostFtdcProductInfoType productInfo,
-								  TThostFtdcProductInfoType interfaceInfo, TThostFtdcProtocolInfoType	protocolInfo)
-{
-	if (pApi == NULL) return -1;
-
-	CThostFtdcReqUserLoginField req;
-	memset(&req, 0, sizeof(req));
-	strcpy_s(req.BrokerID, brokerID);
-	strcpy_s(req.UserID, userID);
-	strcpy_s(req.Password, password);
-	if (oneTimePassword != NULL) strcpy_s(req.OneTimePassword, oneTimePassword);
-	if (macAddress != NULL) strcpy_s(req.MacAddress, macAddress);
-	if (productInfo != NULL) strcpy_s(req.UserProductInfo, productInfo);
-	if (interfaceInfo != NULL) strcpy_s(req.InterfaceProductInfo, interfaceInfo);
-	if (protocolInfo != NULL) strcpy_s(req.ProtocolInfo, protocolInfo);
-
-	return pApi->ReqUserLogin(&req, requestID);
-}
-//安全更新用户口令
-TDAPI_API int ReqUserPasswordSafeUpdate(CThostFtdcTraderApi* pApi, int requestID, TThostFtdcBrokerIDType brokerID, TThostFtdcUserIDType userID,
-										   TThostFtdcUserIDType oldPassword, TThostFtdcPasswordType newPassword)
-{
-	if (pApi == NULL) return -1;
-
-	CThostFtdcUserPasswordUpdateField req;
-	memset(&req, 0, sizeof(req));
-	strcpy_s(req.BrokerID, brokerID);
-	strcpy_s(req.UserID, userID);
-	strcpy_s(req.OldPassword, oldPassword);
-	strcpy_s(req.NewPassword, newPassword);
-	return pApi->ReqUserPasswordUpdate(&req, requestID);
-}
+////安全登录请求
+//TDAPI_API int ReqUserSafeLogin(CThostFtdcTraderApi* pApi, int requestID, TThostFtdcBrokerIDType brokerID, TThostFtdcUserIDType userID,
+//								  TThostFtdcPasswordType password, TThostFtdcPasswordType oneTimePassword, TThostFtdcMacAddressType macAddress, TThostFtdcProductInfoType productInfo,
+//								  TThostFtdcProductInfoType interfaceInfo, TThostFtdcProtocolInfoType	protocolInfo)
+//{
+//	if (pApi == NULL) return -1;
+//
+//	CThostFtdcReqUserLoginField req;
+//	memset(&req, 0, sizeof(req));
+//	strcpy_s(req.BrokerID, brokerID);
+//	strcpy_s(req.UserID, userID);
+//	strcpy_s(req.Password, password);
+//	if (oneTimePassword != NULL) strcpy_s(req.OneTimePassword, oneTimePassword);
+//	if (macAddress != NULL) strcpy_s(req.MacAddress, macAddress);
+//	if (productInfo != NULL) strcpy_s(req.UserProductInfo, productInfo);
+//	if (interfaceInfo != NULL) strcpy_s(req.InterfaceProductInfo, interfaceInfo);
+//	if (protocolInfo != NULL) strcpy_s(req.ProtocolInfo, protocolInfo);
+//
+//	return pApi->ReqUserLogin(&req, requestID);
+//}
+////安全更新用户口令
+//TDAPI_API int ReqUserPasswordSafeUpdate(CThostFtdcTraderApi* pApi, int requestID, TThostFtdcBrokerIDType brokerID, TThostFtdcUserIDType userID,
+//										   TThostFtdcUserIDType oldPassword, TThostFtdcPasswordType newPassword)
+//{
+//	if (pApi == NULL) return -1;
+//
+//	CThostFtdcUserPasswordUpdateField req;
+//	memset(&req, 0, sizeof(req));
+//	strcpy_s(req.BrokerID, brokerID);
+//	strcpy_s(req.UserID, userID);
+//	strcpy_s(req.OldPassword, oldPassword);
+//	strcpy_s(req.NewPassword, newPassword);
+//	return pApi->ReqUserPasswordUpdate(&req, requestID);
+//}
 
 ////查询用户当前支持的认证模式
 //TDAPI_API int ReqUserAuthMethod(CThostFtdcTraderApi* pApi, int requestID, TThostFtdcBrokerIDType brokerID, TThostFtdcUserIDType userID, TThostFtdcDateType tradingDay)

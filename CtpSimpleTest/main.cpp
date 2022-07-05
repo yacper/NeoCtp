@@ -22,17 +22,17 @@ TThostFtdcPasswordType gInvesterPassword = "";                     // 投资者密码
 CThostFtdcMdApi *g_pMdUserApi = nullptr;                           // 行情指针
 char gMdFrontAddr[] = "tcp://180.168.146.187:10211";               // 模拟行情前置地址 第一组
 //char gMdFrontAddr[] = "tcp://180.168.146.187:10131";               // 模拟行情前置地址 24h
-char *g_pInstrumentID[] = {"rb2101", "hc2010", "i2009", "j2009"}; // 行情合约代码列表，中、上、大、郑交易所各选一种
+char *g_pInstrumentID[] = {"rb2219", "hc2010", "i2009", "j2009"}; // 行情合约代码列表，中、上、大、郑交易所各选一种
 //char* g_pInstrumentID[] = {"rb2210", "hc2210"}; // 行情合约代码列表，中、上、大、郑交易所各选一种
 int instrumentNum = 1;                                             // 行情合约订阅数量
 unordered_map<string, TickToKlineHelper> g_KlineHash;              // 不同合约的k线存储表
 
 // 交易参数
 CThostFtdcTraderApi *g_pTradeUserApi = nullptr;                    // 交易指针
-//char gTradeFrontAddr[] = "tcp://180.168.146.187:10201";            // 模拟交易前置地址 第一组
-char gTradeFrontAddr[] = "tcp://180.168.146.187:10130";            // 模拟交易前置地址 24h
+char gTradeFrontAddr[] = "tcp://180.168.146.187:10201";            // 模拟交易前置地址 第一组
+//char gTradeFrontAddr[] = "tcp://180.168.146.187:10130";            // 模拟交易前置地址 24h
 
-TThostFtdcInstrumentIDType g_pTradeInstrumentID = "rb2205";        // 所交易的合约代码
+TThostFtdcInstrumentIDType g_pTradeInstrumentID = "rb2210";        // 所交易的合约代码
 TThostFtdcDirectionType gTradeDirection = THOST_FTDC_D_Sell;       // 买卖方向
 TThostFtdcPriceType gLimitPrice = 22735;                           // 交易价格
 
@@ -45,16 +45,16 @@ int main()
 	//scanf("%s", gInvesterPassword);
 
 	strcpy(gInvesterID, "097266");
-	strcpy(gInvesterPassword, "hello@123");
+	strcpy(gInvesterPassword, "hello@1234");
 
 
 	// 初始化行情线程
-	cout << "初始化行情..." << endl;
-	g_pMdUserApi = CThostFtdcMdApi::CreateFtdcMdApi("", false, false);   // 创建行情实例
-	CThostFtdcMdSpi *pMdUserSpi = new CustomMdSpi;       // 创建行情回调实例
-	g_pMdUserApi->RegisterSpi(pMdUserSpi);               // 注册事件类
-	g_pMdUserApi->RegisterFront(gMdFrontAddr);           // 设置行情前置地址
-	g_pMdUserApi->Init();                                // 连接运行
+	//cout << "初始化行情..." << endl;
+	//g_pMdUserApi = CThostFtdcMdApi::CreateFtdcMdApi("", false, false);   // 创建行情实例
+	//CThostFtdcMdSpi *pMdUserSpi = new CustomMdSpi;       // 创建行情回调实例
+	//g_pMdUserApi->RegisterSpi(pMdUserSpi);               // 注册事件类
+	//g_pMdUserApi->RegisterFront(gMdFrontAddr);           // 设置行情前置地址
+	//g_pMdUserApi->Init();                                // 连接运行
 	
 
 
@@ -71,9 +71,9 @@ int main()
 		
 
 	// 等到线程退出
-	g_pMdUserApi->Join();
-	delete pMdUserSpi;
-	g_pMdUserApi->Release();
+	//g_pMdUserApi->Join();
+	//delete pMdUserSpi;
+	//g_pMdUserApi->Release();
 
 	g_pTradeUserApi->Join();
 	delete pTradeSpi;
