@@ -90,11 +90,12 @@ public class CtpTdApi_Test
 
 #region User
     [Test]
-    public async Task Login_Test()
+    public async Task ReqQryTradingAccount_Test()
     {
-        var logined = await client.ReqUserLoginAsync();
-        client.IsLogined.Should().BeTrue();
+        var acc = await client.ReqQryTradingAccountAsync();
+        acc.Rsp2.Should().NotBeNull();
 
+        Debug.WriteLine(acc.Dump());
     }
 
 

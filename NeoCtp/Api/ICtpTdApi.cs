@@ -18,12 +18,28 @@ namespace NeoCtp
 	public interface ICtpTdApi
 	{
         string              FrontAddress { get; }
-        int                 SessionId { get; }                              /// 会话编号
-        string              MaxOrderRef { get;  }                           /// 最大报单引用
 
         string              BrokerId { get; }
         string              UserId { get; }
         string              Password { get; }
+
+
+        int                 FrontId { get; }                                /// 前置编号
+        int                 SessionId { get; }                              /// 会话编号
+        string              MaxOrderRef { get;  }
+
+        /// 最大报单引用
+
+        DateTime			LoginTime { get; }
+
+		// update every second
+        TimeSpan			LoginDuration { get; }
+        DateTime			SHFETime { get; }
+        DateTime			DCETime { get; }
+        DateTime			CZCETime { get; }
+        DateTime			FFEXTime { get; }
+        DateTime			INETime { get; }
+
 
 		int					TimeoutMilliseconds { get; set; }
 
@@ -47,7 +63,7 @@ namespace NeoCtp
 
 
 		///请求查询资金账户
-		void				ReqQryTradingAccount(Action<CtpRsp<CThostFtdcTradingAccountField>> callback);
+		Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync();
 
 
 		///请求查询投资者持仓

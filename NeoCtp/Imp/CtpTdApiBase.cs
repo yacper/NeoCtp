@@ -71,26 +71,21 @@ namespace NeoCtp.Imp
 			protected set { SetProperty(ref _SessionID, value); }
 		}
 
-        public string              MaxOrderRef { get; set; }                           /// 最大报单引用
+        public string MaxOrderRef { get => MaxOrderRef_; protected set => SetProperty(ref MaxOrderRef_, value); }                           /// 最大报单引用
 
-		//public bool         IsConnected
-		//{
-		//	get { return _IsConnected;}
-		//	protected set{Set("IsConnected", ref _IsConnected, value); }
-		//}
+        public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
 
-		//public bool			IsLogined
-		//{
-		//	get {  return _IsLogined;  }
-		//	protected set{Set("IsLogined", ref _IsLogined, value); }
-		//}
+        public DateTime LoginTime     { get => LoginTime_; protected set => SetProperty(ref LoginTime_, value); }
 
-		//public DateTime		LoginTime
-		//{
-		//	get { return _LoginTime; }
-		//	protected set{Set("LoginTime", ref _LoginTime, value); }
-		//}								// 登录时间
+        public TimeSpan LoginDuration { get => IsLogined ? DateTime.Now - LoginTime : TimeSpan.Zero; }
 
+        public DateTime SHFETime { get=>SHFETime_ + LoginDuration;   protected set => SetProperty(ref SHFETime_, value); }
+        public DateTime DCETime  { get=>DCETime_+ LoginDuration;     protected set => SetProperty(ref DCETime_, value); }
+        public DateTime CZCETime { get => CZCETime_ + LoginDuration; protected set => SetProperty(ref CZCETime_, value); }
+        public DateTime FFEXTime { get=>FFEXTime_+LoginDuration;     protected set => SetProperty(ref FFEXTime_, value); }
+        public DateTime INETime  { get => INETime_ + LoginDuration;  protected set => SetProperty(ref INETime_, value); }
+
+		
      
 		/// 是否已登录
 
@@ -757,6 +752,8 @@ namespace NeoCtp.Imp
 
 			TdApiCalls.RegOnRspSettlementInfoConfirm(SpiHandle_, _CBOnRspSettlementInfoConfirm);
 
+			TdApiCalls.RegOnRspQryTradingAccount(SpiHandle_, _CBOnRspQryTradingAccount);
+
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
 
             return;
@@ -779,7 +776,6 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspQryOrder(SpiHandle_, _CBRspQryOrder);
 			TdApiCalls.RegRspQryTrade(SpiHandle_, _CBRspQryTrade);
 			TdApiCalls.RegRspQryInvestorPosition(SpiHandle_, _CBRspQryInvestorPosition);
-			TdApiCalls.RegRspQryTradingAccount(SpiHandle_, _CBRspQryTradingAccount);
 			TdApiCalls.RegRspQryInvestor(SpiHandle_, _CBRspQryInvestor);
 			TdApiCalls.RegRspQryTradingCode(SpiHandle_, _CBRspQryTradingCode);
 			TdApiCalls.RegRspQryInstrumentMarginRate(SpiHandle_, _CBRspQryInstrumentMarginRate);
@@ -1095,7 +1091,7 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspQryInvestorPosition(ref pInvestorPosition, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///请求查询资金账户响应
-		private void _CBRspQryTradingAccount(ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspQryTradingAccount(ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspQryTradingAccount(ref pTradingAccount, ref pRspInfo, nRequestID, bIsLast);
 		}
@@ -1600,13 +1596,19 @@ namespace NeoCtp.Imp
 		/// </summary>
 		protected int       _SessionID;
 
-		/// <summary>
-		/// 最大报单引用
-		/// </summary>
-		protected string    _MaxOrderRef;
+	
+        protected string   FlowPath_;
+        private   string   MaxOrderRef_;
+        private   DateTime LoginTime_;
+        private   DateTime SHFETime_;
+        private   DateTime DCETime_;
 
 
-        protected string FlowPath_;
+        protected bool     _IsLogined;
+        private   DateTime CZCETime_;
+        private   DateTime FFEXTime_;
+        private   DateTime INETime_;
+
 #endregion
 	}
 }

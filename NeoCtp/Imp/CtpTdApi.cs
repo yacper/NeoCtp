@@ -205,16 +205,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     }
 
     ///请求查询资金账户响应
+    EventHandler<CtpRsp<CThostFtdcTradingAccountField>> OnRspQryTradingAccountEvent;
     public void OnRspQryTradingAccount(ref CThostFtdcTradingAccountField pTradingAccount,
         ref                                CThostFtdcRspInfoField        pRspInfo, int nRequestID, bool bIsLast)
     {
-        //CtpRsp<CThostFtdcTradingAccountField> rsp = new CtpRsp<CThostFtdcTradingAccountField>
-        //{
-        //	Rsp = pRspInfo,
-        //	Rsp2 =pTradingAccount 
-        //};
-
-        //         _ExecuteCallback(nRequestID, rsp);
+        OnRspQryTradingAccountEvent?.Invoke(this, new(pTradingAccount, pRspInfo, nRequestID, bIsLast));
     }
 
     ///请求查询投资者响应
@@ -527,18 +522,6 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     protected EConnectionState ConnectionState_;
 
 
-    //public bool          IsConnected
-    //      {
-    //       get { return _IsConnected; }
-
-    //	protected set { SetProperty(ref _IsConnected, value); }
-
-    //      }
-
-
-    public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
-
-
     public int TimeoutMilliseconds { get; set; } = 5000;
 
 
@@ -657,6 +640,19 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         {
             clearHandler();
             IsLogined = true;
+
+            SessionId   = e.Rsp2.SessionID;
+            MaxOrderRef = e.Rsp2.MaxOrderRef;
+            FrontId     = e.Rsp2.FrontID;
+
+            DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
+
+            LoginTime = day + TimeSpan.Parse(e.Rsp2.LoginTime) ;
+            SHFETime  = day + TimeSpan.Parse(e.Rsp2.SHFETime);
+            DCETime = day + TimeSpan.Parse(e.Rsp2.DCETime) ;
+            CZCETime  = day + TimeSpan.Parse(e.Rsp2.CZCETime);
+            FFEXTime  = day + TimeSpan.Parse(e.Rsp2.FFEXTime);
+            INETime  = day + TimeSpan.Parse(e.Rsp2.INETime);
 
             taskSource.TrySetResult(e);
         };
@@ -813,21 +809,60 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         return taskSource.Task;
     }
 
-
-    public void ReqQryTradingAccount(Action<CtpRsp<CThostFtdcTradingAccountField>> callback)
+    public Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync()
     {
-        int requestID = _AddCallback(callback);
-        _AddMethod(requestID, new Action(() =>
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcTradingAccountField>>();
+        var reqId      = GetNextRequestId();
+
+
+        EventHandler<CtpRsp<CThostFtdcTradingAccountField>> onRspQryTradingAccountHandler = null;
+        EventHandler<CtpRsp>                                       onRspErrorHandler                 = null;
+
+        onRspQryTradingAccountHandler = (s, e) =>
         {
-            CThostFtdcQryTradingAccountField filed = new CThostFtdcQryTradingAccountField()
+            clearHandler();
+
+            taskSource.TrySetResult(e);
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspQryTradingAccountEvent -= onRspQryTradingAccountHandler;
+            OnRspErrorEvent                 -= onRspErrorHandler;
+        }
+
+
+         CThostFtdcQryTradingAccountField field = new CThostFtdcQryTradingAccountField()
             {
                 BrokerID   = BrokerId,
                 InvestorID = UserId
             };
 
-            int ret = ReqQryTradingAccount(ref filed, requestID);
-            _RemoveMethod(requestID, ret);
-        }));
+        ECtpRtn ret = (ECtpRtn)ReqQryTradingAccount(ref field, reqId);
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        else
+        {
+            OnRspQryTradingAccountEvent += onRspQryTradingAccountHandler;
+            OnRspErrorEvent                 += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
     }
 
 
@@ -1134,11 +1169,6 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     private ConcurrentDictionary<int, object> _dataDict = new ConcurrentDictionary<int, object>(); // 数据字典
 
     protected ConcurrentDictionary<string, object> _Subscribed = new ConcurrentDictionary<string, object>();
-
-    protected bool     _IsConnected;
-    protected bool     _IsLogined;
-    protected DateTime _LoginTime;
-
 
     protected int _RequestID = 0;
 

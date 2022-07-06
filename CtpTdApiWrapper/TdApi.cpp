@@ -1564,7 +1564,7 @@ TDAPI_API void   RegRspQryInvestorPosition(TraderSpi* pSpi, CBRspQryInvestorPosi
 {
 	pSpi->cbRspQryInvestorPosition = cb;
 }
-TDAPI_API void   RegRspQryTradingAccount(TraderSpi* pSpi, CBRspQryTradingAccount cb)	//请求查询资金账户响应
+TDAPI_API void   RegOnRspQryTradingAccount(TraderSpi* pSpi, CBOnRspQryTradingAccount cb)	//请求查询资金账户响应
 {
 	pSpi->cbRspQryTradingAccount = cb;
 }
