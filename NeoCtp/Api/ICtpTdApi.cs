@@ -116,12 +116,6 @@ namespace NeoCtp
 
 
 
-
-
-		///报单操作请求
-		int					ReqOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, int nRequestID);
-
-
 		///预埋单录入请求
 		int					ReqParkedOrderInsert(ref CThostFtdcParkedOrderField pParkedOrder, int nRequestID);
 
