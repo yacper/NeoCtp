@@ -89,7 +89,7 @@ typedef void (WINAPI *CBRspQryInstrumentCommissionRate)(CThostFtdcInstrumentComm
 ///请求查询交易所响应
 typedef void (WINAPI *CBRspQryExchange)(CThostFtdcExchangeField *pExchange, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询合约响应
-typedef void (WINAPI *CBRspQryInstrument)(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspQryInstrument)(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询行情响应
 typedef void (WINAPI *CBRspQryDepthMarketData)(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询投资者结算结果响应
@@ -307,7 +307,7 @@ public:
 	CBRspQryInstrumentMarginRate cbRspQryInstrumentMarginRate = 0;	///请求查询合约保证金率响应
 	CBRspQryInstrumentCommissionRate cbRspQryInstrumentCommissionRate = 0;	///请求查询合约手续费率响应
 	CBRspQryExchange cbRspQryExchange = 0;	///请求查询交易所响应
-	CBRspQryInstrument cbRspQryInstrument = 0;	///请求查询合约响应
+	CBOnRspQryInstrument cbRspQryInstrument = 0;	///请求查询合约响应
 	CBRspQryDepthMarketData cbRspQryDepthMarketData = 0;	///请求查询行情响应
 	CBRspQrySettlementInfo cbRspQrySettlementInfo = 0;	///请求查询投资者结算结果响应
 	CBRspQryTransferBank cbRspQryTransferBank = 0;	///请求查询转帐银行响应

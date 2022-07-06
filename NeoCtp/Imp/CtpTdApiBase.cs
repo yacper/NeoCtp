@@ -756,6 +756,9 @@ namespace NeoCtp.Imp
 
 			TdApiCalls.RegOnRspQryInvestorPosition(SpiHandle_, _CBOnRspQryInvestorPosition);
 
+
+			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, _CBOnRspQryInstrument);
+
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
 
             return;
@@ -782,7 +785,6 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspQryInstrumentMarginRate(SpiHandle_, _CBRspQryInstrumentMarginRate);
 			TdApiCalls.RegRspQryInstrumentCommissionRate(SpiHandle_, _CBRspQryInstrumentCommissionRate);
 			TdApiCalls.RegRspQryExchange(SpiHandle_, _CBRspQryExchange);
-			TdApiCalls.RegRspQryInstrument(SpiHandle_, _CBRspQryInstrument);
 			TdApiCalls.RegRspQryDepthMarketData(SpiHandle_, _CBRspQryDepthMarketData);
 			TdApiCalls.RegRspQrySettlementInfo(SpiHandle_, _CBRspQrySettlementInfo);
 			TdApiCalls.RegRspQryTransferBank(SpiHandle_, _CBRspQryTransferBank);
@@ -1122,7 +1124,7 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspQryExchange(ref pExchange, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///请求查询合约响应
-		private void _CBRspQryInstrument(ref CThostFtdcInstrumentField pInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspQryInstrument(ref CThostFtdcInstrumentField pInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspQryInstrument(ref pInstrument, ref pRspInfo, nRequestID, bIsLast);
 		}

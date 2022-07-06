@@ -339,6 +339,8 @@ extern "C"  // 以C的方式导出函数名
 
 	TDAPI_API void RegOnRspQryInvestorPosition(TraderSpi* pSpi, CBOnRspQryInvestorPosition cb);	//请求查询投资者持仓响应
 
+	TDAPI_API void RegOnRspQryInstrument(TraderSpi* pSpi, CBOnRspQryInstrument cb);	//请求查询合约响应
+
 	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//报单录入请求响应
 
 
@@ -362,7 +364,6 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspQryInstrumentMarginRate(TraderSpi* pSpi, CBRspQryInstrumentMarginRate cb);	//请求查询合约保证金率响应
 	TDAPI_API void RegRspQryInstrumentCommissionRate(TraderSpi* pSpi, CBRspQryInstrumentCommissionRate cb);	//请求查询合约手续费率响应
 	TDAPI_API void RegRspQryExchange(TraderSpi* pSpi, CBRspQryExchange cb);	//请求查询交易所响应
-	TDAPI_API void RegRspQryInstrument(TraderSpi* pSpi, CBRspQryInstrument cb);	//请求查询合约响应
 	TDAPI_API void RegRspQryDepthMarketData(TraderSpi* pSpi, CBRspQryDepthMarketData cb);	//请求查询行情响应
 	TDAPI_API void RegRspQrySettlementInfo(TraderSpi* pSpi, CBRspQrySettlementInfo cb);	//请求查询投资者结算结果响应
 	TDAPI_API void RegRspQryTransferBank(TraderSpi* pSpi, CBRspQryTransferBank cb);	//请求查询转帐银行响应

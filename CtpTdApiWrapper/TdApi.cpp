@@ -1588,7 +1588,7 @@ TDAPI_API void   RegRspQryExchange(TraderSpi* pSpi, CBRspQryExchange cb)	//ÇëÇó²
 {
 	pSpi->cbRspQryExchange = cb;
 }
-TDAPI_API void   RegRspQryInstrument(TraderSpi* pSpi, CBRspQryInstrument cb)	//ÇëÇó²éÑ¯ºÏÔ¼ÏìÓ¦
+TDAPI_API void   RegOnRspQryInstrument(TraderSpi* pSpi, CBOnRspQryInstrument cb)	//ÇëÇó²éÑ¯ºÏÔ¼ÏìÓ¦
 {
 	pSpi->cbRspQryInstrument = cb;
 }

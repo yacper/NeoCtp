@@ -66,28 +66,44 @@ namespace NeoCtp
 		Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync();
 
 
-        ///请求查询投资者持仓
+#region Instrument
+
+		Task<CtpRsp<CThostFtdcInstrumentField>> ReqQryInstrumentAsync(string instrumentID);
+        
+
+#endregion
+
+#region Position
+
+         ///请求查询投资者持仓
         Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(string instrumentID);
 
+       
 
+#endregion
 
-
-
-		void				ReqQryInstrument(string instrumentID, Action<CtpRsp<CThostFtdcInstrumentField>> callback);
-
-
-
+#region Order
+ 
 		///报单录入请求
-		void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
-		void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
-			int volume, double price, double? stopPrice=null,
-			TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD);
-		void				ReqMarketOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume);
-		void				ReqConditionOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID,
-			TThostFtdcContingentConditionType conditionType, double conditionPrice,
-			TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume,
-			TThostFtdcOrderPriceTypeType priceType, double price, TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD
-			);
+		//Task<CtpRsp<CThostFtdcInputOrderField>>	ReqOrderInsert(CThostFtdcInputOrderField pInputOrder);
+		//void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
+		//void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
+		//	int volume, double price, double? stopPrice=null,
+		//	TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD);
+		//void				ReqMarketOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume);
+		//void				ReqConditionOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID,
+		//	TThostFtdcContingentConditionType conditionType, double conditionPrice,
+		//	TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume,
+		//	TThostFtdcOrderPriceTypeType priceType, double price, TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD
+		//	);
+
+       
+
+#endregion
+
+
+
+
 
 		///报单操作请求
 		int					ReqOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, int nRequestID);

@@ -99,6 +99,19 @@ public class CtpTdApi_Test
     }
 
     [Test]
+    public async Task ReqQryInstrumentAsync_Test()
+    {
+        var ins = "rb2210";
+        var acc = await client.ReqQryInstrumentAsync(ins);
+        acc.Rsp2.Should().NotBeNull();
+
+        Debug.WriteLine(acc.Dump());
+    }
+
+
+
+
+    [Test]
     public async Task ReqQryInvestorPositionAsync_Test()
     {
         var acc = await client.ReqQryInvestorPositionAsync("rb2210");

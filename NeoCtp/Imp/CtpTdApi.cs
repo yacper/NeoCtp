@@ -234,9 +234,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnRspQryProduct(ref CThostFtdcProductField pProduct, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
 
     ///请求查询合约响应
+    private EventHandler<CtpRsp<CThostFtdcInstrumentField>> OnRspQryInstrumentEvent;
     public void OnRspQryInstrument(ref CThostFtdcInstrumentField pInstrument, ref CThostFtdcRspInfoField pRspInfo,
         int                                                      nRequestID,  bool                       bIsLast)
     {
+            OnRspQryInstrumentEvent?.Invoke(this, new(pInstrument, pRspInfo, nRequestID, bIsLast));
         //CtpRsp<CThostFtdcInstrumentField> rsp = new CtpRsp<CThostFtdcInstrumentField>
         //{
         //	Rsp = pRspInfo,
@@ -933,19 +935,59 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         return taskSource.Task;
     }
 
-    public void ReqQryInstrument(string instrumentID, Action<CtpRsp<CThostFtdcInstrumentField>> callback)
+    public Task<CtpRsp<CThostFtdcInstrumentField>> ReqQryInstrumentAsync(string instrumentID)
     {
-        int requestID = _AddCallback(callback);
-        _AddMethod(requestID, new Action(() =>
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcInstrumentField>>();
+        var reqId      = GetNextRequestId();
+
+
+        EventHandler<CtpRsp<CThostFtdcInstrumentField>> onRspQryInstrumentHandler = null;
+        EventHandler<CtpRsp>                                       onRspErrorHandler                 = null;
+
+        onRspQryInstrumentHandler = (s, e) =>
         {
-            CThostFtdcQryInstrumentField filed = new CThostFtdcQryInstrumentField()
+            clearHandler();
+
+            taskSource.TrySetResult(e);
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspQryInstrumentEvent -= onRspQryInstrumentHandler;
+            OnRspErrorEvent                 -= onRspErrorHandler;
+        }
+
+
+          CThostFtdcQryInstrumentField field = new CThostFtdcQryInstrumentField()
             {
                 InstrumentID = instrumentID
             };
 
-            int ret = ReqQryInstrument(ref filed, requestID);
-            _RemoveMethod(requestID, ret);
-        }));
+        ECtpRtn ret = (ECtpRtn)ReqQryInstrument(ref field, reqId);
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        else
+        {
+            OnRspQryInstrumentEvent += onRspQryInstrumentHandler;
+            OnRspErrorEvent                 += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
     }
 
 
