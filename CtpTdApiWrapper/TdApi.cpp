@@ -1560,7 +1560,7 @@ TDAPI_API void   RegRspQryTrade(TraderSpi* pSpi, CBRspQryTrade cb)	//ÇëÇó²éÑ¯³É½
 {
 	pSpi->cbRspQryTrade = cb;
 }
-TDAPI_API void   RegRspQryInvestorPosition(TraderSpi* pSpi, CBRspQryInvestorPosition cb)	//ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÏìÓ¦
+TDAPI_API void   RegOnRspQryInvestorPosition(TraderSpi* pSpi, CBOnRspQryInvestorPosition cb)	//ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÏìÓ¦
 {
 	pSpi->cbRspQryInvestorPosition = cb;
 }

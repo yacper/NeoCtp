@@ -157,10 +157,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnRspQryTrade(ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
 
     ///请求查询投资者持仓响应
+    private EventHandler<CtpRsp<CThostFtdcInvestorPositionField>> OnRspQryInvestorPositionEvent;
     public void OnRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition,
         ref                                  CThostFtdcRspInfoField          pRspInfo, int nRequestID, bool bIsLast)
     {
-        //CtpRsp<List<CThostFtdcInvestorPositionField>> rsp = null;
+            OnRspQryInvestorPositionEvent?.Invoke(this, new(pInvestorPosition, pRspInfo, nRequestID, bIsLast));
+            //CtpRsp<List<CThostFtdcInvestorPositionField>> rsp = null;
 
         //if (!bIsLast)
         //{
@@ -867,21 +869,68 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///请求查询投资者持仓
-    public void ReqQryInvestorPosition(string instrumentID, Action<CtpRsp<List<CThostFtdcInstrumentField>>> callback)
+    public Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(string instrumentID)
     {
-        int requestID = _AddCallback(callback);
-        _AddMethod(requestID, new Action(() =>
+        var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcInvestorPositionField>>>();
+        var                                   reqId      = GetNextRequestId();
+        List<CThostFtdcInvestorPositionField> l          = new List<CThostFtdcInvestorPositionField>();
+
+        EventHandler<CtpRsp<CThostFtdcInvestorPositionField>> onRspQryInvestorPositionHandler = null;
+        EventHandler<CtpRsp>                                       onRspErrorHandler                 = null;
+
+        onRspQryInvestorPositionHandler = (s, e) =>
         {
-            CThostFtdcQryInvestorPositionField filed = new CThostFtdcQryInvestorPositionField()
+            if (e.RequestId == reqId)
+            {
+                l.Add(e.Rsp2);
+                if (e.IsLast)
+                {
+                    clearHandler();
+
+                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestId, e.IsLast));
+                }
+            }
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspQryInvestorPositionEvent -= onRspQryInvestorPositionHandler;
+            OnRspErrorEvent                 -= onRspErrorHandler;
+        }
+
+
+           CThostFtdcQryInvestorPositionField field = new CThostFtdcQryInvestorPositionField()
             {
                 BrokerID     = BrokerId,
                 InvestorID   = UserId,
                 InstrumentID = instrumentID
             };
 
-            int ret = ReqQryInvestorPosition(ref filed, requestID);
-            _RemoveMethod(requestID, ret);
-        }));
+        ECtpRtn ret = (ECtpRtn)ReqQryInvestorPosition(ref field, reqId);
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        else
+        {
+            OnRspQryInvestorPositionEvent += onRspQryInvestorPositionHandler;
+            OnRspErrorEvent                 += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
     }
 
     public void ReqQryInstrument(string instrumentID, Action<CtpRsp<CThostFtdcInstrumentField>> callback)

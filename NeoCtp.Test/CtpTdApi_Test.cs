@@ -88,14 +88,24 @@ public class CtpTdApi_Test
         confirm.Rsp2.InvestorID.Should().Be(TestConstants.UserID);
     }
 
-#region User
+#region Account
     [Test]
-    public async Task ReqQryTradingAccount_Test()
+    public async Task ReqQryTradingAccountAsync_Test()
     {
         var acc = await client.ReqQryTradingAccountAsync();
         acc.Rsp2.Should().NotBeNull();
 
         Debug.WriteLine(acc.Dump());
+    }
+
+    [Test]
+    public async Task ReqQryInvestorPositionAsync_Test()
+    {
+        var acc = await client.ReqQryInvestorPositionAsync("rb2210");
+        //.acc.Rsp2.Should().n
+
+        Debug.WriteLine(acc.Dump());
+
     }
 
 

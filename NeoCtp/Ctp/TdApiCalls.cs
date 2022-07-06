@@ -438,7 +438,7 @@ namespace NeoCtp
 		///请求查询成交响应
 		internal delegate void CBRspQryTrade( ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询投资者持仓响应
-		internal delegate void CBRspQryInvestorPosition( ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspQryInvestorPosition( ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询资金账户响应
 		internal delegate void CBOnRspQryTradingAccount( ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询投资者响应
@@ -655,6 +655,9 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspQryTradingAccount", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRspQryTradingAccount(IntPtr pSpi, CBOnRspQryTradingAccount cbOn); //请求查询资金账户响应
 
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspQryInvestorPosition", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspQryInvestorPosition(IntPtr pSpi, CBOnRspQryInvestorPosition cbOn); //请求查询投资者持仓响应
+
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRspOrderInsert(IntPtr pSpi, CBOnRspOrderInsert cbOn); //报单录入请求响应
@@ -707,9 +710,6 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspQryTrade(IntPtr pSpi, CBRspQryTrade cb);  //请求查询成交响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryInvestorPosition", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspQryInvestorPosition(IntPtr pSpi, CBRspQryInvestorPosition cb);    //请求查询投资者持仓响应
 
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryInvestor", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]

@@ -754,6 +754,8 @@ namespace NeoCtp.Imp
 
 			TdApiCalls.RegOnRspQryTradingAccount(SpiHandle_, _CBOnRspQryTradingAccount);
 
+			TdApiCalls.RegOnRspQryInvestorPosition(SpiHandle_, _CBOnRspQryInvestorPosition);
+
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
 
             return;
@@ -775,7 +777,6 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegCombActionInsert(SpiHandle_, _CBRspCombActionInsert);
 			TdApiCalls.RegRspQryOrder(SpiHandle_, _CBRspQryOrder);
 			TdApiCalls.RegRspQryTrade(SpiHandle_, _CBRspQryTrade);
-			TdApiCalls.RegRspQryInvestorPosition(SpiHandle_, _CBRspQryInvestorPosition);
 			TdApiCalls.RegRspQryInvestor(SpiHandle_, _CBRspQryInvestor);
 			TdApiCalls.RegRspQryTradingCode(SpiHandle_, _CBRspQryTradingCode);
 			TdApiCalls.RegRspQryInstrumentMarginRate(SpiHandle_, _CBRspQryInstrumentMarginRate);
@@ -1086,7 +1087,7 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspQryTrade(ref pTrade, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///请求查询投资者持仓响应
-		private void _CBRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspQryInvestorPosition(ref pInvestorPosition, ref pRspInfo, nRequestID, bIsLast);
 		}

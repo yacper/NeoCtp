@@ -66,8 +66,8 @@ namespace NeoCtp
 		Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync();
 
 
-		///请求查询投资者持仓
-		void				ReqQryInvestorPosition(string instrumentID, Action<CtpRsp<List<CThostFtdcInstrumentField>>> callback);
+        ///请求查询投资者持仓
+        Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(string instrumentID);
 
 
 
