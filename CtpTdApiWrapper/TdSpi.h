@@ -73,7 +73,7 @@ typedef void (WINAPI *CBRspCombActionInsert)(CThostFtdcInputCombActionField *pIn
 ///请求查询报单响应
 typedef void (WINAPI *CBOnRspQryOrder)(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询成交响应
-typedef void (WINAPI *CBRspQryTrade)(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspQryTrade)(CThostFtdcTradeField *pTrade, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询投资者持仓响应
 typedef void (WINAPI *CBOnRspQryInvestorPosition)(CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///请求查询资金账户响应
@@ -299,7 +299,7 @@ public:
 	CBRspOptionSelfCloseAction cbRspOptionSelfCloseAction = 0; ///期权自对冲操作请求响应
 	CBRspCombActionInsert cbRspCombActionInsert = 0;	///申请组合录入请求响应
 	CBOnRspQryOrder cbRspQryOrder = 0;	///请求查询报单响应
-	CBRspQryTrade cbRspQryTrade = 0;	///请求查询成交响应
+	CBOnRspQryTrade cbRspQryTrade = 0;	///请求查询成交响应
 	CBOnRspQryInvestorPosition cbRspQryInvestorPosition = 0;	///请求查询投资者持仓响应
 	CBOnRspQryTradingAccount cbRspQryTradingAccount = 0;	///请求查询资金账户响应
 	CBRspQryInvestor cbRspQryInvestor = 0;	///请求查询投资者响应

@@ -762,6 +762,9 @@ namespace NeoCtp.Imp
 
 			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, _CBOnRspQryInstrument);
 
+
+			TdApiCalls.RegOnRspQryOrder(SpiHandle_, _CBOnRspQryOrder);
+			TdApiCalls.RegOnRspQryTrade(SpiHandle_, _CBOnRspQryTrade);
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
 	        TdApiCalls.RegOnRtnOrder(SpiHandle_, _CBOnRtnOrder);
 			TdApiCalls.RegOnRtnTrade(SpiHandle_, _CBOnRtnTrade);
@@ -784,9 +787,7 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspRemoveParkedOrderAction(SpiHandle_, _CBRspRemoveParkedOrderAction);
 			TdApiCalls.RegBatchOrderAction(SpiHandle_, _CBRspBatchOrderAction);
 			TdApiCalls.RegCombActionInsert(SpiHandle_, _CBRspCombActionInsert);
-			TdApiCalls.RegRspQryOrder(SpiHandle_, _CBRspQryOrder);
-			TdApiCalls.RegRspQryTrade(SpiHandle_, _CBRspQryTrade);
-			TdApiCalls.RegRspQryInvestor(SpiHandle_, _CBRspQryInvestor);
+		TdApiCalls.RegRspQryInvestor(SpiHandle_, _CBRspQryInvestor);
 			TdApiCalls.RegRspQryTradingCode(SpiHandle_, _CBRspQryTradingCode);
 			TdApiCalls.RegRspQryInstrumentMarginRate(SpiHandle_, _CBRspQryInstrumentMarginRate);
 			TdApiCalls.RegRspQryInstrumentCommissionRate(SpiHandle_, _CBRspQryInstrumentCommissionRate);
@@ -1083,12 +1084,12 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspCombActionInsert(ref pInputCombAction, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///请求查询报单响应
-		private void _CBRspQryOrder(ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspQryOrder(ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspQryOrder(ref pOrder, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///请求查询成交响应
-		private void _CBRspQryTrade(ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspQryTrade(ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspQryTrade(ref pTrade, ref pRspInfo, nRequestID, bIsLast);
 		}

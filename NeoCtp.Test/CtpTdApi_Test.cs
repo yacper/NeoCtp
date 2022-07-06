@@ -120,6 +120,32 @@ public class CtpTdApi_Test
         Debug.WriteLine(acc.Dump());
 
     }
+
+    [Test]
+    public async Task ReqQryOrderAsync_Test()
+    {
+        CThostFtdcQryOrderField field = new();
+        var                     acc   = await client.ReqQryOrderAsync(field);
+        //.acc.Rsp2.Should().n
+
+        Debug.WriteLine(acc.Dump());
+    }
+
+    [Test]
+    public async Task ReqQryTradeAsync_Test()
+    {
+        CThostFtdcQryTradeField field = new();
+        var                     acc   = await client.ReqQryTradeAsync(field);
+        //.acc.Rsp2.Should().n
+
+        Debug.WriteLine(acc.Dump());
+    }
+
+
+
+
+
+
     [Test]
     public async Task ReqOrderInsertAsync_Test()
     {

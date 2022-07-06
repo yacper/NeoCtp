@@ -3,7 +3,7 @@
     author:		rush
     email:		
 	
-    purpose:	
+    purpose:	https://blog.51cto.com/quantfabric/2966425
 *********************************************************************/
 using System;
 using System.Collections.Generic;
@@ -75,14 +75,18 @@ namespace NeoCtp
 
 #region Position
 
-         ///请求查询投资者持仓
-        Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(string instrumentID);
+         ///请求查询投资者持仓 不填参数可以查询所有position
+        Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(string instrumentID = null);
 
        
 
 #endregion
 
 #region Order
+
+		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField pQryOrder);
+		Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField pQryTrade);
+
  
 		///报单录入请求
 		Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);

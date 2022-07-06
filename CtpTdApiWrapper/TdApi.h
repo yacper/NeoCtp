@@ -341,6 +341,8 @@ extern "C"  // 以C的方式导出函数名
 
 	TDAPI_API void RegOnRspQryInstrument(TraderSpi* pSpi, CBOnRspQryInstrument cb);	//请求查询合约响应
 
+	TDAPI_API void RegOnRspQryOrder(TraderSpi* pSpi, CBOnRspQryOrder cb);	//请求查询报单响应
+	TDAPI_API void RegOnRspQryTrade(TraderSpi* pSpi, CBOnRspQryTrade cb);	//请求查询成交响应
 	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//报单录入请求响应
 	TDAPI_API void RegOnRtnOrder(TraderSpi* pSpi, CBOnRtnOrder cb);	//报单通知
 	TDAPI_API void RegOnRtnTrade(TraderSpi* pSpi, CBOnRtnTrade cb);	//成交通知
@@ -360,8 +362,6 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspRemoveParkedOrderAction(TraderSpi* pSpi, CBRspRemoveParkedOrderAction cb);	//删除预埋撤单响应
 	TDAPI_API void RegBatchOrderAction(TraderSpi* pSpi, CBRspBatchOrderAction cb);	//批量报单操作请求响应
 	TDAPI_API void RegCombActionInsert(TraderSpi* pSpi, CBRspCombActionInsert cb);	//申请组合录入请求响应
-	TDAPI_API void RegOnRspQryOrder(TraderSpi* pSpi, CBOnRspQryOrder cb);	//请求查询报单响应
-	TDAPI_API void RegRspQryTrade(TraderSpi* pSpi, CBRspQryTrade cb);	//请求查询成交响应
 	TDAPI_API void RegRspQryInvestor(TraderSpi* pSpi, CBRspQryInvestor cb);	//请求查询投资者响应
 	TDAPI_API void RegRspQryTradingCode(TraderSpi* pSpi, CBRspQryTradingCode cb);	//请求查询交易编码响应
 	TDAPI_API void RegRspQryInstrumentMarginRate(TraderSpi* pSpi, CBRspQryInstrumentMarginRate cb);	//请求查询合约保证金率响应

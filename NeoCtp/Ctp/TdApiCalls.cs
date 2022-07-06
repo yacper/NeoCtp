@@ -434,9 +434,9 @@ namespace NeoCtp
 		///申请组合录入请求响应
 		internal delegate void CBRspCombActionInsert( ref CThostFtdcInputCombActionField pInputCombAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询报单响应
-		internal delegate void CBRspQryOrder( ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspQryOrder( ref CThostFtdcOrderField pOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询成交响应
-		internal delegate void CBRspQryTrade( ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspQryTrade( ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询投资者持仓响应
 		internal delegate void CBOnRspQryInvestorPosition( ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询资金账户响应
@@ -663,6 +663,11 @@ namespace NeoCtp
 		internal extern static void RegOnRspQryInvestorPosition(IntPtr pSpi, CBOnRspQryInvestorPosition cbOn); //请求查询投资者持仓响应
 
 
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspQryOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspQryOrder(IntPtr pSpi, CBOnRspQryOrder cbOn); //请求查询报单响应
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspQryTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspQryTrade(IntPtr pSpi, CBOnRspQryTrade cbOn); //请求查询成交响应
+
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRspOrderInsert(IntPtr pSpi, CBOnRspOrderInsert cbOn); //报单录入请求响应
 	    [DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRtnOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
@@ -713,12 +718,6 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegCombActionInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegCombActionInsert(IntPtr pSpi, CBRspCombActionInsert cb); //申请组合录入请求响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspQryOrder(IntPtr pSpi, CBRspQryOrder cb);  //请求查询报单响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspQryTrade(IntPtr pSpi, CBRspQryTrade cb);  //请求查询成交响应
 
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryInvestor", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
