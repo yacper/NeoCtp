@@ -766,9 +766,13 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegOnRspQryOrder(SpiHandle_, _CBOnRspQryOrder);
 			TdApiCalls.RegOnRspQryTrade(SpiHandle_, _CBOnRspQryTrade);
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
+            TdApiCalls.RegOnErrRtnOrderInsert(SpiHandle_, _CBOnErrRtnOrderInsert);
 	        TdApiCalls.RegOnRtnOrder(SpiHandle_, _CBOnRtnOrder);
 			TdApiCalls.RegOnRtnTrade(SpiHandle_, _CBOnRtnTrade);
 
+			TdApiCalls.RegOnRspOrderAction(SpiHandle_, _CBOnRspOrderAction);
+			TdApiCalls.RegOnErrRtnOrderAction(SpiHandle_, _CBOnErrRtnOrderAction);
+	
 
             return;
 
@@ -781,7 +785,6 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspGenUserText(SpiHandle_, _CBRspGenUserText);
 			TdApiCalls.RegRspParkedOrderInsert(SpiHandle_, _CBRspParkedOrderInsert);
 			TdApiCalls.RegRspParkedOrderAction(SpiHandle_, _CBRspParkedOrderAction);
-			TdApiCalls.RegRspOrderAction(SpiHandle_, _CBRspOrderAction);
 			TdApiCalls.RegRspQueryMaxOrderVolume(SpiHandle_, _CBRspQueryMaxOrderVolume);
 			TdApiCalls.RegRspRemoveParkedOrder(SpiHandle_, _CBRspRemoveParkedOrder);
 			TdApiCalls.RegRspRemoveParkedOrderAction(SpiHandle_, _CBRspRemoveParkedOrderAction);
@@ -825,10 +828,7 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspQryCombAction(SpiHandle_, _CBRspQryCombAction);
 			TdApiCalls.RegRspQryTransferSerial(SpiHandle_, _CBRspQryTransferSerial);
 			TdApiCalls.RegRspQryAccountregister(SpiHandle_, _CBRspQryAccountregister);
-			TdApiCalls.RegOnRspError(SpiHandle_, _CBOnRspError);
-					TdApiCalls.RegErrRtnOrderInsert(SpiHandle_, _CBErrRtnOrderInsert);
-			TdApiCalls.RegErrRtnOrderAction(SpiHandle_, _CBErrRtnOrderAction);
-			TdApiCalls.RegRtnInstrumentStatus(SpiHandle_, _CBRtnInstrumentStatus);
+		TdApiCalls.RegRtnInstrumentStatus(SpiHandle_, _CBRtnInstrumentStatus);
 			TdApiCalls.RegRtnTradingNotice(SpiHandle_, _CBRtnTradingNotice);
 			TdApiCalls.RegRtnErrorConditionalOrder(SpiHandle_, _CBRtnErrorConditionalOrder);
 			TdApiCalls.RegRspQryContractBank(SpiHandle_, _CBRspQryContractBank);
@@ -1014,7 +1014,7 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspParkedOrderAction(ref pParkedOrderAction, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///报单操作请求响应
-		private void _CBRspOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspOrderAction(ref pInputOrderAction, ref pRspInfo, nRequestID, bIsLast);
 		}
@@ -1315,12 +1315,12 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRtnTrade(ref pTrade);
 		}
 		///报单录入错误回报
-		private void _CBErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
+		private void _CBOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
 		{
 			TdSpi_?.OnErrRtnOrderInsert(ref pInputOrder, ref pRspInfo);
 		}
 		///报单操作错误回报
-		private void _CBErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
+		private void _CBOnErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
 		{
 			TdSpi_?.OnErrRtnOrderAction(ref pOrderAction, ref pRspInfo);
 		}

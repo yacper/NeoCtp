@@ -95,6 +95,10 @@ namespace NeoCtp
 
         event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	// trade 成交通知
 
+
+        Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction);
+
+
 		//void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
 		//void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
 		//	int volume, double price, double? stopPrice=null,

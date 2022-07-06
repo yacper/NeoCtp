@@ -529,9 +529,9 @@ namespace NeoCtp
 		///成交通知
 		internal delegate void CBRtnTrade( ref CThostFtdcTradeField pTrade);
 		///报单录入错误回报
-		internal delegate void CBErrRtnOrderInsert( ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo);
+		internal delegate void CBOnErrRtnOrderInsert( ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo);
 		///报单操作错误回报
-		internal delegate void CBErrRtnOrderAction( ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo);
+		internal delegate void CBOnErrRtnOrderAction( ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo);
 		///合约交易状态通知
 		internal delegate void CBRtnInstrumentStatus( ref CThostFtdcInstrumentStatusField pInstrumentStatus);
 		///交易通知
@@ -674,6 +674,13 @@ namespace NeoCtp
 		internal extern static void RegOnRtnOrder(IntPtr pSpi, CBRtnOrder cb); //报单通知
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRtnTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRtnTrade(IntPtr pSpi, CBRtnTrade cb); //成交通知
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnErrRtnOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnErrRtnOrderInsert(IntPtr pSpi, CBOnErrRtnOrderInsert cbOn); //报单录入错误回报
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspOrderAction", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspOrderAction(IntPtr pSpi, CBRspOrderAction cb); //报单操作请求响应
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnErrRtnOrderAction", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnErrRtnOrderAction(IntPtr pSpi, CBOnErrRtnOrderAction cbOn); //报单操作错误回报
+	
 
 
 
@@ -699,10 +706,7 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspParkedOrderAction", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspParkedOrderAction(IntPtr pSpi, CBRspParkedOrderAction cb);    //预埋撤单录入请求响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspOrderAction", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspOrderAction(IntPtr pSpi, CBRspOrderAction cb);    //报单操作请求响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQueryMaxOrderVolume", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQueryMaxOrderVolume", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspQueryMaxOrderVolume(IntPtr pSpi, CBRspQueryMaxOrderVolume cb);    //查询最大报单数量响应
 
@@ -834,13 +838,7 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryAccountregister", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspQryAccountregister(IntPtr pSpi, CBRspQryAccountregister cb);  //请求查询银期签约关系响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegErrRtnOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegErrRtnOrderInsert(IntPtr pSpi, CBErrRtnOrderInsert cb);  //报单录入错误回报
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegErrRtnOrderAction", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegErrRtnOrderAction(IntPtr pSpi, CBErrRtnOrderAction cb);  //报单操作错误回报
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnInstrumentStatus", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+	[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnInstrumentStatus", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRtnInstrumentStatus(IntPtr pSpi, CBRtnInstrumentStatus cb);  //合约交易状态通知
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnTradingNotice", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]

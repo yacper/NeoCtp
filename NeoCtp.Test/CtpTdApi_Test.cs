@@ -178,6 +178,27 @@ public class CtpTdApi_Test
 
     }
 
+    [Test]
+    public async Task ReqOrderActionAsync_Test()
+    {
+        CThostFtdcInputOrderActionField field = new CThostFtdcInputOrderActionField()
+        {
+            InstrumentID   = "rb2210",
+            //OrderRef = 
+            ActionFlag = TThostFtdcActionFlagType.Delete
+        };
+
+
+        var acc = await client.ReqOrderActionAsync(field);
+        //.acc.Rsp2.Should().n
+
+        Debug.WriteLine(acc.Dump());
+
+    }
+
+
+
+
      //[Test]
     //public async Task SubMarketDataAsync_Test()
     //{

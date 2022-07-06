@@ -114,7 +114,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnRspParkedOrderAction(ref CThostFtdcParkedOrderActionField pParkedOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
 
     ///报单操作请求响应
-    public void OnRspOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
+    public event EventHandler<CtpRsp<CThostFtdcInputOrderActionField>> OnRspOrderActionEvent;
+    public void OnRspOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    {
+            OnRspOrderActionEvent?.Invoke(this, new(pInputOrderAction, pRspInfo, nRequestID, bIsLast));
+    }
 
     ///查询最大报单数量响应
     public void OnRspQueryMaxOrderVolume(ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
@@ -379,10 +383,18 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnRtnTrade(ref CThostFtdcTradeField pTrade) { OnRtnTradeEvent?.Invoke(this, pTrade); }
 
     ///报单录入错误回报
-    public void OnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo) { }
+    public event EventHandler<Tuple<CThostFtdcInputOrderField, CThostFtdcRspInfoField>> OnErrRtnOrderInsertEvent;
+    public void OnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
+    {
+            OnErrRtnOrderInsertEvent?.Invoke(this, new(pInputOrder, pRspInfo));
+    }
 
     ///报单操作错误回报
-    public void OnErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo) { }
+    public event EventHandler<Tuple<CThostFtdcOrderActionField, CThostFtdcRspInfoField>> OnErrRtnOrderActionEvent;
+    public void OnErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
+    {
+        OnErrRtnOrderActionEvent?.Invoke(this, new(pOrderAction, pRspInfo));
+    }
 
     ///合约交易状态通知
     public void OnRtnInstrumentStatus(ref CThostFtdcInstrumentStatusField pInstrumentStatus) { }
@@ -1208,6 +1220,79 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         return taskSource.Task;
     }
+
+
+
+    // 如果成功，会返回onRtnOrderEvent
+    public Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction)
+    {
+        var taskSource = new TaskCompletionSource<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderActionField>>>();
+        var reqId      = GetNextRequestId();
+
+        pInputOrderAction.BrokerID   = BrokerId;
+        pInputOrderAction.InvestorID = UserId;
+
+
+        EventHandler<CtpRsp<CThostFtdcInputOrderActionField>> onRspOrderActionHandler = null;
+        EventHandler<CThostFtdcOrderField>              onRtnOrderHandler       = null;
+        EventHandler<CtpRsp>                            onRspErrorHandler       = null;
+
+        onRspOrderActionHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetResult(new(null, e));
+            }
+        };
+        onRtnOrderHandler = (s, e) =>
+        {
+            if (e.OrderRef == pInputOrderAction.OrderRef)
+            {
+                clearHandler();
+
+                taskSource.TrySetResult(new(e, null));
+            }
+        };
+
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspOrderActionEvent -= onRspOrderActionHandler;
+            OnRtnOrderEvent       -= onRtnOrderHandler;
+            OnRspErrorEvent       -= onRspErrorHandler;
+        }
+
+
+        ECtpRtn ret = (ECtpRtn)ReqOrderAction(ref pInputOrderAction, reqId);
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(null, new(ret))); }
+        else
+        {
+            OnRspOrderActionEvent += onRspOrderActionHandler;
+            OnRtnOrderEvent       += onRtnOrderHandler;
+            OnRspErrorEvent       += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
+    }
+
 
     ///// <param name="offsetFlag">平仓:仅上期所平今时使用CloseToday/其它情况均使用Close</param>
     //public void ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir,
