@@ -163,9 +163,9 @@ typedef void (WINAPI *CBOnRtnOrder)(CThostFtdcOrderField *pOrder);
 ///成交通知
 typedef void (WINAPI *CBOnRtnTrade)(CThostFtdcTradeField *pTrade);
 ///报单录入错误回报
-typedef void (WINAPI *CBErrRtnOrderInsert)(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
+typedef void (WINAPI *CBOnErrRtnOrderInsert)(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
 ///报单操作错误回报
-typedef void (WINAPI *CBErrRtnOrderAction)(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
+typedef void (WINAPI *CBOnErrRtnOrderAction)(CThostFtdcOrderActionField *pOrderAction, CThostFtdcRspInfoField *pRspInfo);
 ///合约交易状态通知
 typedef void (WINAPI *CBRtnInstrumentStatus)(CThostFtdcInstrumentStatusField *pInstrumentStatus);
 ///交易通知
@@ -344,8 +344,8 @@ public:
 	CBOnRspError cbRspError = 0;	///错误应答
 	CBOnRtnOrder cbRtnOrder = 0;	///报单通知
 	CBOnRtnTrade cbRtnTrade = 0;	///成交通知
-	CBErrRtnOrderInsert cbErrRtnOrderInsert = 0;	///报单录入错误回报
-	CBErrRtnOrderAction cbErrRtnOrderAction = 0;	///报单操作错误回报
+	CBOnErrRtnOrderInsert cbErrRtnOrderInsert = 0;	///报单录入错误回报
+	CBOnErrRtnOrderAction cbErrRtnOrderAction = 0;	///报单操作错误回报
 	CBRtnInstrumentStatus cbRtnInstrumentStatus = 0;	///合约交易状态通知
 	CBRtnTradingNotice cbRtnTradingNotice = 0;	///交易通知
 	CBRtnErrorConditionalOrder cbRtnErrorConditionalOrder = 0;	///提示条件单校验错误
@@ -787,4 +787,3 @@ private:
 	CThostFtdcRspInfoField* repareInfo(CThostFtdcRspInfoField *pRspInfo);
 };
 
-//}

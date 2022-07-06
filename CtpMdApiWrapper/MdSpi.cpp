@@ -3,28 +3,6 @@
 
 using namespace std;
 
-//extern CBOnRspError cbOnRspError;
-//extern CBOnHeartBeatWarning cbOnHeartBeatWarning;
-//
-//extern CBOnRspFrontConnected cbOnFrontConnected;
-//extern CBOnRspFrontDisconnected cbOnFrontDisconnected;
-//
-//extern CBOnRspUserLogin cbOnRspUserLogin;
-//extern CBOnRspUserLogout cbOnRspUserLogout;
-//
-//extern CBOnRspQryMulticastInstrument cbOnRspQryMulticastInstrument;
-//
-//extern CBOnRspSubMarketData cbOnRspSubMarketData;
-//extern CBOnRspUnSubMarketData cbOnRspUnSubMarketData;
-//
-//extern CBOnRspSubForQuoteRsp cbOnRspSubForQuoteRsp;
-//extern CBOnRspUnSubForQuoteRsp cbOnRspUnSubForQuoteRsp;
-//
-//extern CBOnRtnDepthMarketData cbOnRtnDepthMarketData;
-//
-//extern CBOnRtnForQuoteRsp cbOnRtnForQuoteRsp;
-
-
 
 void MdSpi::OnRspError(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {

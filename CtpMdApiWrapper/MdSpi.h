@@ -29,7 +29,7 @@ extern "C"
 	typedef void (WINAPI* CBOnRtnForQuoteRsp)(CThostFtdcForQuoteRspField* pForQuoteRsp);
 
 	typedef void (WINAPI* CBOnRspQryMulticastInstrument)(CThostFtdcMulticastInstrumentField* pMulticastInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
-//}
+}
 #pragma endregion
 
 class /*MDAPI_API*/ MdSpi : public CThostFtdcMdSpi
@@ -116,4 +116,3 @@ public:
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) override;
 
 };
-}

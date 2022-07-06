@@ -4,6 +4,7 @@
     email:		
 	
     purpose:	https://blog.51cto.com/quantfabric/2966425
+                https://www.cnblogs.com/dengchj/p/8442913.html
 *********************************************************************/
 using System;
 using System.Collections.Generic;

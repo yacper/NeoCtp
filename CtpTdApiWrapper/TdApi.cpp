@@ -1736,11 +1736,11 @@ TDAPI_API void   RegOnRtnTrade(TraderSpi* pSpi, CBOnRtnTrade cb)	//成交通知
 {
 	pSpi->cbRtnTrade = cb;
 }
-TDAPI_API void   RegErrRtnOrderInsert(TraderSpi* pSpi, CBErrRtnOrderInsert cb)	//报单录入错误回报
+TDAPI_API void   RegOnErrRtnOrderInsert(TraderSpi* pSpi, CBOnErrRtnOrderInsert cb)	//报单录入错误回报
 {
 	pSpi->cbErrRtnOrderInsert = cb;
 }
-TDAPI_API void   RegErrRtnOrderAction(TraderSpi* pSpi, CBErrRtnOrderAction cb)	//报单操作错误回报
+TDAPI_API void   RegOnErrRtnOrderAction(TraderSpi* pSpi, CBOnErrRtnOrderAction cb)	//报单操作错误回报
 {
 	pSpi->cbErrRtnOrderAction = cb;
 }
