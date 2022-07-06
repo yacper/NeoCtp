@@ -85,7 +85,7 @@ namespace NeoCtp
 #region Order
  
 		///报单录入请求
-		//Task<CtpRsp<CThostFtdcInputOrderField>>	ReqOrderInsert(CThostFtdcInputOrderField pInputOrder);
+		Task<CtpRsp<CThostFtdcInputOrderField>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
 		//void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
 		//void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
 		//	int volume, double price, double? stopPrice=null,

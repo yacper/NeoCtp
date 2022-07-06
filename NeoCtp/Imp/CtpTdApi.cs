@@ -92,9 +92,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///报单录入请求响应
+
+    public event EventHandler<CtpRsp<CThostFtdcInputOrderField>> OnRspOrderInsertEvent;
     public void OnRspOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo,
         int                                                    nRequestID,  bool                       bIsLast)
     {
+            OnRspOrderInsertEvent?.Invoke(this, new(pInputOrder, pRspInfo, nRequestID, bIsLast));
         //CtpRsp<CThostFtdcInputOrderField> rsp = new CtpRsp<CThostFtdcInputOrderField>
         //{
         //	Rsp = pRspInfo,
@@ -946,9 +949,14 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspQryInstrumentHandler = (s, e) =>
         {
-            clearHandler();
 
-            taskSource.TrySetResult(e);
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetResult(e);
+            }
+
         };
         onRspErrorHandler = (s, e) =>
         {
@@ -991,120 +999,159 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     }
 
 
-    public void ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback)
+    public Task<CtpRsp<CThostFtdcInputOrderField>> ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder)
     {
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcInputOrderField>>();
+        var reqId      = GetNextRequestId();
+
+        EventHandler<CtpRsp<CThostFtdcInputOrderField>> onRspOrderInsertHandler = null;
+        EventHandler<CtpRsp>                            onRspErrorHandler       = null;
+
+        onRspOrderInsertHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetResult(e);
+            }
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspOrderInsertEvent -= onRspOrderInsertHandler;
+            OnRspErrorEvent       -= onRspErrorHandler;
+        }
+
         pInputOrder.BrokerID   = BrokerId;
         pInputOrder.InvestorID = UserId;
         pInputOrder.UserID     = UserId;
         pInputOrder.OrderRef   = MaxOrderRef;
 
-
-        int requestID = _AddCallback(callback);
-        _AddMethod(requestID, new Action(() =>
+        ECtpRtn ret = (ECtpRtn)ReqOrderInsert(ref pInputOrder, reqId);
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        else
         {
-            int ret = ReqOrderInsert(ref pInputOrder, requestID);
-            _RemoveMethod(requestID, ret);
-        }));
+            OnRspOrderInsertEvent += onRspOrderInsertHandler;
+            OnRspErrorEvent       += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
     }
 
-    /// <param name="offsetFlag">平仓:仅上期所平今时使用CloseToday/其它情况均使用Close</param>
-    public void ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir,
-        int                                                           volume,   double price,        double?                  stopPrice = null,
-        TThostFtdcTimeConditionType                                   tic = TThostFtdcTimeConditionType.GFD)
-    {
-        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
-        {
-            InstrumentID   = instrumentID,
-            CombOffsetFlag = offsetFlag,
+    ///// <param name="offsetFlag">平仓:仅上期所平今时使用CloseToday/其它情况均使用Close</param>
+    //public void ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir,
+    //    int                                                           volume,   double price,        double?                  stopPrice = null,
+    //    TThostFtdcTimeConditionType                                   tic = TThostFtdcTimeConditionType.GFD)
+    //{
+    //    CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
+    //    {
+    //        InstrumentID   = instrumentID,
+    //        CombOffsetFlag = offsetFlag,
 
-            LimitPrice          = price,
-            VolumeTotalOriginal = volume,
-            Direction           = dir,
-            TimeCondition       = tic,
-
-
-            OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
-            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
-            MinVolume           = 1,                                             // 最小成交量1
-            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
-            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
-            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
-            UserForceClose      = 0,                                             // 用户强平标志：否
-
-            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
-        };
-
-        if (stopPrice != null)
-            field.StopPrice = stopPrice.Value;
+    //        LimitPrice          = price,
+    //        VolumeTotalOriginal = volume,
+    //        Direction           = dir,
+    //        TimeCondition       = tic,
 
 
-        ReqOrderInsert(field, callback);
-    }
+    //        OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
+    //        VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
+    //        MinVolume           = 1,                                             // 最小成交量1
+    //        ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
+    //        ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
+    //        IsAutoSuspend       = 0,                                             // 自动挂起标志：否
+    //        UserForceClose      = 0,                                             // 用户强平标志：否
+
+    //        CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
+    //    };
+
+    //    if (stopPrice != null)
+    //        field.StopPrice = stopPrice.Value;
 
 
-    public void ReqMarketOrderInsert(Action<CThostFtdcInputOrderField> callback,   string                  instrumentID,
-        TThostFtdcOffsetFlagType                                       offsetFlag, TThostFtdcDirectionType dir, int volume)
-    {
-        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
-        {
-            InstrumentID   = instrumentID,
-            CombOffsetFlag = offsetFlag,
-
-            VolumeTotalOriginal = volume,
-            Direction           = dir,
-            TimeCondition       = TThostFtdcTimeConditionType.IOC, //立即完成,否则撤单
+    //    ReqOrderInsert(field, callback);
+    //}
 
 
-            OrderPriceType      = TThostFtdcOrderPriceTypeType.AnyPrice,         // 任意价格
-            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
-            MinVolume           = 1,                                             // 最小成交量1
-            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
-            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
-            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
-            UserForceClose      = 0,                                             // 用户强平标志：否
+    //public void ReqMarketOrderInsert(Action<CThostFtdcInputOrderField> callback,   string                  instrumentID,
+    //    TThostFtdcOffsetFlagType                                       offsetFlag, TThostFtdcDirectionType dir, int volume)
+    //{
+    //    CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
+    //    {
+    //        InstrumentID   = instrumentID,
+    //        CombOffsetFlag = offsetFlag,
 
-            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
-        };
-
-
-        ReqOrderInsert(field, callback);
-    }
-
-    public void ReqConditionOrderInsert(Action<CThostFtdcInputOrderField> callback,      string                  instrumentID,
-        TThostFtdcContingentConditionType                                 conditionType, double                  conditionPrice,
-        TThostFtdcOffsetFlagType                                          offsetFlag,    TThostFtdcDirectionType dir,   int                         volume,
-        TThostFtdcOrderPriceTypeType                                      priceType,     double                  price, TThostFtdcTimeConditionType tic = TThostFtdcTimeConditionType.GFD
-    )
-    {
-        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
-        {
-            InstrumentID   = instrumentID,
-            CombOffsetFlag = offsetFlag,
-
-            VolumeTotalOriginal = volume,
-            Direction           = dir,
-            TimeCondition       = tic, //立即完成,否则撤单
-
-            LimitPrice = price,
-            StopPrice  = conditionPrice,
+    //        VolumeTotalOriginal = volume,
+    //        Direction           = dir,
+    //        TimeCondition       = TThostFtdcTimeConditionType.IOC, //立即完成,否则撤单
 
 
-            OrderPriceType      = priceType,                                    // 任意价格
-            VolumeCondition     = TThostFtdcVolumeConditionType.AV,             // 任何数量
-            MinVolume           = 1,                                            // 最小成交量1
-            ContingentCondition = conditionType,                                // 触发条件：立即
-            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose, // 强平原因：非强平
-            IsAutoSuspend       = 0,                                            // 自动挂起标志：否
-            UserForceClose      = 0,                                            // 用户强平标志：否
+    //        OrderPriceType      = TThostFtdcOrderPriceTypeType.AnyPrice,         // 任意价格
+    //        VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
+    //        MinVolume           = 1,                                             // 最小成交量1
+    //        ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
+    //        ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
+    //        IsAutoSuspend       = 0,                                             // 自动挂起标志：否
+    //        UserForceClose      = 0,                                             // 用户强平标志：否
 
-            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
-        };
+    //        CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
+    //    };
 
 
-        ReqOrderInsert(field, callback);
-    }
+    //    ReqOrderInsert(field, callback);
+    //}
 
-    protected int _GenReqId() { return Interlocked.Increment(ref _RequestID); }
+    //public void ReqConditionOrderInsert(Action<CThostFtdcInputOrderField> callback,      string                  instrumentID,
+    //    TThostFtdcContingentConditionType                                 conditionType, double                  conditionPrice,
+    //    TThostFtdcOffsetFlagType                                          offsetFlag,    TThostFtdcDirectionType dir,   int                         volume,
+    //    TThostFtdcOrderPriceTypeType                                      priceType,     double                  price, TThostFtdcTimeConditionType tic = TThostFtdcTimeConditionType.GFD
+    //)
+    //{
+    //    CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
+    //    {
+    //        InstrumentID   = instrumentID,
+    //        CombOffsetFlag = offsetFlag,
+
+    //        VolumeTotalOriginal = volume,
+    //        Direction           = dir,
+    //        TimeCondition       = tic, //立即完成,否则撤单
+
+    //        LimitPrice = price,
+    //        StopPrice  = conditionPrice,
+
+
+    //        OrderPriceType      = priceType,                                    // 任意价格
+    //        VolumeCondition     = TThostFtdcVolumeConditionType.AV,             // 任何数量
+    //        MinVolume           = 1,                                            // 最小成交量1
+    //        ContingentCondition = conditionType,                                // 触发条件：立即
+    //        ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose, // 强平原因：非强平
+    //        IsAutoSuspend       = 0,                                            // 自动挂起标志：否
+    //        UserForceClose      = 0,                                            // 用户强平标志：否
+
+    //        CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
+    //    };
+
+
+    //    ReqOrderInsert(field, callback);
+    //}
+
 
 #region 回调方法
 
@@ -1115,7 +1162,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     /// <param name="requestID">请求编号</param>
     private int _AddCallback(object callback, int requestID = 0)
     {
-        if (requestID == 0) { requestID = _GenReqId(); }
+        if (requestID == 0) { requestID = GetNextRequestId(); }
 
         if (callback != null)
         {
