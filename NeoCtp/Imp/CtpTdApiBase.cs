@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
@@ -71,7 +72,7 @@ namespace NeoCtp.Imp
 			protected set { SetProperty(ref _SessionID, value); }
 		}
 
-        public string MaxOrderRef { get => MaxOrderRef_; protected set => SetProperty(ref MaxOrderRef_, value); }                           /// 最大报单引用
+//        public string MaxOrderRef { get => OrderRef_; protected set => SetProperty(ref OrderRef_, value); }                           /// 最大报单引用
 
         public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
 
@@ -85,7 +86,9 @@ namespace NeoCtp.Imp
         public DateTime FFEXTime { get=>FFEXTime_+LoginDuration;     protected set => SetProperty(ref FFEXTime_, value); }
         public DateTime INETime  { get => INETime_ + LoginDuration;  protected set => SetProperty(ref INETime_, value); }
 
-		
+	    protected int GetNextRequestId() => Interlocked.Increment(ref RequestID_);
+        protected int GetNextOrderRef() => Interlocked.Increment(ref OrderRef_);
+	
      
 		/// 是否已登录
 
@@ -760,6 +763,9 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, _CBOnRspQryInstrument);
 
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
+	        TdApiCalls.RegOnRtnOrder(SpiHandle_, _CBOnRtnOrder);
+			TdApiCalls.RegOnRtnTrade(SpiHandle_, _CBOnRtnTrade);
+
 
             return;
 
@@ -819,9 +825,7 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspQryTransferSerial(SpiHandle_, _CBRspQryTransferSerial);
 			TdApiCalls.RegRspQryAccountregister(SpiHandle_, _CBRspQryAccountregister);
 			TdApiCalls.RegOnRspError(SpiHandle_, _CBOnRspError);
-			TdApiCalls.RegRtnOrder(SpiHandle_, _CBRtnOrder);
-			TdApiCalls.RegRtnTrade(SpiHandle_, _CBRtnTrade);
-			TdApiCalls.RegErrRtnOrderInsert(SpiHandle_, _CBErrRtnOrderInsert);
+					TdApiCalls.RegErrRtnOrderInsert(SpiHandle_, _CBErrRtnOrderInsert);
 			TdApiCalls.RegErrRtnOrderAction(SpiHandle_, _CBErrRtnOrderAction);
 			TdApiCalls.RegRtnInstrumentStatus(SpiHandle_, _CBRtnInstrumentStatus);
 			TdApiCalls.RegRtnTradingNotice(SpiHandle_, _CBRtnTradingNotice);
@@ -1300,12 +1304,12 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspError(ref pRspInfo, nRequestID, bIsLast);
 		}
 		///报单通知
-		private void _CBRtnOrder(ref CThostFtdcOrderField pOrder)
+		private void _CBOnRtnOrder(ref CThostFtdcOrderField pOrder)
 		{
 			TdSpi_?.OnRtnOrder(ref pOrder);
 		}
 		///成交通知
-		private void _CBRtnTrade(ref CThostFtdcTradeField pTrade)
+		private void _CBOnRtnTrade(ref CThostFtdcTradeField pTrade)
 		{
 			TdSpi_?.OnRtnTrade(ref pTrade);
 		}
@@ -1570,6 +1574,8 @@ namespace NeoCtp.Imp
         protected IntPtr SpiHandle_ = IntPtr.Zero;   // C++ MdSpi Wrapper class
 
 
+        protected int RequestID_ = 0;
+
       /// <summary>
         /// 回调方法字典
         /// </summary>
@@ -1601,7 +1607,7 @@ namespace NeoCtp.Imp
 
 	
         protected string   FlowPath_;
-        private   string   MaxOrderRef_;
+        protected   int   OrderRef_;
         private   DateTime LoginTime_;
         private   DateTime SHFETime_;
         private   DateTime DCETime_;

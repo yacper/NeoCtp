@@ -159,9 +159,9 @@ typedef void (WINAPI *CBOnRspQryAccountregister)(CThostFtdcAccountregisterField 
 ///错误应答
 typedef void (WINAPI *CBOnRspError)(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///报单通知
-typedef void (WINAPI *CBRtnOrder)(CThostFtdcOrderField *pOrder);
+typedef void (WINAPI *CBOnRtnOrder)(CThostFtdcOrderField *pOrder);
 ///成交通知
-typedef void (WINAPI *CBRtnTrade)(CThostFtdcTradeField *pTrade);
+typedef void (WINAPI *CBOnRtnTrade)(CThostFtdcTradeField *pTrade);
 ///报单录入错误回报
 typedef void (WINAPI *CBErrRtnOrderInsert)(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo);
 ///报单操作错误回报
@@ -342,8 +342,8 @@ public:
 	CBRspQryTransferSerial cbRspQryTransferSerial = 0;	///请求查询转帐流水响应
 	CBOnRspQryAccountregister cbRspQryAccountregister = 0;///请求查询银期签约关系响应
 	CBOnRspError cbRspError = 0;	///错误应答
-	CBRtnOrder cbRtnOrder = 0;	///报单通知
-	CBRtnTrade cbRtnTrade = 0;	///成交通知
+	CBOnRtnOrder cbRtnOrder = 0;	///报单通知
+	CBOnRtnTrade cbRtnTrade = 0;	///成交通知
 	CBErrRtnOrderInsert cbErrRtnOrderInsert = 0;	///报单录入错误回报
 	CBErrRtnOrderAction cbErrRtnOrderAction = 0;	///报单操作错误回报
 	CBRtnInstrumentStatus cbRtnInstrumentStatus = 0;	///合约交易状态通知

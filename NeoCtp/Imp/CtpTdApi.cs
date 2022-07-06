@@ -357,10 +357,16 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///报单通知
-    public void OnRtnOrder(ref CThostFtdcOrderField pOrder) { }
+    public event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;
+    public void OnRtnOrder(ref CThostFtdcOrderField pOrder)
+    {
+            OnRtnOrderEvent?.Invoke(this, pOrder);
+    }
+
 
     ///成交通知
-    public void OnRtnTrade(ref CThostFtdcTradeField pTrade) { }
+    public event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;
+    public void OnRtnTrade(ref CThostFtdcTradeField pTrade) { OnRtnTradeEvent?.Invoke(this, pTrade);}
 
     ///报单录入错误回报
     public void OnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo) { }
@@ -649,7 +655,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             IsLogined = true;
 
             SessionId   = e.Rsp2.SessionID;
-            MaxOrderRef = e.Rsp2.MaxOrderRef;
+            OrderRef_ = Convert.ToInt32(e.Rsp2.MaxOrderRef);
             FrontId     = e.Rsp2.FrontID;
 
             DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
@@ -999,12 +1005,20 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     }
 
 
-    public Task<CtpRsp<CThostFtdcInputOrderField>> ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder)
+    // 如果成功，会返回onRtnOrderEvent
+    public Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>> ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder)
     {
-        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcInputOrderField>>();
+        var taskSource = new TaskCompletionSource<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>();
         var reqId      = GetNextRequestId();
 
+        pInputOrder.BrokerID   = BrokerId;
+        pInputOrder.InvestorID = UserId;
+        pInputOrder.UserID     = UserId;
+        pInputOrder.OrderRef   = GetNextOrderRef().ToString();
+
+
         EventHandler<CtpRsp<CThostFtdcInputOrderField>> onRspOrderInsertHandler = null;
+        EventHandler<CThostFtdcOrderField>              onRtnOrderHandler       = null;
         EventHandler<CtpRsp>                            onRspErrorHandler       = null;
 
         onRspOrderInsertHandler = (s, e) =>
@@ -1013,9 +1027,19 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             {
                 clearHandler();
 
-                taskSource.TrySetResult(e);
+                taskSource.TrySetResult(new(null, e));
             }
         };
+        onRtnOrderHandler = (s, e) =>
+        {
+            if (e.OrderRef == pInputOrder.OrderRef)
+            {
+                clearHandler();
+
+                taskSource.TrySetResult(new(e, null));
+            }
+        };
+
         onRspErrorHandler = (s, e) =>
         {
             if (e.RequestId == reqId)
@@ -1029,19 +1053,17 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         void clearHandler()
         {
             OnRspOrderInsertEvent -= onRspOrderInsertHandler;
+            OnRtnOrderEvent       -= onRtnOrderHandler;
             OnRspErrorEvent       -= onRspErrorHandler;
         }
 
-        pInputOrder.BrokerID   = BrokerId;
-        pInputOrder.InvestorID = UserId;
-        pInputOrder.UserID     = UserId;
-        pInputOrder.OrderRef   = MaxOrderRef;
-
+     
         ECtpRtn ret = (ECtpRtn)ReqOrderInsert(ref pInputOrder, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(null, new(ret))); }
         else
         {
             OnRspOrderInsertEvent += onRspOrderInsertHandler;
+            OnRtnOrderEvent       += onRtnOrderHandler;
             OnRspErrorEvent       += onRspErrorHandler;
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
@@ -1293,7 +1315,6 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     //}
 
 
-    protected int GetNextRequestId() => Interlocked.Increment(ref _RequestID);
 
 #region Members
 
@@ -1308,7 +1329,6 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
     protected ConcurrentDictionary<string, object> _Subscribed = new ConcurrentDictionary<string, object>();
 
-    protected int _RequestID = 0;
 
 
     private DateTime _QueryTime = DateTime.MinValue;

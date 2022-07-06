@@ -665,6 +665,11 @@ namespace NeoCtp
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRspOrderInsert(IntPtr pSpi, CBOnRspOrderInsert cbOn); //报单录入请求响应
+	    [DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRtnOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRtnOrder(IntPtr pSpi, CBRtnOrder cb); //报单通知
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRtnTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRtnTrade(IntPtr pSpi, CBRtnTrade cb); //成交通知
+
 
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspUserPasswordUpdate", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
@@ -830,12 +835,6 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQryAccountregister", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspQryAccountregister(IntPtr pSpi, CBRspQryAccountregister cb);  //请求查询银期签约关系响应
-	[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRtnOrder(IntPtr pSpi, CBRtnOrder cb);    //报单通知
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRtnTrade", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRtnTrade(IntPtr pSpi, CBRtnTrade cb);    //成交通知
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegErrRtnOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegErrRtnOrderInsert(IntPtr pSpi, CBErrRtnOrderInsert cb);  //报单录入错误回报

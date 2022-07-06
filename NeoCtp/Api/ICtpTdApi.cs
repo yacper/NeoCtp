@@ -26,7 +26,7 @@ namespace NeoCtp
 
         int                 FrontId { get; }                                /// 前置编号
         int                 SessionId { get; }                              /// 会话编号
-        string              MaxOrderRef { get;  }
+        //string              MaxOrderRef { get;  }
 
         /// 最大报单引用
 
@@ -85,7 +85,12 @@ namespace NeoCtp
 #region Order
  
 		///报单录入请求
-		Task<CtpRsp<CThostFtdcInputOrderField>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
+		Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
+
+        event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;		// order 状态通知
+
+        event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	// trade 成交通知
+
 		//void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
 		//void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
 		//	int volume, double price, double? stopPrice=null,

@@ -1728,11 +1728,11 @@ TDAPI_API void   RegOnRspError(TraderSpi* pSpi, CBOnRspError cb)	//错误应答
 {
 	pSpi->cbRspError = cb;
 }
-TDAPI_API void   RegRtnOrder(TraderSpi* pSpi, CBRtnOrder cb)	//报单通知
+TDAPI_API void   RegOnRtnOrder(TraderSpi* pSpi, CBOnRtnOrder cb)	//报单通知
 {
 	pSpi->cbRtnOrder = cb;
 }
-TDAPI_API void   RegRtnTrade(TraderSpi* pSpi, CBRtnTrade cb)	//成交通知
+TDAPI_API void   RegOnRtnTrade(TraderSpi* pSpi, CBOnRtnTrade cb)	//成交通知
 {
 	pSpi->cbRtnTrade = cb;
 }

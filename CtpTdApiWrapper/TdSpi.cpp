@@ -75,8 +75,8 @@
 //extern CBRspQryTransferSerial cbRspQryTransferSerial;	///请求查询转帐流水响应
 //extern CBOnRspQryAccountregister cbRspQryAccountregister;///请求查询银期签约关系响应
 //extern CBOnRspError cbRspError;	///错误应答
-//extern CBRtnOrder cbRtnOrder;	///报单通知
-//extern CBRtnTrade cbRtnTrade;	///成交通知
+//extern CBOnRtnOrder cbRtnOrder;	///报单通知
+//extern CBOnRtnTrade cbRtnTrade;	///成交通知
 //extern CBErrRtnOrderInsert cbErrRtnOrderInsert;	///报单录入错误回报
 //extern CBErrRtnOrderAction cbErrRtnOrderAction;	///报单操作错误回报
 //extern CBRtnInstrumentStatus cbRtnInstrumentStatus;	///合约交易状态通知

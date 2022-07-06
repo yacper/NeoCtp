@@ -37,7 +37,7 @@ namespace NeoCtp.Imp
 
         int                 FrontId { get; }                                /// 前置编号
         int                 SessionId { get; }                              /// 会话编号
-        string              MaxOrderRef { get;  }                           /// 最大报单引用
+        //string              MaxOrderRef { get;  }                           /// 最大报单引用
 
 
 		///注册回调接口

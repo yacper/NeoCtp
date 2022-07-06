@@ -342,6 +342,9 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegOnRspQryInstrument(TraderSpi* pSpi, CBOnRspQryInstrument cb);	//请求查询合约响应
 
 	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//报单录入请求响应
+	TDAPI_API void RegOnRtnOrder(TraderSpi* pSpi, CBOnRtnOrder cb);	//报单通知
+	TDAPI_API void RegOnRtnTrade(TraderSpi* pSpi, CBOnRtnTrade cb);	//成交通知
+
 
 
 	TDAPI_API void RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb);	//用户口令更新请求响应
@@ -397,8 +400,6 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspQryCombAction(TraderSpi* pSpi, CBRspQryCombAction cb);	//请求查询申请组合响应
 	TDAPI_API void RegRspQryTransferSerial(TraderSpi* pSpi, CBRspQryTransferSerial cb);	//请求查询转帐流水响应
 	TDAPI_API void RegOnRspQryAccountregister(TraderSpi* pSpi, CBOnRspQryAccountregister cb);	//请求查询银期签约关系响应
-	TDAPI_API void RegRtnOrder(TraderSpi* pSpi, CBRtnOrder cb);	//报单通知
-	TDAPI_API void RegRtnTrade(TraderSpi* pSpi, CBRtnTrade cb);	//成交通知
 	TDAPI_API void RegErrRtnOrderInsert(TraderSpi* pSpi, CBErrRtnOrderInsert cb);	//报单录入错误回报
 	TDAPI_API void RegErrRtnOrderAction(TraderSpi* pSpi, CBErrRtnOrderAction cb);	//报单操作错误回报
 	TDAPI_API void RegRtnInstrumentStatus(TraderSpi* pSpi, CBRtnInstrumentStatus cb);	//合约交易状态通知
