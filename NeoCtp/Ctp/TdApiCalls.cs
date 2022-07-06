@@ -410,7 +410,7 @@ namespace NeoCtp
 		///查询最大报单数量响应
 		internal delegate void CBRspQueryMaxOrderVolume( ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///投资者结算结果确认响应
-		internal delegate void CBRspSettlementInfoConfirm( ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBOnRspSettlementInfoConfirm( ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///删除预埋单响应
 		internal delegate void CBRspRemoveParkedOrder( ref CThostFtdcRemoveParkedOrderField pRemoveParkedOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///删除预埋撤单响应
@@ -519,8 +519,11 @@ namespace NeoCtp
 		internal delegate void CBRspQryTransferSerial( ref CThostFtdcTransferSerialField pTransferSerial, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///请求查询银期签约关系响应
 		internal delegate void CBRspQryAccountregister( ref CThostFtdcAccountregisterField pAccountregister, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+
 		///错误应答
 		internal delegate void CBOnRspError( ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		//internal delegate void CBOnRspError( ref CThostFtdcRspInfoField pRspInfo, int nRequestID, [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.I1)] bIsLast);
+
 		///报单通知
 		internal delegate void CBRtnOrder( ref CThostFtdcOrderField pOrder);
 		///成交通知
@@ -646,6 +649,10 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspUserLogout", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRspUserLogout(IntPtr pSpi, CBOnRspUserLogout cbOn); //登出请求响应
 
+		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspSettlementInfoConfirm", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
+		internal extern static void RegOnRspSettlementInfoConfirm(IntPtr pSpi, CBOnRspSettlementInfoConfirm cbOn); //投资者结算结果确认响应
+
+
 
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegOnRspOrderInsert", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void RegOnRspOrderInsert(IntPtr pSpi, CBOnRspOrderInsert cbOn); //报单录入请求响应
@@ -679,9 +686,7 @@ namespace NeoCtp
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspQueryMaxOrderVolume", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspQueryMaxOrderVolume(IntPtr pSpi, CBRspQueryMaxOrderVolume cb);    //查询最大报单数量响应
-		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspSettlementInfoConfirm", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static void 
-			RegRspSettlementInfoConfirm(IntPtr pSpi, CBRspSettlementInfoConfirm cb);    //投资者结算结果确认响应
+
 		[DllImport("CtpTdApiWrapper", EntryPoint = "RegRspRemoveParkedOrder", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static void 
 			RegRspRemoveParkedOrder(IntPtr pSpi, CBRspRemoveParkedOrder cb);    //删除预埋单响应

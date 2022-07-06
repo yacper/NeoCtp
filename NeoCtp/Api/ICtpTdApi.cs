@@ -42,9 +42,9 @@ namespace NeoCtp
         Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
 
 
-
 		///投资者结算结果确认
-		void				ReqSettlementInfoConfirm(Action<CtpRsp<CThostFtdcSettlementInfoConfirmField>> callback);
+		Task<CtpRsp<CThostFtdcSettlementInfoConfirmField>> ReqSettlementInfoConfirmAsync();
+
 
 		///请求查询资金账户
 		void				ReqQryTradingAccount(Action<CtpRsp<CThostFtdcTradingAccountField>> callback);

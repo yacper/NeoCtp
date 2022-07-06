@@ -36,7 +36,7 @@ public class CtpMdApi_Test
         //defaultLogger            = LogManager.GetCurrentClassLogger();
 
         /// connect
-        client = new CtpMdApi(TestConstants.MdFrontAddr, TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
+        client = new CtpMdApi(TestConstants.GetMdFrontAddr(), TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
         var connected = await client.ConnectAsync();
         connected.Should().BeTrue();
 

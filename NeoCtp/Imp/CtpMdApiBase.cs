@@ -147,7 +147,8 @@ namespace NeoCtp
 		{
 			IntPtr ptr = MdApiCalls.GetTradingDay(ApiHandle_);
 
-			return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAuto(ptr);
+			//return Marshal.PtrToStringAnsi(ptr);
 		}
 
 

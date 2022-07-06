@@ -34,6 +34,16 @@ public class CtpRsp
         RequestId = nRequestID;
         IsLast    = bIsLast;
     }
+
+    public override string ToString()
+    {
+        if (Rsp.ErrorID != 0)
+        {
+            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestId}";
+        }
+        else
+            return $"Ctp local call Error:{Rtn}";
+    }
 }
 
 public class CtpRsp<T2> : CtpRsp
@@ -50,6 +60,17 @@ public class CtpRsp<T2> : CtpRsp
     {
         Rsp2 = rsp2;
     }
+
+    public override string ToString()
+    {
+        if (Rsp.ErrorID != 0)
+        {
+            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestId} \n {Rsp2.Dump()}";
+        }
+        else
+            return $"Ctp local call Error:{Rtn}";
+    }
+
 }
 
 public class CtpRsp<T2, T3> : CtpRsp<T2>
@@ -61,4 +82,16 @@ public class CtpRsp<T2, T3> : CtpRsp<T2>
     {
         Rsp3 = rsp3;
     }
+
+    public override string ToString()
+    {
+        if (Rsp.ErrorID != 0)
+        {
+            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestId} \n {Rsp2.Dump()} \n {Rsp3.Dump()}";
+        }
+        else
+            return $"Ctp local call Error:{Rtn}";
+    }
+
+
 }

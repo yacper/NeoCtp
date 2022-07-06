@@ -136,7 +136,8 @@ namespace NeoCtp.Imp
 		{
 			IntPtr ptr = TdApiCalls.GetTradingDay(ApiHandle_);
 
-			return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringUTF8(ptr);
+			//return Marshal.PtrToStringAnsi(ptr);
 		}
 
 		///注册前置机网络地址
@@ -304,8 +305,7 @@ namespace NeoCtp.Imp
 		}
 
 		///投资者结算结果确认
-		public int ReqSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm,
-			int nRequestID)
+		public int ReqSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, int nRequestID)
 		{
 			return TdApiCalls.ReqSettlementInfoConfirm(ApiHandle_, ref pSettlementInfoConfirm, nRequestID);
 		}
@@ -755,7 +755,7 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegOnRspUserLogin(SpiHandle_, _OnRspUserLogin);
 			TdApiCalls.RegOnRspUserLogout(SpiHandle_, _OnRspUserLogout);
 
-
+			TdApiCalls.RegOnRspSettlementInfoConfirm(SpiHandle_, _CBOnRspSettlementInfoConfirm);
 
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
 
@@ -772,7 +772,6 @@ namespace NeoCtp.Imp
 			TdApiCalls.RegRspParkedOrderAction(SpiHandle_, _CBRspParkedOrderAction);
 			TdApiCalls.RegRspOrderAction(SpiHandle_, _CBRspOrderAction);
 			TdApiCalls.RegRspQueryMaxOrderVolume(SpiHandle_, _CBRspQueryMaxOrderVolume);
-			TdApiCalls.RegRspSettlementInfoConfirm(SpiHandle_, _CBRspSettlementInfoConfirm);
 			TdApiCalls.RegRspRemoveParkedOrder(SpiHandle_, _CBRspRemoveParkedOrder);
 			TdApiCalls.RegRspRemoveParkedOrderAction(SpiHandle_, _CBRspRemoveParkedOrderAction);
 			TdApiCalls.RegBatchOrderAction(SpiHandle_, _CBRspBatchOrderAction);
@@ -1021,7 +1020,7 @@ namespace NeoCtp.Imp
 			TdSpi_?.OnRspQueryMaxOrderVolume(ref pQueryMaxOrderVolume, ref pRspInfo, nRequestID, bIsLast);
 		}
 		///投资者结算结果确认响应
-		private void _CBRspSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+		private void _CBOnRspSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
 			TdSpi_?.OnRspSettlementInfoConfirm(ref pSettlementInfoConfirm, ref pRspInfo, nRequestID, bIsLast);
 		}

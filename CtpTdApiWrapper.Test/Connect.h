@@ -25,11 +25,11 @@ public:
 	}
 };
 
-TEST(CtpApiTest, 01Connect)
-{
-	Connect initCtp;
-	TestBase = &initCtp;
-	initCtp.Run();
-	bool isOK = initCtp.CheckIsOK();
-	EXPECT_TRUE(isOK);
-}
+//TEST(CtpApiTest, 01Connect)
+//{
+//	Connect initCtp;
+//	TestBase = &initCtp;
+//	initCtp.Run();
+//	bool isOK = initCtp.CheckIsOK();
+//	EXPECT_TRUE(isOK);
+//}

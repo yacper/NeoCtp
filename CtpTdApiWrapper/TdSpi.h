@@ -8,7 +8,7 @@
 #pragma once
 #include "pch.h"
 
-//extern "C"{
+extern "C"{
 
 #pragma region 回调委托声明
 
@@ -261,7 +261,7 @@ typedef void (WINAPI *CBRtnCancelAccountByBank)(CThostFtdcCancelAccountField *pC
 ///银行发起变更银行账号通知
 typedef void (WINAPI *CBRtnChangeAccountByBank)(CThostFtdcChangeAccountField *pChangeAccount);
 
-//}
+}
 
 #pragma endregion
 
@@ -787,3 +787,4 @@ private:
 	CThostFtdcRspInfoField* repareInfo(CThostFtdcRspInfoField *pRspInfo);
 };
 
+//}

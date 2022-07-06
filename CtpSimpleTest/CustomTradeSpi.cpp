@@ -251,7 +251,7 @@ void CustomTradeSpi::reqUserLogin()
 	strcpy(loginReq.BrokerID, gBrokerID);
 	strcpy(loginReq.UserID, gInvesterID);
 	strcpy(loginReq.Password, gInvesterPassword);
-	static int requestID = 0; // 请求编号
+	static int requestID = 1; // 请求编号
 	int rt = g_pTradeUserApi->ReqUserLogin(&loginReq, requestID);
 	if (!rt)
 		std::cout << ">>>>>>发送登录请求成功" << std::endl;
@@ -280,7 +280,7 @@ void CustomTradeSpi::reqSettlementInfoConfirm()
 	memset(&settlementConfirmReq, 0, sizeof(settlementConfirmReq));
 	strcpy(settlementConfirmReq.BrokerID, gBrokerID);
 	strcpy(settlementConfirmReq.InvestorID, gInvesterID);
-	static int requestID = 0; // 请求编号
+	static int requestID = 10; // 请求编号
 	int rt = g_pTradeUserApi->ReqSettlementInfoConfirm(&settlementConfirmReq, requestID);
 	if (!rt)
 		std::cout << ">>>>>>发送投资者结算结果确认请求成功" << std::endl;

@@ -35,18 +35,19 @@ public class CtpTdApi_Test
         //defaultLogger            = LogManager.GetCurrentClassLogger();
 
         /// connect
-        client = new CtpTdApi(TestConstants.MdFrontAddr, TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
+        client = new CtpTdApi(TestConstants.GetTdFrontAddr(), TestConstants.BrokerID, TestConstants.UserID, TestConstants.Password, defaultLogger); // defaultLogger - can be null
         var connected = await client.ConnectAsync();
         connected.Should().BeTrue();
 
+        // login
         var logined = await client.ReqUserLoginAsync();
         client.IsLogined.Should().BeTrue();
-
-
         Debug.WriteLine(client.Dump());
 
 
-
+        // SettlementInfoConfirm 使用simnow测试账户无此功能
+        var confirm = await client.ReqSettlementInfoConfirmAsync();
+        confirm.Rsp2.InvestorID.Should().Be(TestConstants.UserID);
 
     }
 
@@ -59,9 +60,14 @@ public class CtpTdApi_Test
         Debug.WriteLine(client.Dump());
     }
 
-    //[Test]
+    [Test]
     public async Task Reconnect_Test()
     {
+        await client.ReqUserLogoutAsync();
+        client.IsLogined.Should().Be(false);
+        Debug.WriteLine(client.Dump());
+
+
         await client.DisconnectAsync();
         client.ConnectionState.Should().Be(EConnectionState.Disconnected);
         Debug.WriteLine(client.Dump());
@@ -71,8 +77,15 @@ public class CtpTdApi_Test
         connected.Should().BeTrue();
         Debug.WriteLine(client.Dump());
 
-        // wait some time for account info
-        await Task.Delay(5000);
+       // login
+        var logined = await client.ReqUserLoginAsync();
+        client.IsLogined.Should().BeTrue();
+        Debug.WriteLine(client.Dump());
+
+
+        // SettlementInfoConfirm 使用simnow测试账户无此功能
+        var confirm = await client.ReqSettlementInfoConfirmAsync();
+        confirm.Rsp2.InvestorID.Should().Be(TestConstants.UserID);
     }
 
 #region User

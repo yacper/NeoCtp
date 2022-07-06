@@ -20,7 +20,8 @@ namespace NeoCtp.Imp
 		public static string GetApiVersion()			// 获取版本号
 		{
 			IntPtr ptr = MdApiCalls.GetApiVersion();
-            return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAuto(ptr);
+            //return Marshal.PtrToStringAnsi(ptr);
 		}
 	}
 

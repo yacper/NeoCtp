@@ -40,15 +40,18 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     ///错误应答
     public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
-        OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
+        var rsp = new CtpRsp(pRspInfo, nRequestID, bIsLast);
+        Logger?.Error(rsp.ToString);
+#if DEBUG
+        System.Diagnostics.Debug.WriteLine(rsp.ToString());
+#endif
+
+        OnRspErrorEvent?.Invoke(this, rsp);
     }
 
     public event EventHandler<int> OnHeartBeatWarningEvent;
 
-    public void OnHeartBeatWarning(int nTimeLapse)
-    {
-        OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse);
-    }
+    public void OnHeartBeatWarning(int nTimeLapse) { OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse); }
 
 
     public event EventHandler<CtpRsp<CThostFtdcRspUserLoginField>> OnRspUserLoginEvent;
@@ -79,16 +82,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///投资者结算结果确认响应
+    public event EventHandler<CtpRsp<CThostFtdcSettlementInfoConfirmField>> OnRspSettlementInfoConfirmEvent;
+
     public void OnRspSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm,
         ref                                    CThostFtdcRspInfoField               pRspInfo, int nRequestID, bool bIsLast)
     {
-        //CtpRsp<CThostFtdcSettlementInfoConfirmField> rsp = new CtpRsp<CThostFtdcSettlementInfoConfirmField>
-        //{
-        //	Rsp = pRspInfo,
-        //	Rsp2 = pSettlementInfoConfirm
-        //};
-
-        //         _ExecuteCallback(nRequestID, rsp);
+        OnRspSettlementInfoConfirmEvent?.Invoke(this, new(pSettlementInfoConfirm, pRspInfo, nRequestID, bIsLast));
     }
 
 
@@ -611,7 +610,6 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         OnDisconnected_();
 
         return Task.CompletedTask;
-
     }
 
     protected void OnConnected_()
@@ -760,20 +758,59 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///投资者结算结果确认
-    public void ReqSettlementInfoConfirm(Action<CtpRsp<CThostFtdcSettlementInfoConfirmField>> callback)
+    public Task<CtpRsp<CThostFtdcSettlementInfoConfirmField>> ReqSettlementInfoConfirmAsync()
     {
-        int requestID = _AddCallback(callback);
-        _AddMethod(requestID, new Action(() =>
-        {
-            CThostFtdcSettlementInfoConfirmField filed = new CThostFtdcSettlementInfoConfirmField()
-            {
-                BrokerID   = BrokerId,
-                InvestorID = UserId
-            };
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcSettlementInfoConfirmField>>();
+        var reqId      = GetNextRequestId();
 
-            int ret = ReqSettlementInfoConfirm(ref filed, requestID);
-            _RemoveMethod(requestID, ret);
-        }));
+        EventHandler<CtpRsp<CThostFtdcSettlementInfoConfirmField>> onRspSettlementInfoConfirmHandler = null;
+        EventHandler<CtpRsp>                                       onRspErrorHandler                 = null;
+
+        onRspSettlementInfoConfirmHandler = (s, e) =>
+        {
+            clearHandler();
+
+            taskSource.TrySetResult(e);
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestId == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspSettlementInfoConfirmEvent -= onRspSettlementInfoConfirmHandler;
+            OnRspErrorEvent                 -= onRspErrorHandler;
+        }
+
+
+        CThostFtdcSettlementInfoConfirmField field = new CThostFtdcSettlementInfoConfirmField()
+        {
+            BrokerID   = BrokerId,
+            InvestorID = UserId
+        };
+
+        ECtpRtn ret = (ECtpRtn)ReqSettlementInfoConfirm(ref field, reqId);
+        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        else
+        {
+            OnRspSettlementInfoConfirmEvent += onRspSettlementInfoConfirmHandler;
+            OnRspErrorEvent                 += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
     }
 
 

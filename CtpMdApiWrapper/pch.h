@@ -11,6 +11,7 @@
 // Windows 头文件
 #include <windows.h>
 
+#include"ThostFtdcUserApiStruct.h"
 #include "ThostFtdcMdApi.h"   // 最新6.3.19版本 
 
 #ifdef CTPMDAPIWRAPPER_EXPORTS

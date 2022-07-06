@@ -26,7 +26,7 @@ void CustomMdSpi::OnFrontConnected()
 	strcpy(loginReq.UserID, gInvesterID);
 	strcpy(loginReq.Password, gInvesterPassword);
 	static int requestID = -3; // 请求编号
-	int rt = g_pMdUserApi->ReqUserLogin(&loginReq, requestID);
+	int rt = g_pMdUserApi->ReqUserLogin(&loginReq, 3);
 	if (!rt)
 		std::cout << ">>>>>>发送登录请求成功" << std::endl;
 	else

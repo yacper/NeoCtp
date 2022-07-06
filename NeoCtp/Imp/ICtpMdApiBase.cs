@@ -21,7 +21,8 @@ namespace NeoCtp
 		{
 			IntPtr ptr = MdApiCalls.GetApiVersion();
 
-            return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAuto(ptr);
+            //return Marshal.PtrToStringAnsi(ptr);
 		}
 	}
 

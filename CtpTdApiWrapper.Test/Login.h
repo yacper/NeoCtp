@@ -53,7 +53,7 @@ private:
 		strcpy_s(loginField.UserID, gInvesterID);
 		strcpy_s(loginField.Password, gInvesterPassword);
 
-		int rf = ReqUserLogin(m_pTdApi, &loginField, 0);
+		int rf = ReqUserLogin(m_pTdApi, &loginField, 1);
 		if (!rf)
 			std::cout << "发送登录请求成功" << std::endl;
 		else

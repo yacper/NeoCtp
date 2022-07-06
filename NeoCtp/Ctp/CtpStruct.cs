@@ -161,7 +161,7 @@ namespace NeoCtp
 	/// <summary>
 	/// 用户登录应答
 	/// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct CThostFtdcRspUserLoginField
 	{
 		/// <summary>
@@ -880,7 +880,7 @@ namespace NeoCtp
 	/// <summary>
 	/// 响应信息
 	/// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 	public struct CThostFtdcRspInfoField
 	{
 		/// <summary>

@@ -9,8 +9,8 @@
 #include "pch.h"
 
 #pragma region 回调委托申明
-//extern "C"
-//{
+extern "C"
+{
 	typedef void (WINAPI* CBOnRspError)(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
 	typedef void (WINAPI* CBOnHeartBeatWarning)(int nTimeLapse);
 
@@ -116,3 +116,4 @@ public:
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) override;
 
 };
+}
