@@ -359,7 +359,9 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API void RegRspGenUserText(TraderSpi* pSpi, CBRspGenUserText cb);	//获取短信验证码请求的回复
 	TDAPI_API void RegRspParkedOrderInsert(TraderSpi* pSpi, CBRspParkedOrderInsert cb);	//预埋单录入请求响应
 	TDAPI_API void RegRspParkedOrderAction(TraderSpi* pSpi, CBRspParkedOrderAction cb);	//预埋撤单录入请求响应
-	TDAPI_API void RegRspOrderAction(TraderSpi* pSpi, CBRspOrderAction cb);	//报单操作请求响应
+
+	TDAPI_API void RegOnRspOrderAction(TraderSpi* pSpi, CBOnRspOrderAction cb);	//报单操作请求响应
+
 	TDAPI_API void RegRspQueryMaxOrderVolume(TraderSpi* pSpi, CBRspQueryMaxOrderVolume cb);	//查询最大报单数量响应
 	TDAPI_API void RegRspRemoveParkedOrder(TraderSpi* pSpi, CBRspRemoveParkedOrder cb);	//删除预埋单响应
 	TDAPI_API void RegRspRemoveParkedOrderAction(TraderSpi* pSpi, CBRspRemoveParkedOrderAction cb);	//删除预埋撤单响应

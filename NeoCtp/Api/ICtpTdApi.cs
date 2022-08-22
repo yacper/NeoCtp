@@ -5,6 +5,12 @@
 	
     purpose:	https://blog.51cto.com/quantfabric/2966425
                 https://www.cnblogs.com/dengchj/p/8442913.html
+
+数据处理：
+                https://zhuanlan.zhihu.com/p/123384992
+                https://zhuanlan.zhihu.com/p/126775219
+                https://zhuanlan.zhihu.com/p/380143402
+
 *********************************************************************/
 using System;
 using System.Collections.Generic;

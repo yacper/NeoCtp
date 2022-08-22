@@ -1524,7 +1524,7 @@ TDAPI_API void   RegRspParkedOrderAction(TraderSpi* pSpi, CBRspParkedOrderAction
 {
 	pSpi->cbRspParkedOrderAction = cb;
 }
-TDAPI_API void   RegRspOrderAction(TraderSpi* pSpi, CBRspOrderAction cb)	//报单操作请求响应
+TDAPI_API void   RegOnRspOrderAction(TraderSpi* pSpi, CBOnRspOrderAction cb)	//报单操作请求响应
 {
 	pSpi->cbRspOrderAction = cb;
 }

@@ -16,6 +16,8 @@ namespace NeoCtp.Imp
 {
 public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 {
+    public override string ToString() => $"CtpTdApi[{FrontAddress}-{UserId}]";
+
 #region ICtpTdSpi
 
     public void OnFrontConnected()
@@ -41,7 +43,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
         var rsp = new CtpRsp(pRspInfo, nRequestID, bIsLast);
-        Logger?.Error(rsp.ToString);
+        Logger?.Error(rsp.ToString());
 #if DEBUG
         System.Diagnostics.Debug.WriteLine(rsp.ToString());
 #endif
@@ -553,7 +555,17 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         Logger = logger;
     }
 
-    public    EConnectionState ConnectionState { get => ConnectionState_; set => SetProperty(ref ConnectionState_, value); }
+    public EConnectionState ConnectionState
+    {
+        get => ConnectionState_;
+        protected set
+        {
+            if (value != ConnectionState)
+                Logger?.Info($"{this.ToString()} {value} ");
+
+            SetProperty(ref ConnectionState_, value);
+        }
+    }
     protected EConnectionState ConnectionState_;
 
 
@@ -632,14 +644,14 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
     protected void OnConnected_()
     {
-        Logger?.Info($"Connected:{this.Dump()}");
+        Logger?.Info($"Connected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
 
         ConnectionState = EConnectionState.Connected;
     }
 
     protected void OnDisconnected_()
     {
-        Logger?.Info($"DisConnected:{this.Dump()}");
+        Logger?.Info($"DisConnected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
 
         //RealtimeBarsSubscriptions_.Clear();
         //RealtimeBarsSubscriptionReqs_.Clear();

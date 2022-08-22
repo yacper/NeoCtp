@@ -25,6 +25,8 @@ namespace NeoCtp.Imp
 {
 public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 {
+    public override string ToString() => $"CtpMdApi[{FrontAddress}-{UserId}]";
+
 #region ICtpMdSpi
 
     public void OnFrontConnected()
@@ -47,7 +49,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
-        Logger?.Error(pRspInfo.Dump());
+        Logger?.Error(pRspInfo.ToJson());
         OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
     }
 
@@ -108,7 +110,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
 
     public CtpMdApi(string frontAddress,            string brokerId,            string userId, string password, ILogger logger = null,
-        string             pszFlowPath = "CtpFlow", bool   bIsUsingUdp = false, bool   bIsMulticast = false)
+        string             pszFlowPath = "CtpMdFlow/", bool   bIsUsingUdp = false, bool   bIsMulticast = false)
         : base(frontAddress, brokerId, userId, password,
                pszFlowPath, bIsUsingUdp, bIsMulticast)
     {
@@ -116,7 +118,16 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
         }
 
-    public    EConnectionState ConnectionState { get => ConnectionState_; set => SetProperty(ref ConnectionState_, value); }
+    public EConnectionState ConnectionState
+    {
+        get => ConnectionState_;
+        protected set
+        { 
+             if (value != ConnectionState)
+                Logger?.Info($"{this.ToString()} {value} ");
+
+            SetProperty(ref ConnectionState_, value); }
+        }
     protected EConnectionState ConnectionState_;
 
     //public bool                IsConnected
@@ -212,14 +223,14 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     protected void OnConnected_()
     {
-        Logger?.Info($"Connected:{this.Dump()}");
+        Logger?.Info($"Connected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
 
         ConnectionState = EConnectionState.Connected;
     }
 
     protected void OnDisconnected_()
     {
-        Logger?.Info($"DisConnected:{this.Dump()}");
+        Logger?.Info($"DisConnected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
 
         //RealtimeBarsSubscriptions_.Clear();
         //RealtimeBarsSubscriptionReqs_.Clear();

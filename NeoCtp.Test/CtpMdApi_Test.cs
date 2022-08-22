@@ -90,7 +90,7 @@ public class CtpMdApi_Test
         client.OnRtnDepthMarketDataEvent += (s, e) =>
         {
             marketDataFields.Add(e);
-            Debug.WriteLine(e);
+            Debug.WriteLine(e.ToJson());
         };
 
         var subs = await client.SubMarketDataAsync(instruments.ToArray());

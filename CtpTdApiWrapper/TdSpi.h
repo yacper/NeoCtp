@@ -43,7 +43,7 @@ typedef void (WINAPI *CBRspParkedOrderInsert)(CThostFtdcParkedOrderField *pParke
 ///预埋撤单录入请求响应
 typedef void (WINAPI *CBRspParkedOrderAction)(CThostFtdcParkedOrderActionField *pParkedOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///报单操作请求响应
-typedef void (WINAPI *CBRspOrderAction)(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+typedef void (WINAPI *CBOnRspOrderAction)(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///查询最大报单数量响应
 typedef void (WINAPI *CBRspQueryMaxOrderVolume)(CThostFtdcQueryMaxOrderVolumeField *pQueryMaxOrderVolume, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 ///投资者结算结果确认响应
@@ -284,7 +284,7 @@ public:
 	CBOnRspOrderInsert cbRspOrderInsert = 0;	///报单录入请求响应
 	CBRspParkedOrderInsert cbRspParkedOrderInsert = 0;	///预埋单录入请求响应
 	CBRspParkedOrderAction cbRspParkedOrderAction = 0;	///预埋撤单录入请求响应
-	CBRspOrderAction cbRspOrderAction = 0;	///报单操作请求响应
+	CBOnRspOrderAction cbRspOrderAction = 0;	///报单操作请求响应
 	CBRspQueryMaxOrderVolume cbRspQueryMaxOrderVolume = 0;	///查询最大报单数量响应
 	CBOnRspSettlementInfoConfirm cbRspSettlementInfoConfirm = 0;	///投资者结算结果确认响应
 	CBRspRemoveParkedOrder cbRspRemoveParkedOrder = 0;	///删除预埋单响应

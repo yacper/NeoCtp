@@ -20,9 +20,9 @@ TThostFtdcPasswordType gInvesterPassword = "";                     // 投资者密码
 
 // 行情参数
 CThostFtdcMdApi *g_pMdUserApi = nullptr;                           // 行情指针
-//char gMdFrontAddr[] = "tcp://180.168.146.187:10211";               // 模拟行情前置地址 第一组
-char gMdFrontAddr[] = "tcp://180.168.146.187:10131";               // 模拟行情前置地址 24h
-char *g_pInstrumentID[] = {"rb2219", "hc2010", "i2009", "j2009"}; // 行情合约代码列表，中、上、大、郑交易所各选一种
+char gMdFrontAddr[] = "tcp://180.168.146.187:10211";               // 模拟行情前置地址 第一组
+//char gMdFrontAddr[] = "tcp://180.168.146.187:10131";               // 模拟行情前置地址 24h
+char *g_pInstrumentID[] = {"rb2210", "hc2210", "i2209", "j2209"}; // 行情合约代码列表，中、上、大、郑交易所各选一种
 //char* g_pInstrumentID[] = {"rb2210", "hc2210"}; // 行情合约代码列表，中、上、大、郑交易所各选一种
 int instrumentNum = 1;                                             // 行情合约订阅数量
 unordered_map<string, TickToKlineHelper> g_KlineHash;              // 不同合约的k线存储表
