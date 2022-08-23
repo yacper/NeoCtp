@@ -3,20 +3,20 @@
     author:		rush
     email:		
 	
-    purpose:	¶¨Òå DLL Ó¦ÓÃ³ÌĞòµÄµ¼³öº¯Êı¡£
+    purpose:	å®šä¹‰ DLL åº”ç”¨ç¨‹åºçš„å¯¼å‡ºå‡½æ•°ã€‚
 *********************************************************************/
 #pragma once
 #include "pch.h"
 #include "MdSpi.h"
 
-extern "C"  // ÒÔCµÄ·½Ê½µ¼³öº¯ÊıÃû
+extern "C"  // ä»¥Cçš„æ–¹å¼å¯¼å‡ºå‡½æ•°å
 {
 #pragma  region Api
 	MDAPI_API CThostFtdcMdApi* CreateFtdcMdApi(const char* pszFlowPath = "CtpFlow/", const bool bIsUsingUdp = false, const bool bIsMulticast = false);
 	MDAPI_API MdSpi*		CreateMdSpi();
 	MDAPI_API void			RegisterSpi(CThostFtdcMdApi* api, MdSpi* pSpi);
 
-	MDAPI_API const char*	GetApiVersion();			//»ñÈ¡½Ó¿Ú°æ±¾
+	MDAPI_API const char*	GetApiVersion();			//è·å–æ¥å£ç‰ˆæœ¬
 
 	MDAPI_API void			Release(CThostFtdcMdApi* api);
 
@@ -36,15 +36,15 @@ extern "C"  // ÒÔCµÄ·½Ê½µ¼³öº¯ÊıÃû
 	MDAPI_API int			SubscribeMarketData(CThostFtdcMdApi* pUserApi, char* instrumentsID[], int nCount);
 	MDAPI_API int			UnSubscribeMarketData(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount);
 
-	// quoteÎŞÒâÒå
+	// quoteæ— æ„ä¹‰
 	MDAPI_API int			SubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount);
 	MDAPI_API int			UnSubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount);
 
 	MDAPI_API int			ReqQryMulticastInstrument(CThostFtdcMdApi* pUserApi, CThostFtdcQryMulticastInstrumentField* pQryMulticastInstrument, int nRequestID);
 #pragma endregion
 
-#pragma region »Øµ÷º¯Êı
-//============================================ ×¢²á»Øµ÷º¯Êı ===========================================
+#pragma region å›è°ƒå‡½æ•°
+//============================================ æ³¨å†Œå›è°ƒå‡½æ•° ===========================================
 	MDAPI_API void			RegOnRspError(MdSpi* spi, CBOnRspError cb);
 	MDAPI_API void			RegOnHeartBeatWarning(MdSpi* spi, CBOnHeartBeatWarning cb);
 

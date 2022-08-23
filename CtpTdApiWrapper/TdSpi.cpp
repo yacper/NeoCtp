@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "TdSpi.h"
 
-// ÇëÇó±àºÅ
+// è¯·æ±‚ç¼–å·
 //extern int iRequestID;
-///µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨½¨Á¢ÆğÍ¨ĞÅÁ¬½ÓÊ±£¨»¹Î´µÇÂ¼Ç°£©£¬¸Ã·½·¨±»µ÷ÓÃ¡£
+///å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°å»ºç«‹èµ·é€šä¿¡è¿æ¥æ—¶ï¼ˆè¿˜æœªç™»å½•å‰ï¼‰ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
 void TraderSpi::OnFrontConnected() { if (cbOnFrontConnected != NULL) 		cbOnFrontConnected(); }
 
-///µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨Í¨ĞÅÁ¬½Ó¶Ï¿ªÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£µ±·¢ÉúÕâ¸öÇé¿öºó£¬API»á×Ô¶¯ÖØĞÂÁ¬½Ó£¬¿Í»§¶Ë¿É²»×ö´¦Àí¡£
+///å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°é€šä¿¡è¿æ¥æ–­å¼€æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚å½“å‘ç”Ÿè¿™ä¸ªæƒ…å†µåï¼ŒAPIä¼šè‡ªåŠ¨é‡æ–°è¿æ¥ï¼Œå®¢æˆ·ç«¯å¯ä¸åšå¤„ç†ã€‚
 void TraderSpi::OnFrontDisconnected(int nReason) { if (cbOnFrontDisconnected != NULL) cbOnFrontDisconnected(nReason); }
 
-///ĞÄÌø³¬Ê±¾¯¸æ¡£µ±³¤Ê±¼äÎ´ÊÕµ½±¨ÎÄÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£  @param nTimeLapse ¾àÀëÉÏ´Î½ÓÊÕ±¨ÎÄµÄÊ±¼ä
+///å¿ƒè·³è¶…æ—¶è­¦å‘Šã€‚å½“é•¿æ—¶é—´æœªæ”¶åˆ°æŠ¥æ–‡æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚  @param nTimeLapse è·ç¦»ä¸Šæ¬¡æ¥æ”¶æŠ¥æ–‡çš„æ—¶é—´
 void TraderSpi::OnHeartBeatWarning(int nTimeLapse) { if (cbOnHeartBeatWarning != NULL) cbOnHeartBeatWarning(nTimeLapse); }
 
-///¿Í»§¶ËÈÏÖ¤ÏìÓ¦
+///å®¢æˆ·ç«¯è®¤è¯å“åº”
 void TraderSpi::OnRspAuthenticate(CThostFtdcRspAuthenticateField* pRspAuthenticateField, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbOnRspAuthenticate != NULL)
@@ -28,7 +28,7 @@ void TraderSpi::OnRspAuthenticate(CThostFtdcRspAuthenticateField* pRspAuthentica
 	}
 }
 
-///µÇÂ¼ÇëÇóÏìÓ¦
+///ç™»å½•è¯·æ±‚å“åº”
 void TraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbOnRspUserLogin != NULL)
@@ -44,7 +44,7 @@ void TraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField* pRspUserLogin, CThos
 	}
 }
 
-///µÇ³öÇëÇóÏìÓ¦
+///ç™»å‡ºè¯·æ±‚å“åº”
 void TraderSpi::OnRspUserLogout(CThostFtdcUserLogoutField* pUserLogout, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbOnRspUserLogout != NULL)
@@ -60,7 +60,7 @@ void TraderSpi::OnRspUserLogout(CThostFtdcUserLogoutField* pUserLogout, CThostFt
 	}
 }
 
-///ÓÃ»§¿ÚÁî¸üĞÂÇëÇóÏìÓ¦
+///ç”¨æˆ·å£ä»¤æ›´æ–°è¯·æ±‚å“åº”
 void TraderSpi::OnRspUserPasswordUpdate(CThostFtdcUserPasswordUpdateField* pUserPasswordUpdate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspUserPasswordUpdate != NULL)
@@ -76,7 +76,7 @@ void TraderSpi::OnRspUserPasswordUpdate(CThostFtdcUserPasswordUpdateField* pUser
 	}
 }
 
-///×Ê½ğÕË»§¿ÚÁî¸üĞÂÇëÇóÏìÓ¦
+///èµ„é‡‘è´¦æˆ·å£ä»¤æ›´æ–°è¯·æ±‚å“åº”
 void TraderSpi::OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswordUpdateField* pTradingAccountPasswordUpdate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspTradingAccountPasswordUpdate != NULL)
@@ -92,28 +92,28 @@ void TraderSpi::OnRspTradingAccountPasswordUpdate(CThostFtdcTradingAccountPasswo
 	}
 }
 
-///²éÑ¯ÓÃ»§µ±Ç°Ö§³ÖµÄÈÏÖ¤Ä£Ê½µÄ»Ø¸´
+///æŸ¥è¯¢ç”¨æˆ·å½“å‰æ”¯æŒçš„è®¤è¯æ¨¡å¼çš„å›å¤
 void TraderSpi::OnRspUserAuthMethod(CThostFtdcRspUserAuthMethodField* pRspUserAuthMethod, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pRspUserAuthMethod != NULL)
 		cbRspUserAuthMethod(pRspUserAuthMethod, repareInfo(pRspInfo), nRequestID, bIsLast);
 }
 
-///»ñÈ¡Í¼ĞÎÑéÖ¤ÂëÇëÇóµÄ»Ø¸´
+///è·å–å›¾å½¢éªŒè¯ç è¯·æ±‚çš„å›å¤
 void TraderSpi::OnRspGenUserCaptcha(CThostFtdcRspGenUserCaptchaField* pRspGenUserCaptcha, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pRspGenUserCaptcha != NULL)
 		cbRspGenUserCaptcha(pRspGenUserCaptcha, repareInfo(pRspInfo), nRequestID, bIsLast);
 }
 
-///»ñÈ¡¶ÌĞÅÑéÖ¤ÂëÇëÇóµÄ»Ø¸´
+///è·å–çŸ­ä¿¡éªŒè¯ç è¯·æ±‚çš„å›å¤
 void TraderSpi::OnRspGenUserText(CThostFtdcRspGenUserTextField* pRspGenUserText, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pRspGenUserText != NULL)
 		cbRspGenUserText(pRspGenUserText, repareInfo(pRspInfo), nRequestID, bIsLast);
 }
 
-///±¨µ¥Â¼ÈëÇëÇóÏìÓ¦
+///æŠ¥å•å½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspOrderInsert != NULL)
@@ -129,7 +129,7 @@ void TraderSpi::OnRspOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostF
 	}
 }
 
-///Ô¤Âñµ¥Â¼ÈëÇëÇóÏìÓ¦
+///é¢„åŸ‹å•å½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspParkedOrderInsert(CThostFtdcParkedOrderField* pParkedOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspParkedOrderInsert != NULL)
@@ -145,7 +145,7 @@ void TraderSpi::OnRspParkedOrderInsert(CThostFtdcParkedOrderField* pParkedOrder,
 	}
 }
 
-///Ô¤Âñ³·µ¥Â¼ÈëÇëÇóÏìÓ¦
+///é¢„åŸ‹æ’¤å•å½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspParkedOrderAction(CThostFtdcParkedOrderActionField* pParkedOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspParkedOrderAction != NULL)
@@ -161,7 +161,7 @@ void TraderSpi::OnRspParkedOrderAction(CThostFtdcParkedOrderActionField* pParked
 	}
 }
 
-///±¨µ¥²Ù×÷ÇëÇóÏìÓ¦
+///æŠ¥å•æ“ä½œè¯·æ±‚å“åº”
 void TraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspOrderAction != NULL)
@@ -177,7 +177,7 @@ void TraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAct
 	}
 }
 
-///²éÑ¯×î´ó±¨µ¥ÊıÁ¿ÏìÓ¦
+///æŸ¥è¯¢æœ€å¤§æŠ¥å•æ•°é‡å“åº”
 void TraderSpi::OnRspQueryMaxOrderVolume(CThostFtdcQueryMaxOrderVolumeField* pQueryMaxOrderVolume, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQueryMaxOrderVolume != NULL)
@@ -193,7 +193,7 @@ void TraderSpi::OnRspQueryMaxOrderVolume(CThostFtdcQueryMaxOrderVolumeField* pQu
 	}
 }
 
-///Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏÏìÓ¦
+///æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤å“åº”
 void TraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspSettlementInfoConfirm != NULL)
@@ -209,7 +209,7 @@ void TraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField*
 	}
 }
 
-///É¾³ıÔ¤Âñµ¥ÏìÓ¦
+///åˆ é™¤é¢„åŸ‹å•å“åº”
 void TraderSpi::OnRspRemoveParkedOrder(CThostFtdcRemoveParkedOrderField* pRemoveParkedOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspRemoveParkedOrder != NULL)
@@ -225,7 +225,7 @@ void TraderSpi::OnRspRemoveParkedOrder(CThostFtdcRemoveParkedOrderField* pRemove
 	}
 }
 
-///É¾³ıÔ¤Âñ³·µ¥ÏìÓ¦
+///åˆ é™¤é¢„åŸ‹æ’¤å•å“åº”
 void TraderSpi::OnRspRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionField* pRemoveParkedOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspRemoveParkedOrderAction != NULL)
@@ -241,7 +241,7 @@ void TraderSpi::OnRspRemoveParkedOrderAction(CThostFtdcRemoveParkedOrderActionFi
 	}
 }
 
-///Ö´ĞĞĞû¸æÂ¼ÈëÇëÇóÏìÓ¦
+///æ‰§è¡Œå®£å‘Šå½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspExecOrderInsert(CThostFtdcInputExecOrderField* pInputExecOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspExecOrderInsert != NULL)
@@ -257,7 +257,7 @@ void TraderSpi::OnRspExecOrderInsert(CThostFtdcInputExecOrderField* pInputExecOr
 	}
 }
 
-///Ö´ĞĞĞû¸æ²Ù×÷ÇëÇóÏìÓ¦
+///æ‰§è¡Œå®£å‘Šæ“ä½œè¯·æ±‚å“åº”
 void TraderSpi::OnRspExecOrderAction(CThostFtdcInputExecOrderActionField* pInputExecOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspExecOrderAction != NULL)
@@ -273,7 +273,7 @@ void TraderSpi::OnRspExecOrderAction(CThostFtdcInputExecOrderActionField* pInput
 	}
 }
 
-///Ñ¯¼ÛÂ¼ÈëÇëÇóÏìÓ¦
+///è¯¢ä»·å½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspForQuoteInsert(CThostFtdcInputForQuoteField* pInputForQuote, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspForQuoteInsert != NULL)
@@ -289,7 +289,7 @@ void TraderSpi::OnRspForQuoteInsert(CThostFtdcInputForQuoteField* pInputForQuote
 	}
 }
 
-///±¨¼ÛÂ¼ÈëÇëÇóÏìÓ¦
+///æŠ¥ä»·å½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspQuoteInsert(CThostFtdcInputQuoteField* pInputQuote, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQuoteInsert != NULL)
@@ -305,7 +305,7 @@ void TraderSpi::OnRspQuoteInsert(CThostFtdcInputQuoteField* pInputQuote, CThostF
 	}
 }
 
-///±¨¼Û²Ù×÷ÇëÇóÏìÓ¦
+///æŠ¥ä»·æ“ä½œè¯·æ±‚å“åº”
 void TraderSpi::OnRspQuoteAction(CThostFtdcInputQuoteActionField* pInputQuoteAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQuoteAction != NULL)
@@ -321,7 +321,7 @@ void TraderSpi::OnRspQuoteAction(CThostFtdcInputQuoteActionField* pInputQuoteAct
 	}
 }
 
-///ÅúÁ¿±¨µ¥²Ù×÷ÇëÇóÏìÓ¦
+///æ‰¹é‡æŠ¥å•æ“ä½œè¯·æ±‚å“åº”
 void TraderSpi::OnRspBatchOrderAction(CThostFtdcInputBatchOrderActionField* pInputBatchOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspBatchOrderAction != NULL)
@@ -337,7 +337,7 @@ void TraderSpi::OnRspBatchOrderAction(CThostFtdcInputBatchOrderActionField* pInp
 	}
 }
 
-///ÆÚÈ¨×Ô¶Ô³åÂ¼ÈëÇëÇóÏìÓ¦
+///æœŸæƒè‡ªå¯¹å†²å½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseField* pInputOptionSelfClose, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspOptionSelfCloseInsert != NULL)
@@ -353,7 +353,7 @@ void TraderSpi::OnRspOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseField* 
 	}
 }
 
-///ÆÚÈ¨×Ô¶Ô³å²Ù×÷ÇëÇóÏìÓ¦
+///æœŸæƒè‡ªå¯¹å†²æ“ä½œè¯·æ±‚å“åº”
 void TraderSpi::OnRspOptionSelfCloseAction(CThostFtdcInputOptionSelfCloseActionField* pInputOptionSelfCloseAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspOptionSelfCloseAction != NULL)
@@ -369,7 +369,7 @@ void TraderSpi::OnRspOptionSelfCloseAction(CThostFtdcInputOptionSelfCloseActionF
 	}
 }
 
-///ÉêÇë×éºÏÂ¼ÈëÇëÇóÏìÓ¦
+///ç”³è¯·ç»„åˆå½•å…¥è¯·æ±‚å“åº”
 void TraderSpi::OnRspCombActionInsert(CThostFtdcInputCombActionField* pInputCombAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspCombActionInsert != NULL)
@@ -385,7 +385,7 @@ void TraderSpi::OnRspCombActionInsert(CThostFtdcInputCombActionField* pInputComb
 	}
 }
 
-///ÇëÇó²éÑ¯±¨µ¥ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ¥å•å“åº”
 void TraderSpi::OnRspQryOrder(CThostFtdcOrderField* pOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryOrder != NULL)
@@ -401,7 +401,7 @@ void TraderSpi::OnRspQryOrder(CThostFtdcOrderField* pOrder, CThostFtdcRspInfoFie
 	}
 }
 
-///ÇëÇó²éÑ¯³É½»ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æˆäº¤å“åº”
 void TraderSpi::OnRspQryTrade(CThostFtdcTradeField* pTrade, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryTrade != NULL)
@@ -417,7 +417,7 @@ void TraderSpi::OnRspQryTrade(CThostFtdcTradeField* pTrade, CThostFtdcRspInfoFie
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“å“åº”
 void TraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField* pInvestorPosition, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInvestorPosition != NULL)
@@ -433,7 +433,7 @@ void TraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField* pInves
 	}
 }
 
-///ÇëÇó²éÑ¯×Ê½ğÕË»§ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·å“åº”
 void TraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField* pTradingAccount, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryTradingAccount != NULL)
@@ -449,7 +449,7 @@ void TraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField* pTradingAc
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×ÊÕßÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…å“åº”
 void TraderSpi::OnRspQryInvestor(CThostFtdcInvestorField* pInvestor, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInvestor != NULL)
@@ -465,7 +465,7 @@ void TraderSpi::OnRspQryInvestor(CThostFtdcInvestorField* pInvestor, CThostFtdcR
 	}
 }
 
-///ÇëÇó²éÑ¯½»Ò×±àÂëÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“ç¼–ç å“åº”
 void TraderSpi::OnRspQryTradingCode(CThostFtdcTradingCodeField* pTradingCode, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryTradingCode != NULL)
@@ -481,7 +481,7 @@ void TraderSpi::OnRspQryTradingCode(CThostFtdcTradingCodeField* pTradingCode, CT
 	}
 }
 
-///ÇëÇó²éÑ¯ºÏÔ¼±£Ö¤½ğÂÊÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢åˆçº¦ä¿è¯é‡‘ç‡å“åº”
 void TraderSpi::OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField* pInstrumentMarginRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInstrumentMarginRate != NULL)
@@ -497,7 +497,7 @@ void TraderSpi::OnRspQryInstrumentMarginRate(CThostFtdcInstrumentMarginRateField
 	}
 }
 
-///ÇëÇó²éÑ¯ºÏÔ¼ÊÖĞø·ÑÂÊÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢åˆçº¦æ‰‹ç»­è´¹ç‡å“åº”
 void TraderSpi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionRateField* pInstrumentCommissionRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInstrumentCommissionRate != NULL)
@@ -513,7 +513,7 @@ void TraderSpi::OnRspQryInstrumentCommissionRate(CThostFtdcInstrumentCommissionR
 	}
 }
 
-///ÇëÇó²éÑ¯½»Ò×ËùÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€å“åº”
 void TraderSpi::OnRspQryExchange(CThostFtdcExchangeField* pExchange, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryExchange != NULL)
@@ -529,7 +529,7 @@ void TraderSpi::OnRspQryExchange(CThostFtdcExchangeField* pExchange, CThostFtdcR
 	}
 }
 
-///ÇëÇó²éÑ¯ºÏÔ¼ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢åˆçº¦å“åº”
 void TraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField* pInstrument, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInstrument != NULL)
@@ -545,7 +545,7 @@ void TraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField* pInstrument, CThos
 	}
 }
 
-///ÇëÇó²éÑ¯ĞĞÇéÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢è¡Œæƒ…å“åº”
 void TraderSpi::OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField* pDepthMarketData, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryDepthMarketData != NULL)
@@ -561,7 +561,7 @@ void TraderSpi::OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField* pDepthMa
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×ÊÕß½áËã½á¹ûÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…ç»“ç®—ç»“æœå“åº”
 void TraderSpi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField* pSettlementInfo, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQrySettlementInfo != NULL)
@@ -577,7 +577,7 @@ void TraderSpi::OnRspQrySettlementInfo(CThostFtdcSettlementInfoField* pSettlemen
 	}
 }
 
-///ÇëÇó²éÑ¯×ªÕÊÒøĞĞÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢è½¬å¸é“¶è¡Œå“åº”
 void TraderSpi::OnRspQryTransferBank(CThostFtdcTransferBankField* pTransferBank, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryTransferBank != NULL)
@@ -593,7 +593,7 @@ void TraderSpi::OnRspQryTransferBank(CThostFtdcTransferBankField* pTransferBank,
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÃ÷Ï¸ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“æ˜ç»†å“åº”
 void TraderSpi::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField* pInvestorPositionDetail, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInvestorPositionDetail != NULL)
@@ -609,7 +609,7 @@ void TraderSpi::OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailF
 	}
 }
 
-///ÇëÇó²éÑ¯¿Í»§Í¨ÖªÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢å®¢æˆ·é€šçŸ¥å“åº”
 void TraderSpi::OnRspQryNotice(CThostFtdcNoticeField* pNotice, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryNotice != NULL)
@@ -625,7 +625,7 @@ void TraderSpi::OnRspQryNotice(CThostFtdcNoticeField* pNotice, CThostFtdcRspInfo
 	}
 }
 
-///ÇëÇó²éÑ¯½áËãĞÅÏ¢È·ÈÏÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ç»“ç®—ä¿¡æ¯ç¡®è®¤å“åº”
 void TraderSpi::OnRspQrySettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQrySettlementInfoConfirm != NULL)
@@ -641,7 +641,7 @@ void TraderSpi::OnRspQrySettlementInfoConfirm(CThostFtdcSettlementInfoConfirmFie
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÃ÷Ï¸ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“æ˜ç»†å“åº”
 void TraderSpi::OnRspQryInvestorPositionCombineDetail(CThostFtdcInvestorPositionCombineDetailField* pInvestorPositionCombineDetail, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInvestorPositionCombineDetail != NULL)
@@ -657,7 +657,7 @@ void TraderSpi::OnRspQryInvestorPositionCombineDetail(CThostFtdcInvestorPosition
 	}
 }
 
-///²éÑ¯±£Ö¤½ğ¼à¹ÜÏµÍ³¾­¼Í¹«Ë¾×Ê½ğÕË»§ÃÜÔ¿ÏìÓ¦
+///æŸ¥è¯¢ä¿è¯é‡‘ç›‘ç®¡ç³»ç»Ÿç»çºªå…¬å¸èµ„é‡‘è´¦æˆ·å¯†é’¥å“åº”
 void TraderSpi::OnRspQryCFMMCTradingAccountKey(CThostFtdcCFMMCTradingAccountKeyField* pCFMMCTradingAccountKey, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryCFMMCTradingAccountKey != NULL)
@@ -673,7 +673,7 @@ void TraderSpi::OnRspQryCFMMCTradingAccountKey(CThostFtdcCFMMCTradingAccountKeyF
 	}
 }
 
-///ÇëÇó²éÑ¯²Öµ¥ÕÛµÖĞÅÏ¢ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ä»“å•æŠ˜æŠµä¿¡æ¯å“åº”
 void TraderSpi::OnRspQryEWarrantOffset(CThostFtdcEWarrantOffsetField* pEWarrantOffset, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryEWarrantOffset != NULL)
@@ -689,7 +689,7 @@ void TraderSpi::OnRspQryEWarrantOffset(CThostFtdcEWarrantOffsetField* pEWarrantO
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×ÊÕßÆ·ÖÖ/¿çÆ·ÖÖ±£Ö¤½ğÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…å“ç§/è·¨å“ç§ä¿è¯é‡‘å“åº”
 void TraderSpi::OnRspQryInvestorProductGroupMargin(CThostFtdcInvestorProductGroupMarginField* pInvestorProductGroupMargin, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInvestorProductGroupMargin != NULL)
@@ -705,7 +705,7 @@ void TraderSpi::OnRspQryInvestorProductGroupMargin(CThostFtdcInvestorProductGrou
 	}
 }
 
-///ÇëÇó²éÑ¯½»Ò×Ëù±£Ö¤½ğÂÊÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€ä¿è¯é‡‘ç‡å“åº”
 void TraderSpi::OnRspQryExchangeMarginRate(CThostFtdcExchangeMarginRateField* pExchangeMarginRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryExchangeMarginRate != NULL)
@@ -721,7 +721,7 @@ void TraderSpi::OnRspQryExchangeMarginRate(CThostFtdcExchangeMarginRateField* pE
 	}
 }
 
-///ÇëÇó²éÑ¯½»Ò×Ëùµ÷Õû±£Ö¤½ğÂÊÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€è°ƒæ•´ä¿è¯é‡‘ç‡å“åº”
 void TraderSpi::OnRspQryExchangeMarginRateAdjust(CThostFtdcExchangeMarginRateAdjustField* pExchangeMarginRateAdjust, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryExchangeMarginRateAdjust != NULL)
@@ -737,7 +737,7 @@ void TraderSpi::OnRspQryExchangeMarginRateAdjust(CThostFtdcExchangeMarginRateAdj
 	}
 }
 
-///ÇëÇó²éÑ¯»ãÂÊÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æ±‡ç‡å“åº”
 void TraderSpi::OnRspQryExchangeRate(CThostFtdcExchangeRateField* pExchangeRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryExchangeRate != NULL)
@@ -753,7 +753,7 @@ void TraderSpi::OnRspQryExchangeRate(CThostFtdcExchangeRateField* pExchangeRate,
 	}
 }
 
-///ÇëÇó²éÑ¯¶ş¼¶´úÀí²Ù×÷Ô±ÒøÆÚÈ¨ÏŞÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†æ“ä½œå‘˜é“¶æœŸæƒé™å“åº”
 void TraderSpi::OnRspQrySecAgentACIDMap(CThostFtdcSecAgentACIDMapField* pSecAgentACIDMap, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQrySecAgentACIDMap != NULL)
@@ -769,12 +769,12 @@ void TraderSpi::OnRspQrySecAgentACIDMap(CThostFtdcSecAgentACIDMapField* pSecAgen
 	}
 }
 
-///ÇëÇó²éÑ¯²úÆ·ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äº§å“å“åº”
 void TraderSpi::OnRspQryProduct(CThostFtdcProductField* pProduct, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 }
 
-///ÇëÇó²éÑ¯²úÆ·±¨¼Û»ãÂÊ
+///è¯·æ±‚æŸ¥è¯¢äº§å“æŠ¥ä»·æ±‡ç‡
 void TraderSpi::OnRspQryProductExchRate(CThostFtdcProductExchRateField* pProductExchRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryProductExchRate != NULL)
@@ -790,7 +790,7 @@ void TraderSpi::OnRspQryProductExchRate(CThostFtdcProductExchRateField* pProduct
 	}
 }
 
-///ÇëÇó²éÑ¯²úÆ·×é
+///è¯·æ±‚æŸ¥è¯¢äº§å“ç»„
 void TraderSpi::OnRspQryProductGroup(CThostFtdcProductGroupField* pProductGroup, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryProductGroup != NULL)
@@ -806,7 +806,7 @@ void TraderSpi::OnRspQryProductGroup(CThostFtdcProductGroupField* pProductGroup,
 	}
 }
 
-///ÇëÇó²éÑ¯×öÊĞÉÌºÏÔ¼ÊÖĞø·ÑÂÊÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢åšå¸‚å•†åˆçº¦æ‰‹ç»­è´¹ç‡å“åº”
 void TraderSpi::OnRspQryMMInstrumentCommissionRate(CThostFtdcMMInstrumentCommissionRateField* pMMInstrumentCommissionRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryMMInstrumentCommissionRate != NULL)
@@ -822,7 +822,7 @@ void TraderSpi::OnRspQryMMInstrumentCommissionRate(CThostFtdcMMInstrumentCommiss
 	}
 }
 
-///ÇëÇó²éÑ¯×öÊĞÉÌÆÚÈ¨ºÏÔ¼ÊÖĞø·ÑÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢åšå¸‚å•†æœŸæƒåˆçº¦æ‰‹ç»­è´¹å“åº”
 void TraderSpi::OnRspQryMMOptionInstrCommRate(CThostFtdcMMOptionInstrCommRateField* pMMOptionInstrCommRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryMMOptionInstrCommRate != NULL)
@@ -838,7 +838,7 @@ void TraderSpi::OnRspQryMMOptionInstrCommRate(CThostFtdcMMOptionInstrCommRateFie
 	}
 }
 
-///ÇëÇó²éÑ¯±¨µ¥ÊÖĞø·ÑÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ¥å•æ‰‹ç»­è´¹å“åº”
 void TraderSpi::OnRspQryInstrumentOrderCommRate(CThostFtdcInstrumentOrderCommRateField* pInstrumentOrderCommRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInstrumentOrderCommRate != NULL)
@@ -854,7 +854,7 @@ void TraderSpi::OnRspQryInstrumentOrderCommRate(CThostFtdcInstrumentOrderCommRat
 	}
 }
 
-///ÇëÇó²éÑ¯×Ê½ğÕË»§ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·å“åº”
 void TraderSpi::OnRspQrySecAgentTradingAccount(CThostFtdcTradingAccountField* pTradingAccount, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQrySecAgentTradingAccount != NULL)
@@ -870,7 +870,7 @@ void TraderSpi::OnRspQrySecAgentTradingAccount(CThostFtdcTradingAccountField* pT
 	}
 }
 
-///ÇëÇó²éÑ¯¶ş¼¶´úÀíÉÌ×Ê½ğĞ£ÑéÄ£Ê½ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†å•†èµ„é‡‘æ ¡éªŒæ¨¡å¼å“åº”
 void TraderSpi::OnRspQrySecAgentCheckMode(CThostFtdcSecAgentCheckModeField* pSecAgentCheckMode, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQrySecAgentCheckMode != NULL)
@@ -886,7 +886,7 @@ void TraderSpi::OnRspQrySecAgentCheckMode(CThostFtdcSecAgentCheckModeField* pSec
 	}
 }
 
-///ÇëÇó²éÑ¯¶ş¼¶´úÀíÉÌĞÅÏ¢ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†å•†ä¿¡æ¯å“åº”
 void TraderSpi::OnRspQrySecAgentTradeInfo(CThostFtdcSecAgentTradeInfoField* pSecAgentTradeInfo, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (pSecAgentTradeInfo == NULL)
@@ -899,7 +899,7 @@ void TraderSpi::OnRspQrySecAgentTradeInfo(CThostFtdcSecAgentTradeInfoField* pSec
 		cbRspQrySecAgentTradeInfo(pSecAgentTradeInfo, repareInfo(pRspInfo), nRequestID, bIsLast);
 }
 
-///ÇëÇó²éÑ¯ÆÚÈ¨½»Ò×³É±¾ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æœŸæƒäº¤æ˜“æˆæœ¬å“åº”
 void TraderSpi::OnRspQryOptionInstrTradeCost(CThostFtdcOptionInstrTradeCostField* pOptionInstrTradeCost, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryOptionInstrTradeCost != NULL)
@@ -915,7 +915,7 @@ void TraderSpi::OnRspQryOptionInstrTradeCost(CThostFtdcOptionInstrTradeCostField
 	}
 }
 
-///ÇëÇó²éÑ¯ÆÚÈ¨ºÏÔ¼ÊÖĞø·ÑÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æœŸæƒåˆçº¦æ‰‹ç»­è´¹å“åº”
 void TraderSpi::OnRspQryOptionInstrCommRate(CThostFtdcOptionInstrCommRateField* pOptionInstrCommRate, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryOptionInstrCommRate != NULL)
@@ -931,7 +931,7 @@ void TraderSpi::OnRspQryOptionInstrCommRate(CThostFtdcOptionInstrCommRateField* 
 	}
 }
 
-///ÇëÇó²éÑ¯Ö´ĞĞĞû¸æÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æ‰§è¡Œå®£å‘Šå“åº”
 void TraderSpi::OnRspQryExecOrder(CThostFtdcExecOrderField* pExecOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryExecOrder != NULL)
@@ -947,7 +947,7 @@ void TraderSpi::OnRspQryExecOrder(CThostFtdcExecOrderField* pExecOrder, CThostFt
 	}
 }
 
-///ÇëÇó²éÑ¯Ñ¯¼ÛÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢è¯¢ä»·å“åº”
 void TraderSpi::OnRspQryForQuote(CThostFtdcForQuoteField* pForQuote, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryForQuote != NULL)
@@ -963,7 +963,7 @@ void TraderSpi::OnRspQryForQuote(CThostFtdcForQuoteField* pForQuote, CThostFtdcR
 	}
 }
 
-///ÇëÇó²éÑ¯±¨¼ÛÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ¥ä»·å“åº”
 void TraderSpi::OnRspQryQuote(CThostFtdcQuoteField* pQuote, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryQuote != NULL)
@@ -979,7 +979,7 @@ void TraderSpi::OnRspQryQuote(CThostFtdcQuoteField* pQuote, CThostFtdcRspInfoFie
 	}
 }
 
-///ÇëÇó²éÑ¯ÆÚÈ¨×Ô¶Ô³åÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æœŸæƒè‡ªå¯¹å†²å“åº”
 void TraderSpi::OnRspQryOptionSelfClose(CThostFtdcOptionSelfCloseField* pOptionSelfClose, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryOptionSelfClose != NULL)
@@ -995,7 +995,7 @@ void TraderSpi::OnRspQryOptionSelfClose(CThostFtdcOptionSelfCloseField* pOptionS
 	}
 }
 
-///ÇëÇó²éÑ¯Í¶×Êµ¥ÔªÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„å•å…ƒå“åº”
 void TraderSpi::OnRspQryInvestUnit(CThostFtdcInvestUnitField* pInvestUnit, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryInvestUnit != NULL)
@@ -1011,7 +1011,7 @@ void TraderSpi::OnRspQryInvestUnit(CThostFtdcInvestUnitField* pInvestUnit, CThos
 	}
 }
 
-///ÇëÇó²éÑ¯×éºÏºÏÔ¼°²È«ÏµÊıÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ç»„åˆåˆçº¦å®‰å…¨ç³»æ•°å“åº”
 void TraderSpi::OnRspQryCombInstrumentGuard(CThostFtdcCombInstrumentGuardField* pCombInstrumentGuard, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryCombInstrumentGuard != NULL)
@@ -1027,7 +1027,7 @@ void TraderSpi::OnRspQryCombInstrumentGuard(CThostFtdcCombInstrumentGuardField* 
 	}
 }
 
-///ÇëÇó²éÑ¯ÉêÇë×éºÏÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ç”³è¯·ç»„åˆå“åº”
 void TraderSpi::OnRspQryCombAction(CThostFtdcCombActionField* pCombAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryCombAction != NULL)
@@ -1043,7 +1043,7 @@ void TraderSpi::OnRspQryCombAction(CThostFtdcCombActionField* pCombAction, CThos
 	}
 }
 
-///ÇëÇó²éÑ¯×ªÕÊÁ÷Ë®ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢è½¬å¸æµæ°´å“åº”
 void TraderSpi::OnRspQryTransferSerial(CThostFtdcTransferSerialField* pTransferSerial, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryTransferSerial != NULL)
@@ -1059,7 +1059,7 @@ void TraderSpi::OnRspQryTransferSerial(CThostFtdcTransferSerialField* pTransferS
 	}
 }
 
-///ÇëÇó²éÑ¯ÒøÆÚÇ©Ô¼¹ØÏµÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢é“¶æœŸç­¾çº¦å…³ç³»å“åº”
 void TraderSpi::OnRspQryAccountregister(CThostFtdcAccountregisterField* pAccountregister, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryAccountregister != NULL)
@@ -1075,7 +1075,7 @@ void TraderSpi::OnRspQryAccountregister(CThostFtdcAccountregisterField* pAccount
 	}
 };
 
-///´íÎóÓ¦´ğ
+///é”™è¯¯åº”ç­”
 void TraderSpi::OnRspError(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspError != NULL)
@@ -1091,7 +1091,7 @@ void TraderSpi::OnRspError(CThostFtdcRspInfoField* pRspInfo, int nRequestID, boo
 	}
 }
 
-///±¨µ¥Í¨Öª
+///æŠ¥å•é€šçŸ¥
 void TraderSpi::OnRtnOrder(CThostFtdcOrderField* pOrder)
 {
 	if (cbRtnOrder != NULL)
@@ -1107,7 +1107,7 @@ void TraderSpi::OnRtnOrder(CThostFtdcOrderField* pOrder)
 	}
 }
 
-///³É½»Í¨Öª
+///æˆäº¤é€šçŸ¥
 void TraderSpi::OnRtnTrade(CThostFtdcTradeField* pTrade)
 {
 	if (cbRtnTrade != NULL)
@@ -1123,7 +1123,7 @@ void TraderSpi::OnRtnTrade(CThostFtdcTradeField* pTrade)
 	}
 }
 
-///±¨µ¥Â¼Èë´íÎó»Ø±¨
+///æŠ¥å•å½•å…¥é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnOrderInsert(CThostFtdcInputOrderField* pInputOrder, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnOrderInsert != NULL)
@@ -1139,7 +1139,7 @@ void TraderSpi::OnErrRtnOrderInsert(CThostFtdcInputOrderField* pInputOrder, CTho
 	}
 }
 
-///±¨µ¥²Ù×÷´íÎó»Ø±¨
+///æŠ¥å•æ“ä½œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnOrderAction(CThostFtdcOrderActionField* pOrderAction, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnOrderAction != NULL)
@@ -1155,7 +1155,7 @@ void TraderSpi::OnErrRtnOrderAction(CThostFtdcOrderActionField* pOrderAction, CT
 	}
 }
 
-///ºÏÔ¼½»Ò××´Ì¬Í¨Öª
+///åˆçº¦äº¤æ˜“çŠ¶æ€é€šçŸ¥
 void TraderSpi::OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField* pInstrumentStatus)
 {
 	if (cbRtnInstrumentStatus != NULL)
@@ -1171,7 +1171,7 @@ void TraderSpi::OnRtnInstrumentStatus(CThostFtdcInstrumentStatusField* pInstrume
 	}
 }
 
-///½»Ò×Í¨Öª
+///äº¤æ˜“é€šçŸ¥
 void TraderSpi::OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField* pTradingNoticeInfo)
 {
 	if (cbRtnTradingNotice != NULL)
@@ -1187,7 +1187,7 @@ void TraderSpi::OnRtnTradingNotice(CThostFtdcTradingNoticeInfoField* pTradingNot
 	}
 }
 
-///ÌáÊ¾Ìõ¼şµ¥Ğ£Ñé´íÎó
+///æç¤ºæ¡ä»¶å•æ ¡éªŒé”™è¯¯
 void TraderSpi::OnRtnErrorConditionalOrder(CThostFtdcErrorConditionalOrderField* pErrorConditionalOrder)
 {
 	if (cbRtnErrorConditionalOrder != NULL)
@@ -1203,7 +1203,7 @@ void TraderSpi::OnRtnErrorConditionalOrder(CThostFtdcErrorConditionalOrderField*
 	}
 }
 
-///Ö´ĞĞĞû¸æÍ¨Öª
+///æ‰§è¡Œå®£å‘Šé€šçŸ¥
 void TraderSpi::OnRtnExecOrder(CThostFtdcExecOrderField* pExecOrder)
 {
 	if (cbRtnExecOrder != NULL)
@@ -1219,7 +1219,7 @@ void TraderSpi::OnRtnExecOrder(CThostFtdcExecOrderField* pExecOrder)
 	}
 }
 
-///Ö´ĞĞĞû¸æÂ¼Èë´íÎó»Ø±¨
+///æ‰§è¡Œå®£å‘Šå½•å…¥é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnExecOrderInsert(CThostFtdcInputExecOrderField* pInputExecOrder, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnExecOrderInsert != NULL)
@@ -1235,7 +1235,7 @@ void TraderSpi::OnErrRtnExecOrderInsert(CThostFtdcInputExecOrderField* pInputExe
 	}
 }
 
-///Ö´ĞĞĞû¸æ²Ù×÷´íÎó»Ø±¨
+///æ‰§è¡Œå®£å‘Šæ“ä½œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnExecOrderAction(CThostFtdcExecOrderActionField* pExecOrderAction, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnExecOrderAction != NULL)
@@ -1251,7 +1251,7 @@ void TraderSpi::OnErrRtnExecOrderAction(CThostFtdcExecOrderActionField* pExecOrd
 	}
 }
 
-///Ñ¯¼ÛÂ¼Èë´íÎó»Ø±¨
+///è¯¢ä»·å½•å…¥é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnForQuoteInsert(CThostFtdcInputForQuoteField* pInputForQuote, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnForQuoteInsert != NULL)
@@ -1267,7 +1267,7 @@ void TraderSpi::OnErrRtnForQuoteInsert(CThostFtdcInputForQuoteField* pInputForQu
 	}
 }
 
-///±¨¼ÛÍ¨Öª
+///æŠ¥ä»·é€šçŸ¥
 void TraderSpi::OnRtnQuote(CThostFtdcQuoteField* pQuote)
 {
 	if (cbRtnQuote != NULL)
@@ -1283,7 +1283,7 @@ void TraderSpi::OnRtnQuote(CThostFtdcQuoteField* pQuote)
 	}
 }
 
-///±¨¼ÛÂ¼Èë´íÎó»Ø±¨
+///æŠ¥ä»·å½•å…¥é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnQuoteInsert(CThostFtdcInputQuoteField* pInputQuote, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnQuoteInsert != NULL)
@@ -1299,7 +1299,7 @@ void TraderSpi::OnErrRtnQuoteInsert(CThostFtdcInputQuoteField* pInputQuote, CTho
 	}
 }
 
-///±¨¼Û²Ù×÷´íÎó»Ø±¨
+///æŠ¥ä»·æ“ä½œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnQuoteAction(CThostFtdcQuoteActionField* pQuoteAction, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnQuoteAction != NULL)
@@ -1315,7 +1315,7 @@ void TraderSpi::OnErrRtnQuoteAction(CThostFtdcQuoteActionField* pQuoteAction, CT
 	}
 }
 
-///Ñ¯¼ÛÍ¨Öª£¨¸Ã½Ó¿ÚÕ¹Ê¾²»¿ÉÓÃ£©
+///è¯¢ä»·é€šçŸ¥ï¼ˆè¯¥æ¥å£å±•ç¤ºä¸å¯ç”¨ï¼‰
 void TraderSpi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField* pForQuoteRsp)
 {
 	if (cbRtnForQuoteRsp != NULL)
@@ -1329,7 +1329,7 @@ void TraderSpi::OnRtnForQuoteRsp(CThostFtdcForQuoteRspField* pForQuoteRsp)
 	}
 }
 
-///±£Ö¤½ğ¼à¿ØÖĞĞÄÓÃ»§ÁîÅÆ
+///ä¿è¯é‡‘ç›‘æ§ä¸­å¿ƒç”¨æˆ·ä»¤ç‰Œ
 void TraderSpi::OnRtnCFMMCTradingAccountToken(CThostFtdcCFMMCTradingAccountTokenField* pCFMMCTradingAccountToken)
 {
 	if (cbRtnCFMMCTradingAccountToken != NULL)
@@ -1345,7 +1345,7 @@ void TraderSpi::OnRtnCFMMCTradingAccountToken(CThostFtdcCFMMCTradingAccountToken
 	}
 }
 
-///ÅúÁ¿±¨µ¥²Ù×÷´íÎó»Ø±¨
+///æ‰¹é‡æŠ¥å•æ“ä½œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnBatchOrderAction(CThostFtdcBatchOrderActionField* pBatchOrderAction, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnBatchOrderAction != NULL)
@@ -1361,7 +1361,7 @@ void TraderSpi::OnErrRtnBatchOrderAction(CThostFtdcBatchOrderActionField* pBatch
 	}
 }
 
-///ÆÚÈ¨×Ô¶Ô³åÍ¨Öª
+///æœŸæƒè‡ªå¯¹å†²é€šçŸ¥
 void TraderSpi::OnRtnOptionSelfClose(CThostFtdcOptionSelfCloseField* pOptionSelfClose)
 {
 	if (cbRtnOptionSelfClose != NULL)
@@ -1377,7 +1377,7 @@ void TraderSpi::OnRtnOptionSelfClose(CThostFtdcOptionSelfCloseField* pOptionSelf
 	}
 }
 
-///ÆÚÈ¨×Ô¶Ô³åÂ¼Èë´íÎó»Ø±¨
+///æœŸæƒè‡ªå¯¹å†²å½•å…¥é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseField* pInputOptionSelfClose, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnOptionSelfCloseInsert != NULL)
@@ -1393,7 +1393,7 @@ void TraderSpi::OnErrRtnOptionSelfCloseInsert(CThostFtdcInputOptionSelfCloseFiel
 	}
 }
 
-///ÆÚÈ¨×Ô¶Ô³å²Ù×÷´íÎó»Ø±¨
+///æœŸæƒè‡ªå¯¹å†²æ“ä½œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnOptionSelfCloseAction(CThostFtdcOptionSelfCloseActionField* pOptionSelfCloseAction, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnOptionSelfCloseAction != NULL)
@@ -1409,7 +1409,7 @@ void TraderSpi::OnErrRtnOptionSelfCloseAction(CThostFtdcOptionSelfCloseActionFie
 	}
 }
 
-///ÉêÇë×éºÏÍ¨Öª
+///ç”³è¯·ç»„åˆé€šçŸ¥
 void TraderSpi::OnRtnCombAction(CThostFtdcCombActionField* pCombAction)
 {
 	if (cbRtnCombAction != NULL)
@@ -1425,7 +1425,7 @@ void TraderSpi::OnRtnCombAction(CThostFtdcCombActionField* pCombAction)
 	}
 }
 
-///ÉêÇë×éºÏÂ¼Èë´íÎó»Ø±¨
+///ç”³è¯·ç»„åˆå½•å…¥é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnCombActionInsert(CThostFtdcInputCombActionField* pInputCombAction, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnCombActionInsert != NULL)
@@ -1441,7 +1441,7 @@ void TraderSpi::OnErrRtnCombActionInsert(CThostFtdcInputCombActionField* pInputC
 	}
 }
 
-///ÇëÇó²éÑ¯Ç©Ô¼ÒøĞĞÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ç­¾çº¦é“¶è¡Œå“åº”
 void TraderSpi::OnRspQryContractBank(CThostFtdcContractBankField* pContractBank, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryContractBank != NULL)
@@ -1457,7 +1457,7 @@ void TraderSpi::OnRspQryContractBank(CThostFtdcContractBankField* pContractBank,
 	}
 }
 
-///ÇëÇó²éÑ¯Ô¤Âñµ¥ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢é¢„åŸ‹å•å“åº”
 void TraderSpi::OnRspQryParkedOrder(CThostFtdcParkedOrderField* pParkedOrder, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryParkedOrder != NULL)
@@ -1473,7 +1473,7 @@ void TraderSpi::OnRspQryParkedOrder(CThostFtdcParkedOrderField* pParkedOrder, CT
 	}
 }
 
-///ÇëÇó²éÑ¯Ô¤Âñ³·µ¥ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢é¢„åŸ‹æ’¤å•å“åº”
 void TraderSpi::OnRspQryParkedOrderAction(CThostFtdcParkedOrderActionField* pParkedOrderAction, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryParkedOrderAction != NULL)
@@ -1489,7 +1489,7 @@ void TraderSpi::OnRspQryParkedOrderAction(CThostFtdcParkedOrderActionField* pPar
 	}
 }
 
-///ÇëÇó²éÑ¯½»Ò×Í¨ÖªÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“é€šçŸ¥å“åº”
 void TraderSpi::OnRspQryTradingNotice(CThostFtdcTradingNoticeField* pTradingNotice, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryTradingNotice != NULL)
@@ -1505,7 +1505,7 @@ void TraderSpi::OnRspQryTradingNotice(CThostFtdcTradingNoticeField* pTradingNoti
 	}
 }
 
-///ÇëÇó²éÑ¯¾­¼Í¹«Ë¾½»Ò×²ÎÊıÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ç»çºªå…¬å¸äº¤æ˜“å‚æ•°å“åº”
 void TraderSpi::OnRspQryBrokerTradingParams(CThostFtdcBrokerTradingParamsField* pBrokerTradingParams, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryBrokerTradingParams != NULL)
@@ -1521,7 +1521,7 @@ void TraderSpi::OnRspQryBrokerTradingParams(CThostFtdcBrokerTradingParamsField* 
 	}
 }
 
-///ÇëÇó²éÑ¯¾­¼Í¹«Ë¾½»Ò×Ëã·¨ÏìÓ¦
+///è¯·æ±‚æŸ¥è¯¢ç»çºªå…¬å¸äº¤æ˜“ç®—æ³•å“åº”
 void TraderSpi::OnRspQryBrokerTradingAlgos(CThostFtdcBrokerTradingAlgosField* pBrokerTradingAlgos, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQryBrokerTradingAlgos != NULL)
@@ -1537,7 +1537,7 @@ void TraderSpi::OnRspQryBrokerTradingAlgos(CThostFtdcBrokerTradingAlgosField* pB
 	}
 }
 
-///ÇëÇó²éÑ¯¼à¿ØÖĞĞÄÓÃ»§ÁîÅÆ
+///è¯·æ±‚æŸ¥è¯¢ç›‘æ§ä¸­å¿ƒç”¨æˆ·ä»¤ç‰Œ
 void TraderSpi::OnRspQueryCFMMCTradingAccountToken(CThostFtdcQueryCFMMCTradingAccountTokenField* pQueryCFMMCTradingAccountToken, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQueryCFMMCTradingAccountToken != NULL)
@@ -1553,7 +1553,7 @@ void TraderSpi::OnRspQueryCFMMCTradingAccountToken(CThostFtdcQueryCFMMCTradingAc
 	}
 }
 
-///ÒøĞĞ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÍ¨Öª
+///é“¶è¡Œå‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§é€šçŸ¥
 void TraderSpi::OnRtnFromBankToFutureByBank(CThostFtdcRspTransferField* pRspTransfer)
 {
 	if (cbRtnFromBankToFutureByBank != NULL)
@@ -1569,7 +1569,7 @@ void TraderSpi::OnRtnFromBankToFutureByBank(CThostFtdcRspTransferField* pRspTran
 	}
 }
 
-///ÒøĞĞ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÍ¨Öª
+///é“¶è¡Œå‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œé€šçŸ¥
 void TraderSpi::OnRtnFromFutureToBankByBank(CThostFtdcRspTransferField* pRspTransfer)
 {
 	if (cbRtnFromFutureToBankByBank != NULL)
@@ -1585,7 +1585,7 @@ void TraderSpi::OnRtnFromFutureToBankByBank(CThostFtdcRspTransferField* pRspTran
 	}
 }
 
-///ÒøĞĞ·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õÍ¨Öª
+///é“¶è¡Œå‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§é€šçŸ¥
 void TraderSpi::OnRtnRepealFromBankToFutureByBank(CThostFtdcRspRepealField* pRspRepeal)
 {
 	if (cbRtnRepealFromBankToFutureByBank != NULL)
@@ -1601,7 +1601,7 @@ void TraderSpi::OnRtnRepealFromBankToFutureByBank(CThostFtdcRspRepealField* pRsp
 	}
 }
 
-///ÒøĞĞ·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞÍ¨Öª
+///é“¶è¡Œå‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œé€šçŸ¥
 void TraderSpi::OnRtnRepealFromFutureToBankByBank(CThostFtdcRspRepealField* pRspRepeal)
 {
 	if (cbRtnRepealFromFutureToBankByBank != NULL)
@@ -1617,7 +1617,7 @@ void TraderSpi::OnRtnRepealFromFutureToBankByBank(CThostFtdcRspRepealField* pRsp
 	}
 }
 
-///ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÍ¨Öª
+///æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§é€šçŸ¥
 void TraderSpi::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField* pRspTransfer)
 {
 	if (cbRtnFromBankToFutureByFuture != NULL)
@@ -1633,7 +1633,7 @@ void TraderSpi::OnRtnFromBankToFutureByFuture(CThostFtdcRspTransferField* pRspTr
 	}
 }
 
-///ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÍ¨Öª
+///æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œé€šçŸ¥
 void TraderSpi::OnRtnFromFutureToBankByFuture(CThostFtdcRspTransferField* pRspTransfer)
 {
 	if (cbRtnFromFutureToBankByFuture != NULL)
@@ -1649,7 +1649,7 @@ void TraderSpi::OnRtnFromFutureToBankByFuture(CThostFtdcRspTransferField* pRspTr
 	}
 }
 
-///ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+///ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§è¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
 void TraderSpi::OnRtnRepealFromBankToFutureByFutureManual(CThostFtdcRspRepealField* pRspRepeal)
 {
 	if (cbRtnRepealFromBankToFutureByFutureManual != NULL)
@@ -1665,7 +1665,7 @@ void TraderSpi::OnRtnRepealFromBankToFutureByFutureManual(CThostFtdcRspRepealFie
 	}
 }
 
-///ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+///ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œè¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
 void TraderSpi::OnRtnRepealFromFutureToBankByFutureManual(CThostFtdcRspRepealField* pRspRepeal)
 {
 	if (cbRtnRepealFromFutureToBankByFutureManual != NULL)
@@ -1681,7 +1681,7 @@ void TraderSpi::OnRtnRepealFromFutureToBankByFutureManual(CThostFtdcRspRepealFie
 	}
 }
 
-///ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶îÍ¨Öª
+///æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢é€šçŸ¥
 void TraderSpi::OnRtnQueryBankBalanceByFuture(CThostFtdcNotifyQueryAccountField* pNotifyQueryAccount)
 {
 	if (cbRtnQueryBankBalanceByFuture != NULL)
@@ -1697,7 +1697,7 @@ void TraderSpi::OnRtnQueryBankBalanceByFuture(CThostFtdcNotifyQueryAccountField*
 	}
 }
 
-///ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õ´íÎó»Ø±¨
+///æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnBankToFutureByFuture(CThostFtdcReqTransferField* pReqTransfer, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnBankToFutureByFuture != NULL)
@@ -1713,7 +1713,7 @@ void TraderSpi::OnErrRtnBankToFutureByFuture(CThostFtdcReqTransferField* pReqTra
 	}
 }
 
-///ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞ´íÎó»Ø±¨
+///æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnFutureToBankByFuture(CThostFtdcReqTransferField* pReqTransfer, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnFutureToBankByFuture != NULL)
@@ -1729,7 +1729,7 @@ void TraderSpi::OnErrRtnFutureToBankByFuture(CThostFtdcReqTransferField* pReqTra
 	}
 }
 
-///ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õ´íÎó»Ø±¨
+///ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnRepealBankToFutureByFutureManual(CThostFtdcReqRepealField* pReqRepeal, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnRepealBankToFutureByFutureManual != NULL)
@@ -1745,7 +1745,7 @@ void TraderSpi::OnErrRtnRepealBankToFutureByFutureManual(CThostFtdcReqRepealFiel
 	}
 }
 
-///ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞ´íÎó»Ø±¨
+///ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œé”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnRepealFutureToBankByFutureManual(CThostFtdcReqRepealField* pReqRepeal, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnRepealFutureToBankByFutureManual != NULL)
@@ -1761,7 +1761,7 @@ void TraderSpi::OnErrRtnRepealFutureToBankByFutureManual(CThostFtdcReqRepealFiel
 	}
 }
 
-///ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶î´íÎó»Ø±¨
+///æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢é”™è¯¯å›æŠ¥
 void TraderSpi::OnErrRtnQueryBankBalanceByFuture(CThostFtdcReqQueryAccountField* pReqQueryAccount, CThostFtdcRspInfoField* pRspInfo)
 {
 	if (cbErrRtnQueryBankBalanceByFuture != NULL)
@@ -1777,7 +1777,7 @@ void TraderSpi::OnErrRtnQueryBankBalanceByFuture(CThostFtdcReqQueryAccountField*
 	}
 }
 
-///ÆÚ»õ·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+///æœŸè´§å‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§è¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
 void TraderSpi::OnRtnRepealFromBankToFutureByFuture(CThostFtdcRspRepealField* pRspRepeal)
 {
 	if (cbRtnRepealFromBankToFutureByFuture != NULL)
@@ -1793,7 +1793,7 @@ void TraderSpi::OnRtnRepealFromBankToFutureByFuture(CThostFtdcRspRepealField* pR
 	}
 }
 
-///ÆÚ»õ·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+///æœŸè´§å‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œè¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
 void TraderSpi::OnRtnRepealFromFutureToBankByFuture(CThostFtdcRspRepealField* pRspRepeal)
 {
 	if (cbRtnRepealFromFutureToBankByFuture != NULL)
@@ -1809,7 +1809,7 @@ void TraderSpi::OnRtnRepealFromFutureToBankByFuture(CThostFtdcRspRepealField* pR
 	}
 }
 
-///ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÓ¦´ğ
+///æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§åº”ç­”
 void TraderSpi::OnRspFromBankToFutureByFuture(CThostFtdcReqTransferField* pReqTransfer, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspFromBankToFutureByFuture != NULL)
@@ -1825,7 +1825,7 @@ void TraderSpi::OnRspFromBankToFutureByFuture(CThostFtdcReqTransferField* pReqTr
 	}
 }
 
-///ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÓ¦´ğ
+///æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œåº”ç­”
 void TraderSpi::OnRspFromFutureToBankByFuture(CThostFtdcReqTransferField* pReqTransfer, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspFromFutureToBankByFuture != NULL)
@@ -1841,7 +1841,7 @@ void TraderSpi::OnRspFromFutureToBankByFuture(CThostFtdcReqTransferField* pReqTr
 	}
 }
 
-///ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶îÓ¦´ğ
+///æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢åº”ç­”
 void TraderSpi::OnRspQueryBankAccountMoneyByFuture(CThostFtdcReqQueryAccountField* pReqQueryAccount, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQueryBankAccountMoneyByFuture != NULL)
@@ -1857,7 +1857,7 @@ void TraderSpi::OnRspQueryBankAccountMoneyByFuture(CThostFtdcReqQueryAccountFiel
 	}
 }
 
-///ÒøĞĞ·¢ÆğÒøÆÚ¿ª»§Í¨Öª
+///é“¶è¡Œå‘èµ·é“¶æœŸå¼€æˆ·é€šçŸ¥
 void TraderSpi::OnRtnOpenAccountByBank(CThostFtdcOpenAccountField* pOpenAccount)
 {
 	if (cbRtnOpenAccountByBank != NULL)
@@ -1873,7 +1873,7 @@ void TraderSpi::OnRtnOpenAccountByBank(CThostFtdcOpenAccountField* pOpenAccount)
 	}
 }
 
-///ÒøĞĞ·¢ÆğÒøÆÚÏú»§Í¨Öª
+///é“¶è¡Œå‘èµ·é“¶æœŸé”€æˆ·é€šçŸ¥
 void TraderSpi::OnRtnCancelAccountByBank(CThostFtdcCancelAccountField* pCancelAccount)
 {
 	if (cbRtnCancelAccountByBank != NULL)
@@ -1889,7 +1889,7 @@ void TraderSpi::OnRtnCancelAccountByBank(CThostFtdcCancelAccountField* pCancelAc
 	}
 }
 
-///ÒøĞĞ·¢Æğ±ä¸üÒøĞĞÕËºÅÍ¨Öª
+///é“¶è¡Œå‘èµ·å˜æ›´é“¶è¡Œè´¦å·é€šçŸ¥
 void TraderSpi::OnRtnChangeAccountByBank(CThostFtdcChangeAccountField* pChangeAccount)
 {
 	if (cbRtnChangeAccountByBank != NULL)
@@ -1907,7 +1907,7 @@ void TraderSpi::OnRtnChangeAccountByBank(CThostFtdcChangeAccountField* pChangeAc
 
 
 
-//Õë¶ÔÊÕµ½¿Õ·´À¡µÄ´¦Àí
+//é’ˆå¯¹æ”¶åˆ°ç©ºåé¦ˆçš„å¤„ç†
 CThostFtdcRspInfoField rif;
 CThostFtdcRspInfoField* TraderSpi::repareInfo(CThostFtdcRspInfoField* pRspInfo)
 {

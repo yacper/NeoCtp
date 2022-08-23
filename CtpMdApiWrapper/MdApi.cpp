@@ -26,7 +26,7 @@ MDAPI_API void				RegisterSpi(CThostFtdcMdApi* api, MdSpi* pSpi)
 	api->RegisterSpi(pSpi);
 }
 
-//»ñÈ¡½Ó¿Ú°æ±¾
+//èŽ·å–æŽ¥å£ç‰ˆæœ¬
 MDAPI_API const char* GetApiVersion()
 {
 	return CThostFtdcMdApi::GetApiVersion();
@@ -68,7 +68,7 @@ MDAPI_API void RegisterFensUserInfo(CThostFtdcMdApi* pUserApi, CThostFtdcFensUse
 {
 	pUserApi->RegisterFensUserInfo(pFensUserInfo);
 }
-//¶©ÔÄÐÐÇé
+//è®¢é˜…è¡Œæƒ…
 MDAPI_API int SubscribeMarketData(CThostFtdcMdApi* pUserApi, char* instrumentsID[], int nCount)
 {
 	if (pUserApi == NULL) return -1;
@@ -76,7 +76,7 @@ MDAPI_API int SubscribeMarketData(CThostFtdcMdApi* pUserApi, char* instrumentsID
 	return pUserApi->SubscribeMarketData(instrumentsID, nCount);
 }
 
-//ÍË¶©ÐÐÇé
+//é€€è®¢è¡Œæƒ…
 MDAPI_API int UnSubscribeMarketData(CThostFtdcMdApi* pUserApi, char *ppInstrumentID[], int nCount)
 {
 	if (pUserApi == NULL) return -1;
@@ -84,9 +84,9 @@ MDAPI_API int UnSubscribeMarketData(CThostFtdcMdApi* pUserApi, char *ppInstrumen
 	return pUserApi->UnSubscribeMarketData(ppInstrumentID, nCount);
 }
 
-//¶©ÔÄÑ¯¼Û¡£
-///@param ppInstrumentID ºÏÔ¼ID  
-///@param nCount Òª¶©ÔÄ/ÍË¶©ÐÐÇéµÄºÏÔ¼¸öÊý
+//è®¢é˜…è¯¢ä»·ã€‚
+///@param ppInstrumentID åˆçº¦ID  
+///@param nCount è¦è®¢é˜…/é€€è®¢è¡Œæƒ…çš„åˆçº¦ä¸ªæ•°
 ///@remark 
 MDAPI_API int SubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount)
 {
@@ -95,9 +95,9 @@ MDAPI_API int SubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrument
 	return pUserApi->SubscribeForQuoteRsp(ppInstrumentID, nCount);
 }
 
-	///ÍË¶©Ñ¯¼Û¡£
-	///@param ppInstrumentID ºÏÔ¼ID  
-	///@param nCount Òª¶©ÔÄ/ÍË¶©ÐÐÇéµÄºÏÔ¼¸öÊý
+	///é€€è®¢è¯¢ä»·ã€‚
+	///@param ppInstrumentID åˆçº¦ID  
+	///@param nCount è¦è®¢é˜…/é€€è®¢è¡Œæƒ…çš„åˆçº¦ä¸ªæ•°
 	///@remark 
 MDAPI_API int UnSubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrumentID[], int nCount)
 {
@@ -106,7 +106,7 @@ MDAPI_API int UnSubscribeForQuoteRsp(CThostFtdcMdApi* pUserApi, char* ppInstrume
 	return pUserApi->UnSubscribeForQuoteRsp(ppInstrumentID, nCount);
 }
 
-//µÇÂ¼
+//ç™»å½•
 MDAPI_API int ReqUserLogin(CThostFtdcMdApi* pUserApi, CThostFtdcReqUserLoginField *pReqUserLoginField, int nRequestID)
 {
 	if (pUserApi == NULL) return -1;
@@ -114,7 +114,7 @@ MDAPI_API int ReqUserLogin(CThostFtdcMdApi* pUserApi, CThostFtdcReqUserLoginFiel
 	return pUserApi->ReqUserLogin(pReqUserLoginField, nRequestID);
 }
 
-//µÇ³öÇëÇó
+//ç™»å‡ºè¯·æ±‚
 MDAPI_API int ReqUserLogout(CThostFtdcMdApi* pUserApi, CThostFtdcUserLogoutField *pUserLogout, int nRequestID)
 {
 	if (pUserApi == NULL) return -1;
@@ -122,7 +122,7 @@ MDAPI_API int ReqUserLogout(CThostFtdcMdApi* pUserApi, CThostFtdcUserLogoutField
 	return pUserApi->ReqUserLogout(pUserLogout, nRequestID);
 }
 
-///ÇëÇó²éÑ¯×é²¥ºÏÔ¼
+///è¯·æ±‚æŸ¥è¯¢ç»„æ’­åˆçº¦
 MDAPI_API int ReqQryMulticastInstrument(CThostFtdcMdApi* pUserApi, CThostFtdcQryMulticastInstrumentField *pQryMulticastInstrument, int nRequestID)
 {
 	if (pUserApi == NULL) return -1;
@@ -133,46 +133,46 @@ MDAPI_API int ReqQryMulticastInstrument(CThostFtdcMdApi* pUserApi, CThostFtdcQry
 
 #pragma endregion
 
-#pragma region »Øµ÷º¯Êý
+#pragma region å›žè°ƒå‡½æ•°
 
-//============================================ ×¢²á»Øµ÷º¯Êý ===========================================
+//============================================ æ³¨å†Œå›žè°ƒå‡½æ•° ===========================================
 MDAPI_API void				RegOnRspError(MdSpi* spi, CBOnRspError cb)
 {
 	spi->cbOnRspError = cb;
 }
-//ÐÄÌø
+//å¿ƒè·³
 MDAPI_API void				RegOnHeartBeatWarning(MdSpi* spi, CBOnHeartBeatWarning cb)
 {
 	spi->cbOnHeartBeatWarning = cb;
 }
 
-//Á¬½ÓÓ¦´ð
+//è¿žæŽ¥åº”ç­”
 MDAPI_API void				RegOnRspFrontConnected(MdSpi* spi, CBOnRspFrontConnected cb)
 {
 	spi->cbOnFrontConnected = cb;
 }
-//Á¬½Ó¶Ï¿ª
+//è¿žæŽ¥æ–­å¼€
 MDAPI_API void				RegOnRspFrontDisconnected(MdSpi* spi, CBOnRspFrontDisconnected cb)
 {
 	spi->cbOnFrontDisconnected = cb;
 }
-//µÇÂ¼ÇëÇóÓ¦´ð
+//ç™»å½•è¯·æ±‚åº”ç­”
 MDAPI_API void				RegOnRspUserLogin(MdSpi* spi, CBOnRspUserLogin cb)
 {
 	spi->cbOnRspUserLogin = cb;
 }
-//µÇ³öÇëÇóÓ¦´ð
+//ç™»å‡ºè¯·æ±‚åº”ç­”
 MDAPI_API void				RegOnRspUserLogout(MdSpi* spi, CBOnRspUserLogout cb)
 {
 	spi->cbOnRspUserLogout = cb;
 }
-//¶©ÔÄÐÐÇéÓ¦´ð
+//è®¢é˜…è¡Œæƒ…åº”ç­”
 MDAPI_API void				RegOnRspSubMarketData(MdSpi* spi, CBOnRspSubMarketData cb)
 {
 	spi->cbOnRspSubMarketData = cb;
 }
 
-//ÍË¶©ÐÐÇéÓ¦´ð
+//é€€è®¢è¡Œæƒ…åº”ç­”
 MDAPI_API void				RegOnRspUnSubMarketData(MdSpi* spi, CBOnRspUnSubMarketData cb)
 {
 	spi->cbOnRspUnSubMarketData = cb;
@@ -189,13 +189,13 @@ MDAPI_API void				RegOnRspUnSubForQuoteRsp(MdSpi* spi, CBOnRspUnSubForQuoteRsp c
 	spi->cbOnRspUnSubForQuoteRsp = cb;
 }
 
-//Éî¶ÈÐÐÇéÍ¨Öª
+//æ·±åº¦è¡Œæƒ…é€šçŸ¥
 MDAPI_API void				RegOnRtnDepthMarketData(MdSpi* spi, CBOnRtnDepthMarketData cb)
 {
 	spi->cbOnRtnDepthMarketData = cb;
 }
 
-//Ñ¯¼ÛÍ¨Öª£¨ÔÝ²»Ö§³Ö£©
+//è¯¢ä»·é€šçŸ¥ï¼ˆæš‚ä¸æ”¯æŒï¼‰
 MDAPI_API void				RegOnRtnForQuoteRsp(MdSpi* spi, CBOnRtnForQuoteRsp cb)
 {
 	spi->cbOnRtnForQuoteRsp = cb;

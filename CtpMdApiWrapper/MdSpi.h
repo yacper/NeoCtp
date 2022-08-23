@@ -3,12 +3,12 @@
     author:		rush
     email:		
 	
-    purpose:	MdSpiµÄÀ©Õ¹£¬ÎªÁË·½±ã²åÈë»Øµ÷º¯Êı
+    purpose:	MdSpiçš„æ‰©å±•ï¼Œä¸ºäº†æ–¹ä¾¿æ’å…¥å›è°ƒå‡½æ•°
 *********************************************************************/
 #pragma once
 #include "pch.h"
 
-#pragma region »Øµ÷Î¯ÍĞÉêÃ÷
+#pragma region å›è°ƒå§”æ‰˜ç”³æ˜
 extern "C"
 {
 	typedef void (WINAPI* CBOnRspError)(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
@@ -36,7 +36,7 @@ class /*MDAPI_API*/ MdSpi : public CThostFtdcMdSpi
 {
 public:
 
-#pragma region »Øµ÷Î¯ÍĞÊµÀı
+#pragma region å›è°ƒå§”æ‰˜å®ä¾‹
 	CBOnRspError cbOnRspError = nullptr;
 	CBOnHeartBeatWarning cbOnHeartBeatWarning = 0;
 
@@ -61,58 +61,58 @@ public:
 
 
 
-	///µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨½¨Á¢ÆğÍ¨ĞÅÁ¬½ÓÊ±£¨»¹Î´µÇÂ¼Ç°£©£¬¸Ã·½·¨±»µ÷ÓÃ¡£
+	///å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°å»ºç«‹èµ·é€šä¿¡è¿æ¥æ—¶ï¼ˆè¿˜æœªç™»å½•å‰ï¼‰ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
 	virtual void OnFrontConnected() override;
 	
-	///µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨Í¨ĞÅÁ¬½Ó¶Ï¿ªÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£µ±·¢ÉúÕâ¸öÇé¿öºó£¬API»á×Ô¶¯ÖØĞÂÁ¬½Ó£¬¿Í»§¶Ë¿É²»×ö´¦Àí¡£
-	///@param nReason ´íÎóÔ­Òò
-	///        0x1001 ÍøÂç¶ÁÊ§°Ü
-	///        0x1002 ÍøÂçĞ´Ê§°Ü
-	///        0x2001 ½ÓÊÕĞÄÌø³¬Ê±
-	///        0x2002 ·¢ËÍĞÄÌøÊ§°Ü
-	///        0x2003 ÊÕµ½´íÎó±¨ÎÄ
+	///å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°é€šä¿¡è¿æ¥æ–­å¼€æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚å½“å‘ç”Ÿè¿™ä¸ªæƒ…å†µåï¼ŒAPIä¼šè‡ªåŠ¨é‡æ–°è¿æ¥ï¼Œå®¢æˆ·ç«¯å¯ä¸åšå¤„ç†ã€‚
+	///@param nReason é”™è¯¯åŸå› 
+	///        0x1001 ç½‘ç»œè¯»å¤±è´¥
+	///        0x1002 ç½‘ç»œå†™å¤±è´¥
+	///        0x2001 æ¥æ”¶å¿ƒè·³è¶…æ—¶
+	///        0x2002 å‘é€å¿ƒè·³å¤±è´¥
+	///        0x2003 æ”¶åˆ°é”™è¯¯æŠ¥æ–‡
 	virtual void OnFrontDisconnected(int nReason)override;
 
 
-	///´íÎóÓ¦´ğ
+	///é”™è¯¯åº”ç­”
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 		
-	///ĞÄÌø³¬Ê±¾¯¸æ¡£µ±³¤Ê±¼äÎ´ÊÕµ½±¨ÎÄÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£
-	///@param nTimeLapse ¾àÀëÉÏ´Î½ÓÊÕ±¨ÎÄµÄÊ±¼ä
+	///å¿ƒè·³è¶…æ—¶è­¦å‘Šã€‚å½“é•¿æ—¶é—´æœªæ”¶åˆ°æŠ¥æ–‡æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
+	///@param nTimeLapse è·ç¦»ä¸Šæ¬¡æ¥æ”¶æŠ¥æ–‡çš„æ—¶é—´
 	virtual void OnHeartBeatWarning(int nTimeLapse)override;
 	
 
-	///µÇÂ¼ÇëÇóÏìÓ¦
+	///ç™»å½•è¯·æ±‚å“åº”
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
-	///µÇ³öÇëÇóÏìÓ¦
+	///ç™»å‡ºè¯·æ±‚å“åº”
 	virtual void OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
 
-	///ÇëÇó²éÑ¯×é²¥ºÏÔ¼ÏìÓ¦
+	///è¯·æ±‚æŸ¥è¯¢ç»„æ’­åˆçº¦å“åº”
 	virtual void OnRspQryMulticastInstrument(CThostFtdcMulticastInstrumentField *pMulticastInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
 
 
 
-	///¶©ÔÄĞĞÇéÓ¦´ğ
+	///è®¢é˜…è¡Œæƒ…åº”ç­”
 	virtual void OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
-	///È¡Ïû¶©ÔÄĞĞÇéÓ¦´ğ
+	///å–æ¶ˆè®¢é˜…è¡Œæƒ…åº”ç­”
 	virtual void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
 
-	///¶©ÔÄÑ¯¼ÛÓ¦´ğ
+	///è®¢é˜…è¯¢ä»·åº”ç­”
 	virtual void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
-	///È¡Ïû¶©ÔÄÑ¯¼ÛÓ¦´ğ
+	///å–æ¶ˆè®¢é˜…è¯¢ä»·åº”ç­”
 	virtual void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) override;
 
 
-	///Éî¶ÈĞĞÇéÍ¨Öª
+	///æ·±åº¦è¡Œæƒ…é€šçŸ¥
 	virtual void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData) override;
 
-	///Ñ¯¼ÛÍ¨Öª
+	///è¯¢ä»·é€šçŸ¥
 	virtual void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField *pForQuoteRsp) override;
 
 };
