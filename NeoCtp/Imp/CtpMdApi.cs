@@ -15,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using Force.DeepCloner;
 using MoreLinq;
 using NeoCtp.Api;
 using NeoCtp.Enums;
@@ -31,103 +33,130 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     public void OnFrontConnected()
     {
-        OnFrontConnectedEvent?.Invoke(this, null);
-        //         IsConnected = true;
-        //((Action<bool>)_GetCallback(-1))?.Invoke(true);
+        ExecuteInMainthread(() =>
+        {
+            OnFrontConnectedEvent?.Invoke(this, null);
+            //         IsConnected = true;
+            //((Action<bool>)_GetCallback(-1))?.Invoke(true);
+        });
     }
 
     private event EventHandler OnFrontConnectedEvent;
 
     public void OnFrontDisconnected(int nReason)
     {
-        ConnectionState = EConnectionState.Disconnected;
+        ExecuteInMainthread(() =>
+                            {
+                                ConnectionState = EConnectionState.Disconnected;
 
-        OnFrontDisconnectedEvent?.Invoke(this, (EFrontDisconnectedReason)nReason);
+                                OnFrontDisconnectedEvent?.Invoke(this, (EFrontDisconnectedReason)nReason);
+                            }
+                           );
     }
 
     public event EventHandler<CtpRsp> OnRspErrorEvent;
 
-    public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspError(CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
-        Logger?.Error(pRspInfo.ToJson());
-        OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
+        //var rsp = pRspInfo.DeepClone();
+        ExecuteInMainthread(() =>
+        {
+            Logger?.Error(pRspInfo.ToJson());
+            OnRspErrorEvent?.Invoke(this, new CtpRsp(pRspInfo, nRequestID, bIsLast));
+        });
     }
 
     public event EventHandler<int> OnHeartBeatWarningEvent;
-    public void                    OnHeartBeatWarning(int nTimeLapse) { OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse); }
+
+    public void OnHeartBeatWarning(int nTimeLapse) { ExecuteInMainthread(() => { OnHeartBeatWarningEvent?.Invoke(this, nTimeLapse); }); }
 
     public event EventHandler<CtpRsp<CThostFtdcRspUserLoginField>> OnRspUserLoginEvent;
 
-    public void OnRspUserLogin(ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspUserLogin(CThostFtdcRspUserLoginField pRspUserLogin, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
-        OnRspUserLoginEvent?.Invoke(this, new(pRspUserLogin, pRspInfo, nRequestID, bIsLast));
+        //var rspUserLogin = pRspUserLogin.DeepClone();
+        //var rspInfo      = pRspInfo.DeepClone();
+
+        ExecuteInMainthread(() => { OnRspUserLoginEvent?.Invoke(this, new(pRspUserLogin, pRspInfo, nRequestID, bIsLast)); });
     }
 
     public event EventHandler<CtpRsp<CThostFtdcUserLogoutField>> OnRspUserLogoutEvent;
 
-    public void OnRspUserLogout(ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspUserLogout(CThostFtdcUserLogoutField pUserLogout, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
-        OnRspUserLogoutEvent?.Invoke(this, new(pUserLogout, pRspInfo, nRequestID, bIsLast));
+        //var userLogout = pUserLogout.DeepClone();
+        //var rspInfo    = pRspInfo.DeepClone();
+        ExecuteInMainthread(() => { OnRspUserLogoutEvent?.Invoke(this, new(pUserLogout, pRspInfo, nRequestID, bIsLast)); });
     }
 
     public event EventHandler<CtpRsp<CThostFtdcSpecificInstrumentField>> OnRspSubMarketDataEvent;
 
-    public void OnRspSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
-        ref                            CThostFtdcRspInfoField            pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspSubMarketData(CThostFtdcSpecificInstrumentField pSpecificInstrument,
+        CThostFtdcRspInfoField                                       pRspInfo, int nRequestID, bool bIsLast)
     {
-        OnRspSubMarketDataEvent?.Invoke(this, new(pSpecificInstrument, pRspInfo, nRequestID, bIsLast));
+        //var specificInstrument = pSpecificInstrument.DeepClone();
+        //var rspInfo            = pRspInfo.DeepClone();
+        ExecuteInMainthread(() => { OnRspSubMarketDataEvent?.Invoke(this, new(pSpecificInstrument, pRspInfo, nRequestID, bIsLast)); });
     }
 
     public event EventHandler<CtpRsp<CThostFtdcSpecificInstrumentField>> OnRspUnSubMarketDataEvent;
 
-    public void OnRspUnSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
-        ref                              CThostFtdcRspInfoField            pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField pSpecificInstrument,
+        CThostFtdcRspInfoField                                         pRspInfo, int nRequestID, bool bIsLast)
     {
-        OnRspUnSubMarketDataEvent?.Invoke(this, new(pSpecificInstrument, pRspInfo, nRequestID, bIsLast));
+        //var specificInstrument = pSpecificInstrument.DeepClone();
+        //var rspInfo            = pRspInfo.DeepClone();
+        ExecuteInMainthread(() => { OnRspUnSubMarketDataEvent?.Invoke(this, new(pSpecificInstrument, pRspInfo, nRequestID, bIsLast)); });
     }
 
-    public void OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData) { OnRtnDepthMarketDataEvent?.Invoke(this, pDepthMarketData); }
+    public void OnRtnDepthMarketData(CThostFtdcDepthMarketDataField pDepthMarketData)
+    {
+        //var data = pDepthMarketData.DeepClone();
+
+        ExecuteInMainthread(() => { OnRtnDepthMarketDataEvent?.Invoke(this, pDepthMarketData); });
+    }
 
 
-    public void OnRspSubForQuoteRsp(ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
-        ref                             CThostFtdcRspInfoField            pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField pSpecificInstrument,
+        CThostFtdcRspInfoField                                        pRspInfo, int nRequestID, bool bIsLast)
     {
     }
 
-    public void OnRspUnSubForQuoteRsp(ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
-        ref                               CThostFtdcRspInfoField            pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField pSpecificInstrument,
+        CThostFtdcRspInfoField                                          pRspInfo, int nRequestID, bool bIsLast)
     {
     }
 
-    public void OnRtnForQuoteRsp(ref CThostFtdcForQuoteRspField pForQuoteRsp) { }
+    public void OnRtnForQuoteRsp(CThostFtdcForQuoteRspField pForQuoteRsp) { }
 
-    public void OnRspQryMulticastInstrument(ref CThostFtdcMulticastInstrumentField pMulticastInstrument,
-        ref                                     CThostFtdcRspInfoField             pRspInfo, int nRequestID, bool bIsLast)
+    public void OnRspQryMulticastInstrument(CThostFtdcMulticastInstrumentField pMulticastInstrument,
+        CThostFtdcRspInfoField                                                 pRspInfo, int nRequestID, bool bIsLast)
     {
     }
 
 #endregion
 
 
-    public CtpMdApi(string frontAddress,            string brokerId,            string userId, string password, ILogger logger = null,
+    public CtpMdApi(string frontAddress,               string brokerId,            string userId, string password, ILogger logger = null,
         string             pszFlowPath = "CtpMdFlow/", bool   bIsUsingUdp = false, bool   bIsMulticast = false)
         : base(frontAddress, brokerId, userId, password,
                pszFlowPath, bIsUsingUdp, bIsMulticast)
     {
         Logger = logger;
-
-        }
+    }
 
     public EConnectionState ConnectionState
     {
         get => ConnectionState_;
         protected set
-        { 
-             if (value != ConnectionState)
+        {
+            if (value != ConnectionState)
                 Logger?.Info($"{this.ToString()} {value} ");
 
-            SetProperty(ref ConnectionState_, value); }
+            SetProperty(ref ConnectionState_, value);
         }
+    }
+
     protected EConnectionState ConnectionState_;
 
     //public bool                IsConnected
@@ -178,7 +207,6 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
                 OnConnected_();
                 taskSource.TrySetResult(true);
             }
-
         };
 
         CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
@@ -223,14 +251,14 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     protected void OnConnected_()
     {
-        Logger?.Info($"Connected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
+        Logger?.Info($"Connected:{this.Dump(new DumpOptions() { ExcludeProperties = new List<string>() { "Logger" } })}");
 
         ConnectionState = EConnectionState.Connected;
     }
 
     protected void OnDisconnected_()
     {
-        Logger?.Info($"DisConnected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
+        Logger?.Info($"DisConnected:{this.Dump(new DumpOptions() { ExcludeProperties = new List<string>() { "Logger" } })}");
 
         //RealtimeBarsSubscriptions_.Clear();
         //RealtimeBarsSubscriptionReqs_.Clear();
@@ -238,7 +266,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         //TickByTickSubscriptions_.Clear();
         //ReqContracts.Clear();
 
-        IsLogined    = false;
+        IsLogined = false;
 
         ApiHandle_ = IntPtr.Zero;
         SpiHandle_ = IntPtr.Zero;
@@ -260,18 +288,24 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         EventHandler<CtpRsp>                              onRspErrorHandler     = null;
         onRspUserLoginHandler = (s, e) =>
         {
-            clearHandler();
-            IsLogined = true;
+            lock (Lock_)
+            {
+                clearHandler();
+                IsLogined = true;
 
-            taskSource.TrySetResult(e);
+                taskSource.TrySetResult(e);
+            }
         };
         onRspErrorHandler = (s, e) =>
         {
             if (e.RequestId == reqId)
             {
-                clearHandler();
+                lock (Lock_)
+                {
+                    clearHandler();
 
-                taskSource.TrySetException(new CtpException(e));
+                    taskSource.TrySetException(new CtpException(e));
+                }
             }
         };
 
@@ -299,8 +333,11 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
             tokenSource.Token.Register(() =>
             {
-                clearHandler();
-                taskSource.TrySetCanceled();
+                lock (Lock_)
+                {
+                    clearHandler();
+                    taskSource.TrySetCanceled();
+                }
             });
         }
 
@@ -453,7 +490,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         void clearHandler()
         {
             OnRspUnSubMarketDataEvent -= onRspUnSubMarketDataEvent;
-            OnRspErrorEvent         -= onRspErrorHandler;
+            OnRspErrorEvent           -= onRspErrorHandler;
         }
 
         ECtpRtn ret = (ECtpRtn)UnSubscribeMarketData(instruments);
@@ -461,7 +498,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         else
         {
             OnRspUnSubMarketDataEvent += onRspUnSubMarketDataEvent;
-            OnRspErrorEvent         += onRspErrorHandler;
+            OnRspErrorEvent           += onRspErrorHandler;
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
             tokenSource.Token.Register(() =>
@@ -536,6 +573,15 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 #endregion
 
     protected int GetNextRequestId() => Interlocked.Increment(ref _RequestID);
+
+
+    protected void ExecuteInMainthread(Action callback)
+    {
+        if (Application.Current != null)
+            Application.Current.Dispatcher.Invoke(callback);
+        else
+            callback();
+    }
 
 #region Members
 
