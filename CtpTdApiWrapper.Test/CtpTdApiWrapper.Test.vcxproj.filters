@@ -31,6 +31,9 @@
     <ClInclude Include="QryOrder.h">
       <Filter>Order</Filter>
     </ClInclude>
+    <ClInclude Include="QryTradingAccount.h">
+      <Filter>Account</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -44,6 +47,9 @@
     </Filter>
     <Filter Include="Order">
       <UniqueIdentifier>{09223de4-0a10-4632-9151-cb8414a67419}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Account">
+      <UniqueIdentifier>{05ed441c-c5c3-43a6-b3a3-23de5ad766c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1499,6 +1499,63 @@ namespace NeoCtp
 		/// 保底期货结算准备金
 		/// </summary>
 		public double ReserveBalance;
+
+        ///币种代码
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+
+        ///上次货币质入金额
+        public double PreFundMortgageIn;
+
+        ///上次货币质出金额
+        public double PreFundMortgageOut;
+
+        ///货币质入金额
+        public double FundMortgageIn;
+
+        ///货币质出金额
+        public double FundMortgageOut;
+
+        ///货币质押余额
+        public double FundMortgageAvailable;
+
+        ///可质押货币金额
+        public double MortgageableFund;
+
+        ///特殊产品占用保证金
+        public double SpecProductMargin;
+
+        ///特殊产品冻结保证金
+        public double SpecProductFrozenMargin;
+
+        ///特殊产品手续费
+        public double SpecProductCommission;
+
+        ///特殊产品冻结手续费
+        public double SpecProductFrozenCommission;
+
+        ///特殊产品持仓盈亏
+        public double SpecProductPositionProfit;
+
+        ///特殊产品平仓盈亏
+        public double SpecProductCloseProfit;
+
+        ///根据持仓盈亏算法计算的特殊产品持仓盈亏
+        public double SpecProductPositionProfitByAlg;
+
+        ///特殊产品交易所保证金
+        public double SpecProductExchangeMargin;
+
+        ///业务类型
+        //TThostFtdcBizTypeType	BizType;
+        public char BizType;
+
+        ///延时换汇冻结金额
+        public double FrozenSwap;
+
+        ///剩余换汇额度
+        public double RemainSwap;
+
 	}
 
 	/// <summary>
@@ -4025,6 +4082,17 @@ namespace NeoCtp
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
 		public string ConfirmTime;
+
+        ///结算编号
+        public int SettlementID;
+
+        ///投资者帐号
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AccountID;
+
+        ///币种代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
 	}
 
 	/// <summary>
@@ -4794,7 +4862,18 @@ namespace NeoCtp
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
 		public string InvestorID;
-	}
+
+        ///币种代码
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string CurrencyID;
+
+        ///业务类型
+        public char BizType;
+
+        ///投资者帐号
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+        public string AccountID;
+    }
 
 	/// <summary>
 	/// 查询投资者

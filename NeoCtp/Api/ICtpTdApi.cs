@@ -53,8 +53,7 @@ namespace NeoCtp
         event EventHandler<CtpRsp> OnRspErrorEvent;
         event EventHandler<int> OnHeartBeatWarningEvent;
 
-         EConnectionState ConnectionState { get; }
-        //bool             IsConnected     { get; }
+        EConnectionState ConnectionState { get; }
 		Task<bool>          ConnectAsync();
 		Task				DisconnectAsync();
         event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
@@ -65,13 +64,15 @@ namespace NeoCtp
         Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
 
 
+#region Accont
+
 		///投资者结算结果确认
 		Task<CtpRsp<CThostFtdcSettlementInfoConfirmField>> ReqSettlementInfoConfirmAsync();
 
 
 		///请求查询资金账户
 		Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync();
-
+#endregion
 
 #region Instrument
 

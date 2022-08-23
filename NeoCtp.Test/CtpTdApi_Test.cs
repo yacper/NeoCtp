@@ -95,7 +95,7 @@ public class CtpTdApi_Test
         var acc = await client.ReqQryTradingAccountAsync();
         acc.Rsp2.Should().NotBeNull();
 
-        Debug.WriteLine(acc.Dump());
+        Debug.WriteLine(acc.Rsp2.ToJson());
     }
 
     [Test]

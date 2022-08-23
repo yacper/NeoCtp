@@ -856,7 +856,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         return taskSource.Task;
     }
 
-    public Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync()
+    public async Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync()
     {
         var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcTradingAccountField>>();
         var reqId      = GetNextRequestId();
@@ -894,6 +894,9 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             InvestorID = UserId
         };
 
+        // 有时候需要停顿一会才能查询成功
+        await Task.Delay(700);
+
         ECtpRtn ret = (ECtpRtn)ReqQryTradingAccount(ref field, reqId);
         if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
@@ -909,7 +912,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
     }
 
 
