@@ -33,7 +33,7 @@ namespace NeoCtp
 
         int                 FrontId { get; }                                /// 前置编号
         int                 SessionId { get; }                              /// 会话编号
-        //string              MaxOrderRef { get;  }
+        int                 MaxOrderRef { get;  }                           // 最大报单引用
 
         /// 最大报单引用
 
@@ -51,7 +51,7 @@ namespace NeoCtp
 		int					TimeoutMilliseconds { get; set; }
 
         event EventHandler<CtpRsp> OnRspErrorEvent;
-        event EventHandler<int> OnHeartBeatWarningEvent;
+        event EventHandler<int> OnHeartBeatWarningEvent; // ///当长时间未收到报文时，该方法被调用。///@param nTimeLapse 距离上次接收报文的时间
 
         EConnectionState ConnectionState { get; }
 		Task<bool>          ConnectAsync();
@@ -97,25 +97,13 @@ namespace NeoCtp
 
  
 		///报单录入请求
-		Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
+		Task<CtpRsp<CThostFtdcOrderField?, CThostFtdcInputOrderField?>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
 
         event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;		// order 状态通知
         event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	// trade 成交通知
 
 
         Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction);
-
-
-		//void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
-		//void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
-		//	int volume, double price, double? stopPrice=null,
-		//	TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD);
-		//void				ReqMarketOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume);
-		//void				ReqConditionOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID,
-		//	TThostFtdcContingentConditionType conditionType, double conditionPrice,
-		//	TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume,
-		//	TThostFtdcOrderPriceTypeType priceType, double price, TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD
-		//	);
 
        
 

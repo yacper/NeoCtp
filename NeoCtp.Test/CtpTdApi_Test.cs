@@ -193,8 +193,9 @@ public class CtpTdApi_Test
         };
 
         var acc = await client.ReqOrderInsertAsync(field);
-
         Debug.WriteLine("OrderInsert " + acc.ToJson(Formatting.Indented));
+
+        await Task.Delay(10000);
 
     }
 

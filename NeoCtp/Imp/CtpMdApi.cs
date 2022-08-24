@@ -298,7 +298,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 lock (Lock_)
                 {
@@ -360,7 +360,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -419,12 +419,12 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
                 clearHandler();
 
                 instrumentsBag.ForEach(p => Subscribed_.Add(p));
-                taskSource.TrySetResult(new(instrumentsBag.ToList(), e.Rsp, e.RequestId, e.IsLast));
+                taskSource.TrySetResult(new(instrumentsBag.ToList(), e.Rsp, e.RequestID, e.IsLast));
             }
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -474,12 +474,12 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
                 clearHandler();
 
                 instrumentsBag.ForEach(p => Subscribed_.Remove(p));
-                taskSource.TrySetResult(new(instrumentsBag.ToList(), e.Rsp, e.RequestId, e.IsLast));
+                taskSource.TrySetResult(new(instrumentsBag.ToList(), e.Rsp, e.RequestID, e.IsLast));
             }
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 

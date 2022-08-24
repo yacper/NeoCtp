@@ -22,16 +22,17 @@ public class CtpRsp
     public ECtpRtn Rtn { get; protected set; } // 调用函数后直接返回
 
     // 服务器返回信息
-    public int                    RequestId { get; protected set; }
-    public bool                   IsLast    { get; protected set; }
-    public CThostFtdcRspInfoField Rsp       { get; protected set; }
+    public int                    RequestID { get; set; }
+    public bool                   IsLast    { get; set; }
+    public CThostFtdcRspInfoField Rsp       { get; set; }
 
+    public CtpRsp() {  }
     public CtpRsp(ECtpRtn rtn) { Rtn = rtn; }
 
     public CtpRsp(CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
     {
         Rsp       = rsp;
-        RequestId = nRequestID;
+        RequestID = nRequestID;
         IsLast    = bIsLast;
     }
 
@@ -39,7 +40,7 @@ public class CtpRsp
     {
         if (Rsp.ErrorID != 0)
         {
-            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestId}";
+            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestID}";
         }
         else
             return $"Ctp local call Error:{Rtn}";
@@ -50,6 +51,7 @@ public class CtpRsp<T2> : CtpRsp
 {
     public T2 Rsp2 { get; set; }
 
+    public CtpRsp() {  }
     public CtpRsp(ECtpRtn rtn)
         : base(rtn)
     {
@@ -65,7 +67,7 @@ public class CtpRsp<T2> : CtpRsp
     {
         if (Rsp.ErrorID != 0)
         {
-            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestId} \n {Rsp2.Dump()}";
+            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestID} \n {Rsp2.Dump()}";
         }
         else
             return $"Ctp local call Error:{Rtn}";
@@ -77,7 +79,14 @@ public class CtpRsp<T2, T3> : CtpRsp<T2>
 {
     public T3 Rsp3 { get; set; }
 
-    public CtpRsp(T3 rsp3, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast, T2 rsp2)
+    public CtpRsp() {  }
+
+    public CtpRsp(ECtpRtn rtn)
+        : base(rtn)
+    {
+    }
+
+    public CtpRsp(T3 rsp3, T2 rsp2, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
         : base(rsp2, rsp, nRequestID, bIsLast)
     {
         Rsp3 = rsp3;
@@ -87,7 +96,7 @@ public class CtpRsp<T2, T3> : CtpRsp<T2>
     {
         if (Rsp.ErrorID != 0)
         {
-            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestId} \n {Rsp2.Dump()} \n {Rsp3.Dump()}";
+            return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestID} \n {Rsp2.Dump()} \n {Rsp3.Dump()}";
         }
         else
             return $"Ctp local call Error:{Rtn}";

@@ -11,9 +11,9 @@ namespace NeoCtp.Tests
         public static string GetMdFrontAddr()
         {
             DateTime now = DateTime.Now;
-            if ((now.Hour >= 9 && now.Hour <= 17) ||
-                (now.Hour >= 21 && now.Hour <= 23) ||
-                (now.Hour >= 0 && now.Hour <= 3)
+            if ((now.Hour >= 9 && now.Hour < 16) ||
+                (now.Hour >= 21 && now.Hour < 23) ||
+                (now.Hour >= 0 && now.Hour < 3)
                )
                 return MdFrontAddr;
             else
@@ -28,9 +28,9 @@ namespace NeoCtp.Tests
         public static string GetTdFrontAddr()
         {
             DateTime now = DateTime.Now;
-            if ((now.Hour >= 9 && now.Hour <= 17) ||
-                (now.Hour >= 21 && now.Hour <= 23) ||
-                (now.Hour >= 0 && now.Hour <= 3)
+            if ((now.Hour >= 9 && now.Hour < 16) ||
+                (now.Hour >= 21 && now.Hour < 23) ||
+                (now.Hour >= 0 && now.Hour < 3)
                )
                 return TdFrontAddr;
             else

@@ -72,7 +72,7 @@ namespace NeoCtp.Imp
 			protected set { SetProperty(ref _SessionID, value); }
 		}
 
-//        public string MaxOrderRef { get => OrderRef_; protected set => SetProperty(ref OrderRef_, value); }                           /// 最大报单引用
+        public int	MaxOrderRef { get => MaxOrderRef_; }                           /// 最大报单引用
 
         public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
 
@@ -87,10 +87,16 @@ namespace NeoCtp.Imp
         public DateTime INETime  { get => INETime_ + LoginDuration;  protected set => SetProperty(ref INETime_, value); }
 
 	    protected int GetNextRequestId() => Interlocked.Increment(ref RequestID_);
-        protected int GetNextOrderRef() => Interlocked.Increment(ref OrderRef_);
-	
-     
-		/// 是否已登录
+
+        protected int GetNextOrderRef()
+        {
+            var ret = Interlocked.Increment(ref MaxOrderRef_); 
+			OnPropertyChanged(nameof(MaxOrderRef));
+            return ret;
+        }
+
+
+        /// 是否已登录
 
 
 		///注册回调接口
@@ -1653,7 +1659,7 @@ namespace NeoCtp.Imp
 
 	
         protected string   FlowPath_;
-        protected   int   OrderRef_;
+        protected   int   MaxOrderRef_;
         private   DateTime LoginTime_;
         private   DateTime SHFETime_;
         private   DateTime DCETime_;
