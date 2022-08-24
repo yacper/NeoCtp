@@ -369,7 +369,72 @@ namespace NeoCtp
 		/// 应用类型
 		/// </summary>
 		public char AppType;
+	///终端IP地址
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+	public	string ClientIPAddress;
+
 	}
+
+///用户登录应答2
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcRspUserLogin2Field
+{
+    ///交易日
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string TradingDay;
+
+    ///登录成功时间
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string
+			LoginTime;
+
+    ///经纪公司代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string BrokerID;
+
+    ///用户代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string UserID;
+
+    ///交易系统名称
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string SystemName;
+
+    ///前置编号
+    public int FrontID;
+
+    ///会话编号
+    public int SessionID;
+
+    ///最大报单引用
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string MaxOrderRef;
+
+    ///上期所时间
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string SHFETime;
+
+    ///大商所时间
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string DCETime;
+
+    ///郑商所时间
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string CZCETime;
+
+    ///中金所时间
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string FFEXTime;
+
+    ///能源中心时间
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string INETime;
+
+    ///随机串
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 17)]
+    public string RandomString;
+};
+
 
 	/// <summary>
 	/// 用户发出获取安全安全登陆方法请求
@@ -977,6 +1042,17 @@ namespace NeoCtp
 		/// 平仓处理类型
 		/// </summary>
 		public TThostFtdcCloseDealTypeType CloseDealType;
+	///交易币种类型
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string TradeCurrencyID;
+	///质押资金可用范围
+	TThostFtdcMortgageFundUseRangeType	MortgageFundUseRange;
+	///交易所产品代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+	public	string ExchangeProductID;
+	///合约基础商品乘数
+	public	double UnderlyingMultiple;
+
 	}
 
 	/// <summary>
@@ -1099,6 +1175,18 @@ namespace NeoCtp
 		/// 是否使用大额单边保证金算法
 		/// </summary>
 		public TThostFtdcMaxMarginSideAlgorithmType MaxMarginSideAlgorithm;
+	///基础商品代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+	public	string UnderlyingInstrID;
+	///执行价
+	public	double StrikePrice;
+	///期权类型
+	TThostFtdcOptionsTypeType	OptionsType;
+	///合约基础商品乘数
+	public	double UnderlyingMultiple;
+	///组合类型
+	TThostFtdcCombinationTypeType	CombinationType;
+
 	}
 
 	/// <summary>
@@ -1270,6 +1358,15 @@ namespace NeoCtp
 		/// 交易编码类型
 		/// </summary>
 		public TThostFtdcClientIDTypeType ClientIDType;
+	///营业部编号
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string BranchID;
+	///业务类型
+	public TThostFtdcBizTypeType	BizType;
+	///投资单元代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 17)]
+	public	string InvestUnitID;
+
 	}
 
 	/// <summary>
@@ -1547,8 +1644,7 @@ namespace NeoCtp
         public double SpecProductExchangeMargin;
 
         ///业务类型
-        //TThostFtdcBizTypeType	BizType;
-        public char BizType;
+        public TThostFtdcBizTypeType	BizType;
 
         ///延时换汇冻结金额
         public double FrozenSwap;
@@ -1758,6 +1854,11 @@ namespace NeoCtp
 		/// 大商所持仓成本差值，只有大商所使用
 		/// </summary>
 		public double PositionCostOffset;
+	///tas持仓手数
+	public	int TasPosition;
+	///tas持仓成本
+	public	double TasPositionCost;
+
 	}
 
 	/// <summary>
@@ -1809,6 +1910,13 @@ namespace NeoCtp
 		/// 是否相对交易所收取
 		/// </summary>
 		public int IsRelative;
+	///交易所代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string ExchangeID;
+	///投资单元代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 17)]
+	public	string InvestUnitID;
+
 	}
 
 	/// <summary>
@@ -1860,6 +1968,15 @@ namespace NeoCtp
 		/// 平今手续费
 		/// </summary>
 		public double CloseTodayRatioByVolume;
+	///交易所代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string ExchangeID;
+	///业务类型
+	public TThostFtdcBizTypeType	BizType;
+	///投资单元代码
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 17)]
+	public	string InvestUnitID;
+
 	}
 
 	/// <summary>

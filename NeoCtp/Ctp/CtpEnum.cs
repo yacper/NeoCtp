@@ -6279,4 +6279,78 @@ namespace NeoCtp
 		Rejected = (byte) 'c',
 	}
 
+/////////////////////////////////////////////////////////////////////////
+///TFtdcMortgageFundUseRangeType是一个货币质押资金可用范围类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcMortgageFundUseRangeType : byte
+	{
+		///不能使用
+		None = (byte) '0',
+
+		///用于保证金
+		Margin = (byte) '1',
+
+		///用于手续费、盈亏、保证金
+		All = (byte) '2',
+
+		///人民币方案3
+		CNY3 = (byte) '3',
+	}
+
 }
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcOptionsTypeType是一个期权类型类型
+/////////////////////////////////////////////////////////////////////////
+
+public enum TThostFtdcOptionsTypeType : byte
+	{
+
+		///看涨
+		CallOptions = (byte) '1',
+
+		///看跌
+		PutOptions = (byte) '2',
+	}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcCombinationTypeType是一个组合类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcCombinationTypeType : byte
+	{
+
+		///期货组合
+		Future = (byte) '0',
+
+///垂直价差BUL
+BUL=(byte) '1',
+///垂直价差BER
+BER=(byte) '2',
+///跨式组合
+STD=(byte) '3',
+///宽跨式组合
+STG=(byte) '4',
+///备兑组合
+PRT=(byte) '5',
+///时间价差组合
+CLD=(byte) '6',
+///期权对锁组合
+OPL=(byte) '7',
+///买备兑组合
+BFO=(byte) '8'
+
+	}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcBizTypeType是一个业务类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum  TThostFtdcBizTypeType: byte
+{
+
+    ///期货
+    Future = (byte)'1',
+    ///证券
+    Stock = (byte)'2',
+
+}
+
