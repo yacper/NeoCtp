@@ -18,6 +18,7 @@ using NeoCtp.Enums;
 using NUnit.Framework;
 using NeoCtp.Imp;
 using NeoCtp.Tests;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Config;
 
@@ -90,27 +91,61 @@ public class CtpTdApi_Test
 
 #region Account
     [Test]
-    public async Task ReqQryTradingAccountAsync_Test()
+    public async Task ReqQryTradingAccountAsync_Test()  // 查询账户资金
     {
         var acc = await client.ReqQryTradingAccountAsync();
         acc.Rsp2.Should().NotBeNull();
 
-        Debug.WriteLine(acc.Rsp2.ToJson());
+        Debug.WriteLine(acc.Rsp2.ToJson(Formatting.Indented));
     }
+#endregion
+
+#region Instrument 
 
     [Test]
     public async Task ReqQryInstrumentAsync_Test()
     {
         var ins = "rb2210";
         var acc = await client.ReqQryInstrumentAsync(ins);
-        acc.Rsp2.Should().NotBeNull();
+        acc.Rsp2.ExchangeID.Should().Be("SHFE");
 
-        Debug.WriteLine(acc.Dump());
+        Debug.WriteLine(acc.ToJson(Formatting.Indented));
+
+        /*
+    "InstrumentID": "rb2210",
+    "ExchangeID": "SHFE",
+    "InstrumentName": "rb2210",
+    "ExchangeInstID": "rb2210",
+    "ProductID": "rb",
+    "ProductClass": "Futures",
+    "DeliveryYear": 2022,
+    "DeliveryMonth": 10,
+    "MaxMarketOrderVolume": 30,
+    "MinMarketOrderVolume": 1,
+    "MaxLimitOrderVolume": 500,
+    "MinLimitOrderVolume": 1,
+    "VolumeMultiple": 10,
+    "PriceTick": 1.0,
+    "CreateDate": "20210913",
+    "OpenDate": "20211018",
+    "ExpireDate": "20221017",
+    "StartDelivDate": "20221018",
+    "EndDelivDate": "20221020",
+    "InstLifePhase": "Started",
+    "IsTrading": 1,
+    "PositionType": "Gross",
+    "PositionDateType": "UseHistory",
+    "LongMarginRatio": 0.16,
+    "ShortMarginRatio": 0.16,
+    "MaxMarginSideAlgorithm": "YES",
+    "UnderlyingInstrID": "rb",
+    "StrikePrice": 0.0,
+    "UnderlyingMultiple": 1.0
+        */
     }
+#endregion
 
-
-
-
+#region position 
     [Test]
     public async Task ReqQryInvestorPositionAsync_Test()
     {
@@ -118,6 +153,48 @@ public class CtpTdApi_Test
         //.acc.Rsp2.Should().n
 
         Debug.WriteLine(acc.Dump());
+    }
+
+    #endregion
+
+#region Order
+
+    [Test]
+    public async Task ReqOrderInsertAsync_Test()        // 输入订单
+    {
+        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
+        {
+            InstrumentID   = "rb2210",
+            CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
+
+            LimitPrice          = 4200,
+            VolumeTotalOriginal = 1,
+            Direction           = TThostFtdcDirectionType.Buy,
+            TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
+
+            OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
+            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
+            MinVolume           = 1,                                             // 最小成交量1
+            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
+            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
+            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
+            UserForceClose      = 0,                                             // 用户强平标志：否
+
+            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
+        };
+
+        client.OnRtnOrderEvent += (s, e) =>
+        {
+            Debug.WriteLine("OnRtnOrderEvent " + e.ToJson(Formatting.Indented));
+        };
+        client.OnRtnTradeEvent += (s, e) =>
+        {
+            Debug.WriteLine("OnRtnTradeEvent " + e.ToJson(Formatting.Indented));
+        };
+
+        var acc = await client.ReqOrderInsertAsync(field);
+
+        Debug.WriteLine("OrderInsert " + acc.ToJson(Formatting.Indented));
 
     }
 
@@ -143,41 +220,6 @@ public class CtpTdApi_Test
 
 
 
-
-
-
-    [Test]
-    public async Task ReqOrderInsertAsync_Test()
-    {
-        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
-        {
-            InstrumentID   = "rb2210",
-            CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
-
-            LimitPrice          = 4200,
-            VolumeTotalOriginal = 1,
-            Direction           = TThostFtdcDirectionType.Buy,
-            TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
-
-            OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
-            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
-            MinVolume           = 1,                                             // 最小成交量1
-            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
-            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
-            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
-            UserForceClose      = 0,                                             // 用户强平标志：否
-
-            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
-        };
-
-
-        var acc = await client.ReqOrderInsertAsync(field);
-        //.acc.Rsp2.Should().n
-
-        Debug.WriteLine(acc.Dump());
-
-    }
-
     [Test]
     public async Task ReqOrderActionAsync_Test()
     {
@@ -195,33 +237,5 @@ public class CtpTdApi_Test
         Debug.WriteLine(acc.Dump());
 
     }
-
-
-
-
-     //[Test]
-    //public async Task SubMarketDataAsync_Test()
-    //{
-    //    List<string> instruments = new() { "rb2210", "hc2210" };
-
-    //    var marketDataFields = new List<CThostFtdcDepthMarketDataField>();
-    //    client.OnRtnDepthMarketDataEvent += (s, e) =>
-    //    {
-    //        marketDataFields.Add(e);
-    //        Debug.WriteLine(e);
-    //    };
-
-    //    await client.SubMarketDataAsync(instruments.ToArray());
-    //    //await client.SubMarketDataAsync(instruments.ToArray());
-
-    //    client.Subscribed.Should().NotBeEmpty();
-    //    marketDataFields.Should().NotBeEmpty();
-
-    //    // cancel
-    //    await client.UnSubMarketDataAsync(instruments.ToArray());
-    //    client.Subscribed.Should().BeEmpty();
-    //    await Task.Delay(5000);
-    //}
-
 #endregion
 }

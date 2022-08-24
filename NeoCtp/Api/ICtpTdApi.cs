@@ -92,15 +92,14 @@ namespace NeoCtp
 
 #region Order
 
-		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField pQryOrder);
-		Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField pQryTrade);
+		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? pQryOrder = null); // 不填返回所有
+		Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField? pQryTrade = null); // 不填返回所有
 
  
 		///报单录入请求
 		Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
 
         event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;		// order 状态通知
-
         event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	// trade 成交通知
 
 
