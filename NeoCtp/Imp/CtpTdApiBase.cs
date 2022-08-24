@@ -807,6 +807,7 @@ namespace NeoCtp.Imp
             cbOnRspQryInstrumentDele = new(_CBOnRspQryInstrument);
 			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, cbOnRspQryInstrumentDele);
 
+
             cbOnRspQryOrderDele = new(_CBOnRspQryOrder);
 			TdApiCalls.RegOnRspQryOrder(SpiHandle_, cbOnRspQryOrderDele);
             cbOnRspQryTradeDele = new(_CBOnRspQryTrade);
@@ -814,7 +815,7 @@ namespace NeoCtp.Imp
             cbOnRspOrderInsertDele = new(_CBOnRspOrderInsert);
 			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, cbOnRspOrderInsertDele);
             cbOnErrRtnOrderInsertDele = new(_CBOnErrRtnOrderInsert);
-            TdApiCalls.RegOnErrRtnOrderInsert(SpiHandle_, _CBOnErrRtnOrderInsert);
+            TdApiCalls.RegOnErrRtnOrderInsert(SpiHandle_, cbOnErrRtnOrderInsertDele);
             cbRtnOrderDele = new(_CBOnRtnOrder);
 	        TdApiCalls.RegOnRtnOrder(SpiHandle_, cbRtnOrderDele);
             cbRtnTradeDele = new(_CBOnRtnTrade);

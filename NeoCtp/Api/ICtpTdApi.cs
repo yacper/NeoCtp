@@ -97,10 +97,11 @@ namespace NeoCtp
 
  
 		///报单录入请求
-		Task<CtpRsp<CThostFtdcOrderField?, CThostFtdcInputOrderField?>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
+        // 交易所校验通过后返回， 忽略掉本地校验后的rtn
+		Task<CtpRsp<CThostFtdcOrderField?>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);  
 
         event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;		// order 状态通知
-        event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	// trade 成交通知
+        event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	    // trade 成交通知
 
 
         Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction);

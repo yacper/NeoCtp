@@ -323,8 +323,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             Password = Password
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqUserLogin(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqUserLogin(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLoginEvent += onRspUserLoginHandler;
@@ -380,8 +380,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             UserID   = UserId
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqUserLogout(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqUserLogout(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLogoutEvent += onRspUserLogoutHandler;
@@ -438,8 +438,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent         -= onRspErrorHandler;
         }
 
-        ECtpRtn ret = (ECtpRtn)SubscribeMarketData(instruments);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)SubscribeMarketData(instruments);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspSubMarketDataEvent += onRspSubMarketDataHandler;
@@ -493,8 +493,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent           -= onRspErrorHandler;
         }
 
-        ECtpRtn ret = (ECtpRtn)UnSubscribeMarketData(instruments);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)UnSubscribeMarketData(instruments);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUnSubMarketDataEvent += onRspUnSubMarketDataEvent;

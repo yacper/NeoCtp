@@ -164,7 +164,7 @@ public class CtpTdApi_Test
     {
         CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
         {
-            InstrumentID   = "rb2210",
+            InstrumentID   = "rb2110",
             CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
 
             LimitPrice          = 4200,

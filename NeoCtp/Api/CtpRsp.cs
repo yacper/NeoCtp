@@ -19,7 +19,7 @@ namespace NeoCtp.Api;
 public class CtpRsp
 {
     // 本地返回信息
-    public ECtpRtn Rtn { get; protected set; } // 调用函数后直接返回
+    public ECtpLocalRtn LocalRtn { get; protected set; } // 调用函数后直接返回
 
     // 服务器返回信息
     public int                    RequestID { get; set; }
@@ -27,7 +27,7 @@ public class CtpRsp
     public CThostFtdcRspInfoField Rsp       { get; set; }
 
     public CtpRsp() {  }
-    public CtpRsp(ECtpRtn rtn) { Rtn = rtn; }
+    public CtpRsp(ECtpLocalRtn localRtn) { LocalRtn = localRtn; }
 
     public CtpRsp(CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
     {
@@ -43,7 +43,7 @@ public class CtpRsp
             return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestID}";
         }
         else
-            return $"Ctp local call Error:{Rtn}";
+            return $"Ctp local call Error:{LocalRtn}";
     }
 }
 
@@ -52,8 +52,8 @@ public class CtpRsp<T2> : CtpRsp
     public T2 Rsp2 { get; set; }
 
     public CtpRsp() {  }
-    public CtpRsp(ECtpRtn rtn)
-        : base(rtn)
+    public CtpRsp(ECtpLocalRtn localRtn)
+        : base(localRtn)
     {
     }
 
@@ -70,7 +70,7 @@ public class CtpRsp<T2> : CtpRsp
             return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestID} \n {Rsp2.Dump()}";
         }
         else
-            return $"Ctp local call Error:{Rtn}";
+            return $"Ctp local call Error:{LocalRtn}";
     }
 
 }
@@ -81,8 +81,8 @@ public class CtpRsp<T2, T3> : CtpRsp<T2>
 
     public CtpRsp() {  }
 
-    public CtpRsp(ECtpRtn rtn)
-        : base(rtn)
+    public CtpRsp(ECtpLocalRtn localRtn)
+        : base(localRtn)
     {
     }
 
@@ -99,7 +99,7 @@ public class CtpRsp<T2, T3> : CtpRsp<T2>
             return $"Ctp Rsp Error:{Rsp.ErrorID} Msg:{Rsp.ErrorMsg} RequestID:{RequestID} \n {Rsp2.Dump()} \n {Rsp3.Dump()}";
         }
         else
-            return $"Ctp local call Error:{Rtn}";
+            return $"Ctp local call Error:{LocalRtn}";
     }
 
 

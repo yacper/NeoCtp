@@ -14,9 +14,6 @@
 	  <EmbeddedResource Include="Resources\error.xml" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Enums\" />
-	</ItemGroup>
-	<ItemGroup>
 	  <PackageReference Include="DeepCloner" Version="0.10.4" />
 	  <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
 	  <PackageReference Include="morelinq" Version="3.3.2" />
