@@ -5,6 +5,12 @@
 	
     purpose:	https://blog.51cto.com/quantfabric/2966425
                 https://www.cnblogs.com/dengchj/p/8442913.html
+
+数据处理：
+                https://zhuanlan.zhihu.com/p/123384992
+                https://zhuanlan.zhihu.com/p/126775219
+                https://zhuanlan.zhihu.com/p/380143402
+
 *********************************************************************/
 using System;
 using System.Collections.Generic;
@@ -27,7 +33,7 @@ namespace NeoCtp
 
         int                 FrontId { get; }                                /// 前置编号
         int                 SessionId { get; }                              /// 会话编号
-        //string              MaxOrderRef { get;  }
+        int                 MaxOrderRef { get;  }                           // 最大报单引用
 
         /// 最大报单引用
 
@@ -45,10 +51,9 @@ namespace NeoCtp
 		int					TimeoutMilliseconds { get; set; }
 
         event EventHandler<CtpRsp> OnRspErrorEvent;
-        event EventHandler<int> OnHeartBeatWarningEvent;
+        event EventHandler<int> OnHeartBeatWarningEvent; // ///当长时间未收到报文时，该方法被调用。///@param nTimeLapse 距离上次接收报文的时间
 
-         EConnectionState ConnectionState { get; }
-        //bool             IsConnected     { get; }
+        EConnectionState ConnectionState { get; }
 		Task<bool>          ConnectAsync();
 		Task				DisconnectAsync();
         event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
@@ -59,13 +64,15 @@ namespace NeoCtp
         Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
 
 
+#region Accont
+
 		///投资者结算结果确认
 		Task<CtpRsp<CThostFtdcSettlementInfoConfirmField>> ReqSettlementInfoConfirmAsync();
 
 
 		///请求查询资金账户
 		Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync();
-
+#endregion
 
 #region Instrument
 
@@ -85,31 +92,19 @@ namespace NeoCtp
 
 #region Order
 
-		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField pQryOrder);
-		Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField pQryTrade);
+		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? pQryOrder = null); // 不填返回所有
+		Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField? pQryTrade = null); // 不填返回所有
 
  
 		///报单录入请求
-		Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);
+        // 交易所校验通过后返回， 忽略掉本地校验后的rtn
+		Task<CtpRsp<CThostFtdcOrderField?>>	ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder);  
 
         event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;		// order 状态通知
-
-        event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	// trade 成交通知
+        event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	    // trade 成交通知
 
 
         Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction);
-
-
-		//void				ReqOrderInsert(CThostFtdcInputOrderField pInputOrder, Action<CThostFtdcInputOrderField> callback);
-		//void				ReqLimitOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, 
-		//	int volume, double price, double? stopPrice=null,
-		//	TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD);
-		//void				ReqMarketOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID, TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume);
-		//void				ReqConditionOrderInsert(Action<CThostFtdcInputOrderField> callback, string instrumentID,
-		//	TThostFtdcContingentConditionType conditionType, double conditionPrice,
-		//	TThostFtdcOffsetFlagType offsetFlag, TThostFtdcDirectionType dir, int volume,
-		//	TThostFtdcOrderPriceTypeType priceType, double price, TThostFtdcTimeConditionType tic= TThostFtdcTimeConditionType.GFD
-		//	);
 
        
 

@@ -13,61 +13,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Force.DeepCloner;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Exception = System.Exception;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace NeoCtp.Imp
 {
-    public static class JsonEx
+   public static class JsonEx
     {
-        public static JsonSerializerSettings _settings = new JsonSerializerSettings()
+        public static JsonSerializerSettings DefaultSettings = new JsonSerializerSettings()
         {
             Converters = new List<JsonConverter>()
             {
                 new Newtonsoft.Json.Converters.StringEnumConverter(),
                 new DoubleExConverter(),
-            }
+            },
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore    // 忽略循环引用
         };
-        public static string ToJson(this object o)
+        public static string ToJson(this object o, Formatting formatting= Formatting.None, JsonConverter exConverter = null)
         {
-            return JsonConvert.SerializeObject(o, _settings);
+            if (formatting != Formatting.None || exConverter != null)
+            {
+                var setting = DefaultSettings.DeepClone();
+                setting.Formatting = formatting;
+                if(exConverter != null)
+                    setting.Converters.Add(exConverter);
+                return JsonConvert.SerializeObject(o, setting);
+            }
+            else
+                return JsonConvert.SerializeObject(o, DefaultSettings);
         }
-        public static bool ToJsonFile(this object o, string path)
+        public static bool ToJsonFile(this object o, string path , Formatting formatting= Formatting.None, JsonConverter exConverter = null)
         {
             try
             {
-                string str = o.ToJson();
-                File.WriteAllText(path, str);
-                return true;
-            }
-            catch (System.Exception)
-            {
-            }
-
-            return false;
-        }
-
-        public static string ToJsonNoLoop(this object o)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            settings.Converters = new List<JsonConverter>()
-                                  {
-                                      new Newtonsoft.Json.Converters.
-                                          StringEnumConverter(),
-                new DoubleExConverter(),
-                                  };
-            return JsonConvert.SerializeObject(o, settings);
-        }
-
-        public static bool ToJsonNoLoopFile(this object o, string path)
-        {
-            try
-            {
-                string str = o.ToJsonNoLoop();
+                string str = o.ToJson(formatting, exConverter);
                 File.WriteAllText(path, str);
                 return true;
             }
@@ -78,12 +62,41 @@ namespace NeoCtp.Imp
             return false;
         }
 
+        //public static string ToJsonNoLoop(this object o)
+        //{
+        //    JsonSerializerSettings settings = new JsonSerializerSettings();
+        //    settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        //    settings.Converters = new List<JsonConverter>()
+        //                          {
+        //                              new Newtonsoft.Json.Converters.
+        //                                  StringEnumConverter(),
+        //        new DoubleExConverter(),
+        //        new ProtoMessageConverter()
+        //                          };
+        //    return JsonConvert.SerializeObject(o, settings);
+        //}
+
+        //public static bool ToJsonNoLoopFile(this object o, string path)
+        //{
+        //    try
+        //    {
+        //        string str = o.ToJsonNoLoop();
+        //        File.WriteAllText(path, str);
+        //        return true;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //    }
+
+        //    return false;
+        //}
+
         public static object ToJsonObj(this string o, Type t)
         {
             if (string.IsNullOrWhiteSpace(o))
                 return null;
 
-            return JsonConvert.DeserializeObject(o, t, _settings);
+            return JsonConvert.DeserializeObject(o, t, DefaultSettings);
         }
 
         public static T ToJsonObj<T>(this string o)
@@ -91,7 +104,7 @@ namespace NeoCtp.Imp
             if (string.IsNullOrWhiteSpace(o))
                 return default(T);
 
-            return JsonConvert.DeserializeObject<T>(o, _settings);
+            return JsonConvert.DeserializeObject<T>(o, DefaultSettings);
         }
 
         public static T FileToJsonObj<T>(this string o)
@@ -260,9 +273,10 @@ namespace NeoCtp.Imp
                     case JsonToken.Float:
                     case JsonToken.Integer:
                         return Convert.ToDouble(reader.Value);
+                        break;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return ret;
             }
@@ -270,31 +284,33 @@ namespace NeoCtp.Imp
             return ret;
         }
 
-        public override bool CanConvert(Type t)
+       public override bool CanConvert(Type t)
         {
             // check if numeric
-            switch (Type.GetTypeCode(t))
-            {
-                case TypeCode.Byte:
-                case TypeCode.SByte:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Single:
-                    return true;
-                default:
-                    return false;
-            }
+			switch(Type.GetTypeCode(t))
+			{
+				//case TypeCode.Byte:
+				//case TypeCode.SByte:
+				//case TypeCode.UInt16:
+				//case TypeCode.UInt32:
+				//case TypeCode.UInt64:
+				//case TypeCode.Int16:
+				//case TypeCode.Int32:
+				//case TypeCode.Int64:
+				//case TypeCode.Decimal:
+				case TypeCode.Double:
+				case TypeCode.Single:
+					return true;
+				default:
+					return false;
+			}
         }
 
         public override bool CanWrite => false;
 
     }
+
+
 
 
 }

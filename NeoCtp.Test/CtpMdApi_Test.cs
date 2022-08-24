@@ -90,7 +90,7 @@ public class CtpMdApi_Test
         client.OnRtnDepthMarketDataEvent += (s, e) =>
         {
             marketDataFields.Add(e);
-            Debug.WriteLine(e);
+            Debug.WriteLine(e.ToJson());
         };
 
         var subs = await client.SubMarketDataAsync(instruments.ToArray());
@@ -98,7 +98,7 @@ public class CtpMdApi_Test
         //await client.SubMarketDataAsync(instruments.ToArray());
 
         client.Subscribed.Should().NotBeEmpty();
-        await Task.Delay(5000); // wait 5s for marketdata
+        await Task.Delay(500000); // wait 5s for marketdata
         marketDataFields.Should().NotBeEmpty();
 
         // cancel

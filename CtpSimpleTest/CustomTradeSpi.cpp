@@ -99,7 +99,8 @@ void CustomTradeSpi::OnRspSettlementInfoConfirm(
 		std::cout << "确认日期： " << pSettlementInfoConfirm->ConfirmDate << std::endl;
 		std::cout << "确认时间： " << pSettlementInfoConfirm->ConfirmTime << std::endl;
 		// 请求查询合约
-		reqQueryInstrument();
+		//reqQueryInstrument();
+		reqQueryTradingAccount();
 	}
 }
 

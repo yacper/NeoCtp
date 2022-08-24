@@ -16,6 +16,8 @@ namespace NeoCtp.Imp
 {
 public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 {
+    public override string ToString() => $"CtpTdApi[{FrontAddress}-{UserId}]";
+
 #region ICtpTdSpi
 
     public void OnFrontConnected()
@@ -41,7 +43,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     public void OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
         var rsp = new CtpRsp(pRspInfo, nRequestID, bIsLast);
-        Logger?.Error(rsp.ToString);
+        Logger?.Error(rsp.ToString());
 #if DEBUG
         System.Diagnostics.Debug.WriteLine(rsp.ToString());
 #endif
@@ -553,7 +555,17 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         Logger = logger;
     }
 
-    public    EConnectionState ConnectionState { get => ConnectionState_; set => SetProperty(ref ConnectionState_, value); }
+    public EConnectionState ConnectionState
+    {
+        get => ConnectionState_;
+        protected set
+        {
+            if (value != ConnectionState)
+                Logger?.Info($"{this.ToString()} {value} ");
+
+            SetProperty(ref ConnectionState_, value);
+        }
+    }
     protected EConnectionState ConnectionState_;
 
 
@@ -632,14 +644,14 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
     protected void OnConnected_()
     {
-        Logger?.Info($"Connected:{this.Dump()}");
+        Logger?.Info($"Connected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
 
         ConnectionState = EConnectionState.Connected;
     }
 
     protected void OnDisconnected_()
     {
-        Logger?.Info($"DisConnected:{this.Dump()}");
+        Logger?.Info($"DisConnected:{this.Dump(new DumpOptions(){ExcludeProperties = new List<string>(){"Logger"}})}");
 
         //RealtimeBarsSubscriptions_.Clear();
         //RealtimeBarsSubscriptionReqs_.Clear();
@@ -677,7 +689,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             IsLogined = true;
 
             SessionId = e.Rsp2.SessionID;
-            OrderRef_ = Convert.ToInt32(e.Rsp2.MaxOrderRef);
+            MaxOrderRef_ = Convert.ToInt32(e.Rsp2.MaxOrderRef);
             FrontId   = e.Rsp2.FrontID;
 
             DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
@@ -693,7 +705,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -715,8 +727,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             Password = Password
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqUserLogin(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqUserLogin(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLoginEvent += onRspUserLoginHandler;
@@ -749,7 +761,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -769,8 +781,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             UserID   = UserId
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqUserLogout(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqUserLogout(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLogoutEvent += onRspUserLogoutHandler;
@@ -805,7 +817,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -826,8 +838,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             InvestorID = UserId
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqSettlementInfoConfirm(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqSettlementInfoConfirm(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspSettlementInfoConfirmEvent += onRspSettlementInfoConfirmHandler;
@@ -844,7 +856,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         return taskSource.Task;
     }
 
-    public Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync()
+    public async Task<CtpRsp<CThostFtdcTradingAccountField>> ReqQryTradingAccountAsync()
     {
         var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcTradingAccountField>>();
         var reqId      = GetNextRequestId();
@@ -861,7 +873,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -882,8 +894,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             InvestorID = UserId
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqQryTradingAccount(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        // 有时候需要停顿一会才能查询成功
+        await Task.Delay(700);
+
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqQryTradingAccount(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryTradingAccountEvent += onRspQryTradingAccountHandler;
@@ -897,7 +912,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
     }
 
 
@@ -913,20 +928,20 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspQryInvestorPositionHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 l.Add(e.Rsp2);
                 if (e.IsLast)
                 {
                     clearHandler();
 
-                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestId, e.IsLast));
+                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestID, e.IsLast));
                 }
             }
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -948,8 +963,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             InstrumentID = instrumentID
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqQryInvestorPosition(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqQryInvestorPosition(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryInvestorPositionEvent += onRspQryInvestorPositionHandler;
@@ -977,7 +992,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspQryInstrumentHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -986,7 +1001,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -1006,8 +1021,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             InstrumentID = instrumentID
         };
 
-        ECtpRtn ret = (ECtpRtn)ReqQryInstrument(ref field, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqQryInstrument(ref field, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryInstrumentEvent += onRspQryInstrumentHandler;
@@ -1024,12 +1039,13 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         return taskSource.Task;
     }
 
-    public Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField pQryOrder)
+    public Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? o = null)
     {
         var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcOrderField>>>();
         var                                   reqId      = GetNextRequestId();
         List<CThostFtdcOrderField> l          = new List<CThostFtdcOrderField>();
 
+        var pQryOrder = o.GetValueOrDefault();
         pQryOrder.BrokerID   = BrokerId;
         pQryOrder.InvestorID = UserId;
 
@@ -1039,20 +1055,20 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspQryOrderHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 l.Add(e.Rsp2);
                 if (e.IsLast)
                 {
                     clearHandler();
 
-                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestId, e.IsLast));
+                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestID, e.IsLast));
                 }
             }
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -1066,8 +1082,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             OnRspErrorEvent               -= onRspErrorHandler;
         }
      
-        ECtpRtn ret = (ECtpRtn)ReqQryOrder(ref pQryOrder, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqQryOrder(ref pQryOrder, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryOrderEvent += onRspQryOrderHandler;
@@ -1085,12 +1101,13 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
     }
 
-    public Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField pQryTrade)
+    public Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField? o)
     {
         var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcTradeField>>>();
         var                                   reqId      = GetNextRequestId();
         List<CThostFtdcTradeField> l          = new List<CThostFtdcTradeField>();
 
+        var pQryTrade = o.GetValueOrDefault();
         pQryTrade.BrokerID   = BrokerId;
         pQryTrade.InvestorID = UserId;
 
@@ -1100,20 +1117,20 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspQryTradeHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 l.Add(e.Rsp2);
                 if (e.IsLast)
                 {
                     clearHandler();
 
-                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestId, e.IsLast));
+                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestID, e.IsLast));
                 }
             }
         };
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -1127,8 +1144,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             OnRspErrorEvent               -= onRspErrorHandler;
         }
      
-        ECtpRtn ret = (ECtpRtn)ReqQryTrade(ref pQryTrade, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqQryTrade(ref pQryTrade, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryTradeEvent += onRspQryTradeHandler;
@@ -1150,9 +1167,9 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     // 如果成功，会返回onRtnOrderEvent
-    public Task<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>> ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder)
+    public Task<CtpRsp<CThostFtdcOrderField?>> ReqOrderInsertAsync(CThostFtdcInputOrderField pInputOrder)
     {
-        var taskSource = new TaskCompletionSource<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderField>>>();
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcOrderField?>>();
         var reqId      = GetNextRequestId();
 
         pInputOrder.BrokerID   = BrokerId;
@@ -1160,55 +1177,58 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         pInputOrder.UserID     = UserId;
         pInputOrder.OrderRef   = GetNextOrderRef().ToString();
 
-
-        EventHandler<CtpRsp<CThostFtdcInputOrderField>> onRspOrderInsertHandler = null;
+            // 成功
         EventHandler<CThostFtdcOrderField>              onRtnOrderHandler       = null;
-        EventHandler<CtpRsp>                            onRspErrorHandler       = null;
+            //失败
+        EventHandler<CtpRsp<CThostFtdcInputOrderField>> onRspOrderInsertHandler = null;
+        EventHandler<Tuple<CThostFtdcInputOrderField, CThostFtdcRspInfoField>> onErrRtnOrderInsertHandler = null;
+
+        onRtnOrderHandler = (s, e) =>
+        {
+            //todo: 判断是否经过了交易所
+            if (e.OrderRef == pInputOrder.OrderRef )
+            {
+                clearHandler();
+
+                taskSource.TrySetResult(new(){Rsp2 = e});
+            }
+        };
 
         onRspOrderInsertHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.Rsp2.OrderRef == pInputOrder.OrderRef)
             {
                 clearHandler();
 
-                taskSource.TrySetResult(new(null, e));
-            }
-        };
-        onRtnOrderHandler = (s, e) =>
-        {
-            if (e.OrderRef == pInputOrder.OrderRef)
-            {
-                clearHandler();
-
-                taskSource.TrySetResult(new(e, null));
+                taskSource.TrySetResult(new(){Rsp = e.Rsp, RequestID = e.RequestID, IsLast = e.IsLast});
             }
         };
 
-        onRspErrorHandler = (s, e) =>
+        onErrRtnOrderInsertHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.Item1.OrderRef == pInputOrder.OrderRef)
             {
                 clearHandler();
 
-                taskSource.TrySetException(new CtpException(e));
+                taskSource.TrySetResult(new (){Rsp = e.Item2});
             }
         };
 
         void clearHandler()
         {
-            OnRspOrderInsertEvent -= onRspOrderInsertHandler;
             OnRtnOrderEvent       -= onRtnOrderHandler;
-            OnRspErrorEvent       -= onRspErrorHandler;
+            OnRspOrderInsertEvent -= onRspOrderInsertHandler;
+                OnErrRtnOrderInsertEvent -=onErrRtnOrderInsertHandler ;
         }
 
 
-        ECtpRtn ret = (ECtpRtn)ReqOrderInsert(ref pInputOrder, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(null, new(ret))); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqOrderInsert(ref pInputOrder, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
-            OnRspOrderInsertEvent += onRspOrderInsertHandler;
             OnRtnOrderEvent       += onRtnOrderHandler;
-            OnRspErrorEvent       += onRspErrorHandler;
+            OnRspOrderInsertEvent += onRspOrderInsertHandler;
+            OnErrRtnOrderInsertEvent       += onErrRtnOrderInsertHandler;
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
             tokenSource.Token.Register(() =>
@@ -1239,7 +1259,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspOrderActionHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -1258,7 +1278,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         onRspErrorHandler = (s, e) =>
         {
-            if (e.RequestId == reqId)
+            if (e.RequestID == reqId)
             {
                 clearHandler();
 
@@ -1274,8 +1294,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         }
 
 
-        ECtpRtn ret = (ECtpRtn)ReqOrderAction(ref pInputOrderAction, reqId);
-        if (ret != ECtpRtn.Sucess) { taskSource.TrySetResult(new(null, new(ret))); }
+        ECtpLocalRtn ret = (ECtpLocalRtn)ReqOrderAction(ref pInputOrderAction, reqId);
+        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(null, new(ret))); }
         else
         {
             OnRspOrderActionEvent += onRspOrderActionHandler;
@@ -1500,8 +1520,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         {
             //object callback;
             //if (_dataCallbackDict.TryGetValue(requestID, out callback))
-            //	(callback as CtpRsp).Rtn = (ECtpRtn)ret;
-            _ExecuteCallback(requestID, new CtpRsp((ECtpRtn)ret));
+            //	(callback as CtpRsp).LocalRtn = (ECtpLocalRtn)ret;
+            _ExecuteCallback(requestID, new CtpRsp((ECtpLocalRtn)ret));
         }
 
 

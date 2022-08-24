@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "TdSpi.h"
 
-extern "C"  // ä»¥Cçš„æ–¹å¼å¯¼å‡ºå‡½æ•°å
+extern "C"  // ÒÔCµÄ·½Ê½µ¼³öº¯ÊıÃû
 {
 #pragma  region Api
 
@@ -10,307 +10,307 @@ extern "C"  // ä»¥Cçš„æ–¹å¼å¯¼å‡ºå‡½æ•°å
 	TDAPI_API TraderSpi*	CreateTdSpi();
 	TDAPI_API void			RegisterSpi(CThostFtdcTraderApi* api, TraderSpi* pSpi);
 
-	//è·å–æ¥å£ç‰ˆæœ¬
+	//»ñÈ¡½Ó¿Ú°æ±¾
 	TDAPI_API const char*	GetApiVersion();
 
-	//è¿æ¥
+	//Á¬½Ó
 	//	TDAPI_API CThostFtdcTraderApi* Connect(char* frontAddr, char* pszFlowPath, TraderSpi* pSpi);
-	////æ–­å¼€
+	////¶Ï¿ª
 	//	TDAPI_API void		DisConnect(CThostFtdcTraderApi* pApi);
 
-		///åˆ é™¤æ¥å£å¯¹è±¡æœ¬èº«
-		///@remark ä¸å†ä½¿ç”¨æœ¬æ¥å£å¯¹è±¡æ—¶,è°ƒç”¨è¯¥å‡½æ•°åˆ é™¤æ¥å£å¯¹è±¡
+		///É¾³ı½Ó¿Ú¶ÔÏó±¾Éí
+		///@remark ²»ÔÙÊ¹ÓÃ±¾½Ó¿Ú¶ÔÏóÊ±,µ÷ÓÃ¸Ãº¯ÊıÉ¾³ı½Ó¿Ú¶ÔÏó
 	TDAPI_API void			Release(CThostFtdcTraderApi* api);
 
-	///åˆå§‹åŒ–
-	///@remark åˆå§‹åŒ–è¿è¡Œç¯å¢ƒ,åªæœ‰è°ƒç”¨å,æ¥å£æ‰å¼€å§‹å·¥ä½œ
+	///³õÊ¼»¯
+	///@remark ³õÊ¼»¯ÔËĞĞ»·¾³,Ö»ÓĞµ÷ÓÃºó,½Ó¿Ú²Å¿ªÊ¼¹¤×÷
 	TDAPI_API void			Init(CThostFtdcTraderApi* api);
 
-	///ç­‰å¾…æ¥å£çº¿ç¨‹ç»“æŸè¿è¡Œ
-	///@return çº¿ç¨‹é€€å‡ºä»£ç 
+	///µÈ´ı½Ó¿ÚÏß³Ì½áÊøÔËĞĞ
+	///@return Ïß³ÌÍË³ö´úÂë
 	TDAPI_API int			Join(CThostFtdcTraderApi* api);
 
 
-	//è·å–äº¤æ˜“æ—¥
+	//»ñÈ¡½»Ò×ÈÕ
 	TDAPI_API const char*	GetTradingDay(CThostFtdcTraderApi* pApi);
 
 
-	///æ³¨å†Œå‰ç½®æœºç½‘ç»œåœ°å€
-	///@param pszFrontAddressï¼šå‰ç½®æœºç½‘ç»œåœ°å€ã€‚
-	///@remark ç½‘ç»œåœ°å€çš„æ ¼å¼ä¸ºï¼šâ€œprotocol://ipaddress:portâ€ï¼Œå¦‚ï¼šâ€tcp://127.0.0.1:17001â€ã€‚ 
-	///@remark â€œtcpâ€ä»£è¡¨ä¼ è¾“åè®®ï¼Œâ€œ127.0.0.1â€ä»£è¡¨æœåŠ¡å™¨åœ°å€ã€‚â€17001â€ä»£è¡¨æœåŠ¡å™¨ç«¯å£å·ã€‚
+	///×¢²áÇ°ÖÃ»úÍøÂçµØÖ·
+	///@param pszFrontAddress£ºÇ°ÖÃ»úÍøÂçµØÖ·¡£
+	///@remark ÍøÂçµØÖ·µÄ¸ñÊ½Îª£º¡°protocol://ipaddress:port¡±£¬Èç£º¡±tcp://127.0.0.1:17001¡±¡£ 
+	///@remark ¡°tcp¡±´ú±í´«ÊäĞ­Òé£¬¡°127.0.0.1¡±´ú±í·şÎñÆ÷µØÖ·¡£¡±17001¡±´ú±í·şÎñÆ÷¶Ë¿ÚºÅ¡£
 	TDAPI_API void			RegisterFront(CThostFtdcTraderApi* pApi, char* pszFrontAddress);
 
-	///æ³¨å†Œåå­—æœåŠ¡å™¨ç½‘ç»œåœ°å€
-	///@param pszNsAddressï¼šåå­—æœåŠ¡å™¨ç½‘ç»œåœ°å€ã€‚
-	///@remark ç½‘ç»œåœ°å€çš„æ ¼å¼ä¸ºï¼šâ€œprotocol://ipaddress:portâ€ï¼Œå¦‚ï¼šâ€tcp://127.0.0.1:12001â€ã€‚ 
-	///@remark â€œtcpâ€ä»£è¡¨ä¼ è¾“åè®®ï¼Œâ€œ127.0.0.1â€ä»£è¡¨æœåŠ¡å™¨åœ°å€ã€‚â€12001â€ä»£è¡¨æœåŠ¡å™¨ç«¯å£å·ã€‚
-	///@remark RegisterNameServerä¼˜å…ˆäºRegisterFront
+	///×¢²áÃû×Ö·şÎñÆ÷ÍøÂçµØÖ·
+	///@param pszNsAddress£ºÃû×Ö·şÎñÆ÷ÍøÂçµØÖ·¡£
+	///@remark ÍøÂçµØÖ·µÄ¸ñÊ½Îª£º¡°protocol://ipaddress:port¡±£¬Èç£º¡±tcp://127.0.0.1:12001¡±¡£ 
+	///@remark ¡°tcp¡±´ú±í´«ÊäĞ­Òé£¬¡°127.0.0.1¡±´ú±í·şÎñÆ÷µØÖ·¡£¡±12001¡±´ú±í·şÎñÆ÷¶Ë¿ÚºÅ¡£
+	///@remark RegisterNameServerÓÅÏÈÓÚRegisterFront
 	TDAPI_API void			RegisterNameServer(CThostFtdcTraderApi* pApi, char* pszNsAddress);
 
-	///æ³¨å†Œåå­—æœåŠ¡å™¨ç”¨æˆ·ä¿¡æ¯
-	///@param pFensUserInfoï¼šç”¨æˆ·ä¿¡æ¯ã€‚
+	///×¢²áÃû×Ö·şÎñÆ÷ÓÃ»§ĞÅÏ¢
+	///@param pFensUserInfo£ºÓÃ»§ĞÅÏ¢¡£
 	TDAPI_API void			RegisterFensUserInfo(CThostFtdcTraderApi* pApi, CThostFtdcFensUserInfoField* pFensUserInfo);
 
-	///è®¢é˜…ç§æœ‰æµã€‚
-	///@param nResumeType ç§æœ‰æµé‡ä¼ æ–¹å¼  
-	///        THOST_TERT_RESTART:ä»æœ¬äº¤æ˜“æ—¥å¼€å§‹é‡ä¼ 
-	///        THOST_TERT_RESUME:ä»ä¸Šæ¬¡æ”¶åˆ°çš„ç»­ä¼ 
-	///        THOST_TERT_QUICK:åªä¼ é€ç™»å½•åç§æœ‰æµçš„å†…å®¹
-	///@remark è¯¥æ–¹æ³•è¦åœ¨Initæ–¹æ³•å‰è°ƒç”¨ã€‚è‹¥ä¸è°ƒç”¨åˆ™ä¸ä¼šæ”¶åˆ°ç§æœ‰æµçš„æ•°æ®ã€‚
+	///¶©ÔÄË½ÓĞÁ÷¡£
+	///@param nResumeType Ë½ÓĞÁ÷ÖØ´«·½Ê½  
+	///        THOST_TERT_RESTART:´Ó±¾½»Ò×ÈÕ¿ªÊ¼ÖØ´«
+	///        THOST_TERT_RESUME:´ÓÉÏ´ÎÊÕµ½µÄĞø´«
+	///        THOST_TERT_QUICK:Ö»´«ËÍµÇÂ¼ºóË½ÓĞÁ÷µÄÄÚÈİ
+	///@remark ¸Ã·½·¨ÒªÔÚInit·½·¨Ç°µ÷ÓÃ¡£Èô²»µ÷ÓÃÔò²»»áÊÕµ½Ë½ÓĞÁ÷µÄÊı¾İ¡£
 	TDAPI_API void			SubscribePrivateTopic(CThostFtdcTraderApi* pApi, THOST_TE_RESUME_TYPE nResumeType);
 
-	///è®¢é˜…å…¬å…±æµã€‚
-	///@param nResumeType å…¬å…±æµé‡ä¼ æ–¹å¼  
-	///        THOST_TERT_RESTART:ä»æœ¬äº¤æ˜“æ—¥å¼€å§‹é‡ä¼ 
-	///        THOST_TERT_RESUME:ä»ä¸Šæ¬¡æ”¶åˆ°çš„ç»­ä¼ 
-	///        THOST_TERT_QUICK:åªä¼ é€ç™»å½•åå…¬å…±æµçš„å†…å®¹
-	///@remark è¯¥æ–¹æ³•è¦åœ¨Initæ–¹æ³•å‰è°ƒç”¨ã€‚è‹¥ä¸è°ƒç”¨åˆ™ä¸ä¼šæ”¶åˆ°å…¬å…±æµçš„æ•°æ®ã€‚
+	///¶©ÔÄ¹«¹²Á÷¡£
+	///@param nResumeType ¹«¹²Á÷ÖØ´«·½Ê½  
+	///        THOST_TERT_RESTART:´Ó±¾½»Ò×ÈÕ¿ªÊ¼ÖØ´«
+	///        THOST_TERT_RESUME:´ÓÉÏ´ÎÊÕµ½µÄĞø´«
+	///        THOST_TERT_QUICK:Ö»´«ËÍµÇÂ¼ºó¹«¹²Á÷µÄÄÚÈİ
+	///@remark ¸Ã·½·¨ÒªÔÚInit·½·¨Ç°µ÷ÓÃ¡£Èô²»µ÷ÓÃÔò²»»áÊÕµ½¹«¹²Á÷µÄÊı¾İ¡£
 	TDAPI_API void			SubscribePublicTopic(CThostFtdcTraderApi* pApi, THOST_TE_RESUME_TYPE nResumeType);
 
 
 
 #pragma region Login/out
 
-	//å®¢æˆ·ç«¯è®¤è¯è¯·æ±‚
+	//¿Í»§¶ËÈÏÖ¤ÇëÇó
 	TDAPI_API int			ReqAuthenticate(CThostFtdcTraderApi* pApi, CThostFtdcReqAuthenticateField* field, int nRequestID);
 
 
-	///æ³¨å†Œç”¨æˆ·ç»ˆç«¯ä¿¡æ¯ï¼Œç”¨äºä¸­ç»§æœåŠ¡å™¨å¤šè¿æ¥æ¨¡å¼
-	///éœ€è¦åœ¨ç»ˆç«¯è®¤è¯æˆåŠŸåï¼Œç”¨æˆ·ç™»å½•å‰è°ƒç”¨è¯¥æ¥å£
+	///×¢²áÓÃ»§ÖÕ¶ËĞÅÏ¢£¬ÓÃÓÚÖĞ¼Ì·şÎñÆ÷¶àÁ¬½ÓÄ£Ê½
+	///ĞèÒªÔÚÖÕ¶ËÈÏÖ¤³É¹¦ºó£¬ÓÃ»§µÇÂ¼Ç°µ÷ÓÃ¸Ã½Ó¿Ú
 	TDAPI_API int			RegisterUserSystemInfo(CThostFtdcTraderApi* pApi, CThostFtdcUserSystemInfoField* pUserSystemInfo);
-	///ä¸ŠæŠ¥ç”¨æˆ·ç»ˆç«¯ä¿¡æ¯ï¼Œç”¨äºä¸­ç»§æœåŠ¡å™¨æ“ä½œå‘˜ç™»å½•æ¨¡å¼
-	///æ“ä½œå‘˜ç™»å½•åï¼Œå¯ä»¥å¤šæ¬¡è°ƒç”¨è¯¥æ¥å£ä¸ŠæŠ¥å®¢æˆ·ä¿¡æ¯
+	///ÉÏ±¨ÓÃ»§ÖÕ¶ËĞÅÏ¢£¬ÓÃÓÚÖĞ¼Ì·şÎñÆ÷²Ù×÷Ô±µÇÂ¼Ä£Ê½
+	///²Ù×÷Ô±µÇÂ¼ºó£¬¿ÉÒÔ¶à´Îµ÷ÓÃ¸Ã½Ó¿ÚÉÏ±¨¿Í»§ĞÅÏ¢
 	TDAPI_API int			SubmitUserSystemInfo(CThostFtdcTraderApi* pApi, CThostFtdcUserSystemInfoField* pUserSystemInfo);
 
 
-	//å‘é€ç”¨æˆ·ç™»å½•è¯·æ±‚
+	//·¢ËÍÓÃ»§µÇÂ¼ÇëÇó
 	TDAPI_API int			ReqUserLogin(CThostFtdcTraderApi* pApi, CThostFtdcReqUserLoginField* pReqUserLoginField, int nRequestID);
-	//å‘é€ç™»å‡ºè¯·æ±‚
+	//·¢ËÍµÇ³öÇëÇó
 	TDAPI_API int			ReqUserLogout(CThostFtdcTraderApi* pApi, CThostFtdcUserLogoutField* pUserLogout, int nRequestID);
 
 
-	///ç”¨æˆ·å£ä»¤æ›´æ–°è¯·æ±‚
+	///ÓÃ»§¿ÚÁî¸üĞÂÇëÇó
 	TDAPI_API int		ReqUserPasswordUpdate(CThostFtdcTraderApi* pApi, CThostFtdcUserPasswordUpdateField* pUserPasswordUpdate, int nRequestID);
 
-	///èµ„é‡‘è´¦æˆ·å£ä»¤æ›´æ–°è¯·æ±‚
+	///×Ê½ğÕË»§¿ÚÁî¸üĞÂÇëÇó
 	TDAPI_API int		ReqTradingAccountPasswordUpdate(CThostFtdcTraderApi* pApi, CThostFtdcTradingAccountPasswordUpdateField* pTradingAccountPasswordUpdate, int nRequestID);
 
-	///æŸ¥è¯¢ç”¨æˆ·å½“å‰æ”¯æŒçš„è®¤è¯æ¨¡å¼
+	///²éÑ¯ÓÃ»§µ±Ç°Ö§³ÖµÄÈÏÖ¤Ä£Ê½
 	TDAPI_API int		ReqUserAuthMethod(CThostFtdcTraderApi* pApi, CThostFtdcReqUserAuthMethodField* pReqUserAuthMethod, int nRequestID);
 
-	///ç”¨æˆ·å‘å‡ºè·å–å›¾å½¢éªŒè¯ç è¯·æ±‚
+	///ÓÃ»§·¢³ö»ñÈ¡Í¼ĞÎÑéÖ¤ÂëÇëÇó
 	TDAPI_API int		ReqGenUserCaptcha(CThostFtdcTraderApi* pApi, CThostFtdcReqGenUserCaptchaField* pReqGenUserCaptcha, int	nRequestID);
 
-	///ç”¨æˆ·å‘å‡ºè·å–çŸ­ä¿¡éªŒè¯ç è¯·æ±‚
+	///ÓÃ»§·¢³ö»ñÈ¡¶ÌĞÅÑéÖ¤ÂëÇëÇó
 	TDAPI_API int		ReqGenUserText(CThostFtdcTraderApi* pApi, CThostFtdcReqGenUserTextField* pReqGenUserText, int nRequestID);
 
-	///ç”¨æˆ·å‘å‡ºå¸¦æœ‰å›¾ç‰‡éªŒè¯ç çš„ç™»é™†è¯·æ±‚
+	///ÓÃ»§·¢³ö´øÓĞÍ¼Æ¬ÑéÖ¤ÂëµÄµÇÂ½ÇëÇó
 	TDAPI_API int		ReqUserLoginWithCaptcha(CThostFtdcTraderApi* pApi, CThostFtdcReqUserLoginWithCaptchaField* pReqUserLoginWithCaptcha, int nRequestID);
 
-	///ç”¨æˆ·å‘å‡ºå¸¦æœ‰çŸ­ä¿¡éªŒè¯ç çš„ç™»é™†è¯·æ±‚
+	///ÓÃ»§·¢³ö´øÓĞ¶ÌĞÅÑéÖ¤ÂëµÄµÇÂ½ÇëÇó
 	TDAPI_API int		ReqUserLoginWithText(CThostFtdcTraderApi* pApi, CThostFtdcReqUserLoginWithTextField* pReqUserLoginWithText, int	nRequestID);
 
-	///ç”¨æˆ·å‘å‡ºå¸¦æœ‰åŠ¨æ€å£ä»¤çš„ç™»é™†è¯·æ±‚
+	///ÓÃ»§·¢³ö´øÓĞ¶¯Ì¬¿ÚÁîµÄµÇÂ½ÇëÇó
 	TDAPI_API int		ReqUserLoginWithOTP(CThostFtdcTraderApi* pApi, CThostFtdcReqUserLoginWithOTPField* pReqUserLoginWithOTP, int nRequestID);
 
 #pragma endregion
 
-	///è¯·æ±‚æŸ¥è¯¢è¯¢ä»·
+	///ÇëÇó²éÑ¯Ñ¯¼Û
 	TDAPI_API int		ReqQryForQuote(CThostFtdcTraderApi* pApi, CThostFtdcQryForQuoteField* pQryForQuote, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æŠ¥ä»·
+	///ÇëÇó²éÑ¯±¨¼Û
 	TDAPI_API int		ReqQryQuote(CThostFtdcTraderApi* pApi, CThostFtdcQryQuoteField* pQryQuote, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢è¡Œæƒ…
+	///ÇëÇó²éÑ¯ĞĞÇé
 	TDAPI_API int		ReqQryDepthMarketData(CThostFtdcTraderApi* pApi, CThostFtdcQryDepthMarketDataField* pQryDepthMarketData, int nRequestID);
 
 #pragma region Order management
-	///æŠ¥å•å½•å…¥è¯·æ±‚
+	///±¨µ¥Â¼ÈëÇëÇó
 	TDAPI_API int		ReqOrderInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputOrderField* pInputOrder, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æŠ¥å•
+	///ÇëÇó²éÑ¯±¨µ¥
 	TDAPI_API int		ReqQryOrder(CThostFtdcTraderApi* pApi, CThostFtdcQryOrderField* pQryOrder, int nRequestID);
-	///æŸ¥è¯¢æœ€å¤§æŠ¥å•æ•°é‡è¯·æ±‚
+	///²éÑ¯×î´ó±¨µ¥ÊıÁ¿ÇëÇó
 	TDAPI_API int		ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, CThostFtdcQueryMaxOrderVolumeField* pQueryMaxOrderVolume, int nRequestID);
-	///æŠ¥å•æ“ä½œè¯·æ±‚
+	///±¨µ¥²Ù×÷ÇëÇó
 	TDAPI_API int		ReqOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputOrderActionField* pInputOrderAction, int nRequestID);
-	///æ‰¹é‡æŠ¥å•æ“ä½œè¯·æ±‚
+	///ÅúÁ¿±¨µ¥²Ù×÷ÇëÇó
 	TDAPI_API int		ReqBatchOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputBatchOrderActionField* pInputBatchOrderAction, int nRequestID);
 
-	///é¢„åŸ‹å•å½•å…¥è¯·æ±‚
+	///Ô¤Âñµ¥Â¼ÈëÇëÇó
 	TDAPI_API int		ReqParkedOrderInsert(CThostFtdcTraderApi* pApi, CThostFtdcParkedOrderField* pParkedOrder, int nRequestID);
-	///é¢„åŸ‹æ’¤å•å½•å…¥è¯·æ±‚
+	///Ô¤Âñ³·µ¥Â¼ÈëÇëÇó
 	TDAPI_API int		ReqParkedOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcParkedOrderActionField* pParkedOrderAction, int nRequestID);
-	///è¯·æ±‚åˆ é™¤é¢„åŸ‹å•
+	///ÇëÇóÉ¾³ıÔ¤Âñµ¥
 	TDAPI_API int		ReqRemoveParkedOrder(CThostFtdcTraderApi* pApi, CThostFtdcRemoveParkedOrderField* pRemoveParkedOrder, int nRequestID);
-	///è¯·æ±‚åˆ é™¤é¢„åŸ‹æ’¤å•
+	///ÇëÇóÉ¾³ıÔ¤Âñ³·µ¥
 	TDAPI_API int		ReqRemoveParkedOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcRemoveParkedOrderActionField* pRemoveParkedOrderAction, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢é¢„åŸ‹å•
+	///ÇëÇó²éÑ¯Ô¤Âñµ¥
 	TDAPI_API int		ReqQryParkedOrder(CThostFtdcTraderApi* pApi, CThostFtdcQryParkedOrderField* pQryParkedOrder, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢é¢„åŸ‹æ’¤å•
+	///ÇëÇó²éÑ¯Ô¤Âñ³·µ¥
 	TDAPI_API int		ReqQryParkedOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcQryParkedOrderActionField* pQryParkedOrderAction, int nRequestID);
 
 #pragma endregion
 
-	///è¯·æ±‚æŸ¥è¯¢æˆäº¤
+	///ÇëÇó²éÑ¯³É½»
 	TDAPI_API int		ReqQryTrade(CThostFtdcTraderApi* pApi, CThostFtdcQryTradeField* pQryTrade, int nRequestID);
 
-		///è¯·æ±‚æŸ¥è¯¢å®¢æˆ·é€šçŸ¥
+		///ÇëÇó²éÑ¯¿Í»§Í¨Öª
 	TDAPI_API int		ReqQryNotice(CThostFtdcTraderApi* pApi, CThostFtdcQryNoticeField* pQryNotice, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“é€šçŸ¥
+	///ÇëÇó²éÑ¯½»Ò×Í¨Öª
 	TDAPI_API int		ReqQryTradingNotice(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingNoticeField* pQryTradingNotice, int nRequestID);
 
 
-	///è¯·æ±‚æŸ¥è¯¢æ‰§è¡Œå®£å‘Š
+	///ÇëÇó²éÑ¯Ö´ĞĞĞû¸æ
 	TDAPI_API int		ReqQryExecOrder(CThostFtdcTraderApi* pApi, CThostFtdcQryExecOrderField* pQryExecOrder, int nRequestID);
-	///æ‰§è¡Œå®£å‘Šå½•å…¥è¯·æ±‚
+	///Ö´ĞĞĞû¸æÂ¼ÈëÇëÇó
 	TDAPI_API int		ReqExecOrderInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputExecOrderField* pInputExecOrder, int nRequestID);
-	///æ‰§è¡Œå®£å‘Šæ“ä½œè¯·æ±‚
+	///Ö´ĞĞĞû¸æ²Ù×÷ÇëÇó
 	TDAPI_API int		ReqExecOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputExecOrderActionField* pInputExecOrderAction, int nRequestID);
 
 
-	///è¯¢ä»·å½•å…¥è¯·æ±‚
+	///Ñ¯¼ÛÂ¼ÈëÇëÇó
 	TDAPI_API int		ReqForQuoteInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputForQuoteField* pInputForQuote, int nRequestID);
-	///æŠ¥ä»·å½•å…¥è¯·æ±‚
+	///±¨¼ÛÂ¼ÈëÇëÇó
 	TDAPI_API int		ReqQuoteInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputQuoteField* pInputQuote, int nRequestID);
-	///æŠ¥ä»·æ“ä½œè¯·æ±‚
+	///±¨¼Û²Ù×÷ÇëÇó
 	TDAPI_API int		ReqQuoteAction(CThostFtdcTraderApi* pApi, CThostFtdcInputQuoteActionField* pInputQuoteAction, int nRequestID);
 
 
 
-	///ç”³è¯·ç»„åˆå½•å…¥è¯·æ±‚
+	///ÉêÇë×éºÏÂ¼ÈëÇëÇó
 	TDAPI_API int		ReqCombActionInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputCombActionField* pInputCombAction, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢ç»„åˆåˆçº¦å®‰å…¨ç³»æ•°
+	///ÇëÇó²éÑ¯×éºÏºÏÔ¼°²È«ÏµÊı
 	TDAPI_API int		ReqQryCombInstrumentGuard(CThostFtdcTraderApi* pApi, CThostFtdcQryCombInstrumentGuardField* pQryCombInstrumentGuard, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢ç”³è¯·ç»„åˆ
+	///ÇëÇó²éÑ¯ÉêÇë×éºÏ
 	TDAPI_API int		ReqQryCombAction(CThostFtdcTraderApi* pApi, CThostFtdcQryCombActionField* pQryCombAction, int nRequestID);
 
 
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“
+	///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²Ö
 	TDAPI_API int		ReqQryInvestorPosition(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestorPositionField* pQryInvestorPosition, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“æ˜ç»†
+	///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÃ÷Ï¸
 	TDAPI_API int		ReqQryInvestorPositionDetail(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestorPositionDetailField* pQryInvestorPositionDetail, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“æ˜ç»†
+	///ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÃ÷Ï¸
 	TDAPI_API int		ReqQryInvestorPositionCombineDetail(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestorPositionCombineDetailField* pQryInvestorPositionCombineDetail, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·
+	///ÇëÇó²éÑ¯×Ê½ğÕË»§
 	TDAPI_API int		ReqQryTradingAccount(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingAccountField* pQryTradingAccount, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…
+	///ÇëÇó²éÑ¯Í¶×ÊÕß
 	TDAPI_API int		ReqQryInvestor(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestorField* pQryInvestor, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“ç¼–ç 
+	///ÇëÇó²éÑ¯½»Ò×±àÂë
 	TDAPI_API int		ReqQryTradingCode(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingCodeField* pQryTradingCode, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„å•å…ƒ
+	///ÇëÇó²éÑ¯Í¶×Êµ¥Ôª
 	TDAPI_API int		ReqQryInvestUnit(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestUnitField* pQryInvestUnit, int nRequestID);
 
 
-#pragma region ç»“ç®—
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…ç»“ç®—ç»“æœ
+#pragma region ½áËã
+	///ÇëÇó²éÑ¯Í¶×ÊÕß½áËã½á¹û
 	TDAPI_API int		ReqQrySettlementInfo(CThostFtdcTraderApi* pApi, CThostFtdcQrySettlementInfoField* pQrySettlementInfo, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢ç»“ç®—ä¿¡æ¯ç¡®è®¤
+	///ÇëÇó²éÑ¯½áËãĞÅÏ¢È·ÈÏ
 	TDAPI_API int		ReqQrySettlementInfoConfirm(CThostFtdcTraderApi* pApi, CThostFtdcQrySettlementInfoConfirmField* pQrySettlementInfoConfirm, int nRequestID);
-	///æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤
+	///Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏ
 	TDAPI_API int		ReqSettlementInfoConfirm(CThostFtdcTraderApi* pApi, CThostFtdcSettlementInfoConfirmField* pSettlementInfoConfirm, int nRequestID);
 #pragma endregion
 
 
 #pragma region product/Instrument
-	///è¯·æ±‚æŸ¥è¯¢äº§å“
+	///ÇëÇó²éÑ¯²úÆ·
 	TDAPI_API int		ReqQryProduct(CThostFtdcTraderApi* pApi, CThostFtdcQryProductField* pQryProduct, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äº§å“æŠ¥ä»·æ±‡ç‡
+	///ÇëÇó²éÑ¯²úÆ·±¨¼Û»ãÂÊ
 	TDAPI_API int		ReqQryProductExchRate(CThostFtdcTraderApi* pApi, CThostFtdcQryProductExchRateField* pQryProductExchRate, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äº§å“ç»„
+	///ÇëÇó²éÑ¯²úÆ·×é
 	TDAPI_API int		ReqQryProductGroup(CThostFtdcTraderApi* pApi, CThostFtdcQryProductGroupField* pQryProductGroup, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢åˆçº¦
+	///ÇëÇó²éÑ¯ºÏÔ¼
 	TDAPI_API int		ReqQryInstrument(CThostFtdcTraderApi* pApi, CThostFtdcQryInstrumentField* pQryInstrument, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢åˆçº¦ä¿è¯é‡‘ç‡
+	///ÇëÇó²éÑ¯ºÏÔ¼±£Ö¤½ğÂÊ
 	TDAPI_API int		ReqQryInstrumentMarginRate(CThostFtdcTraderApi* pApi, CThostFtdcQryInstrumentMarginRateField* pQryInstrumentMarginRate, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢åˆçº¦æ‰‹ç»­è´¹ç‡
+	///ÇëÇó²éÑ¯ºÏÔ¼ÊÖĞø·ÑÂÊ
 	TDAPI_API int		ReqQryInstrumentCommissionRate(CThostFtdcTraderApi* pApi, CThostFtdcQryInstrumentCommissionRateField* pQryInstrumentCommissionRate, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…å“ç§/è·¨å“ç§ä¿è¯é‡‘
+	///ÇëÇó²éÑ¯Í¶×ÊÕßÆ·ÖÖ/¿çÆ·ÖÖ±£Ö¤½ğ
 	TDAPI_API int		ReqQryInvestorProductGroupMargin(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestorProductGroupMarginField* pQryInvestorProductGroupMargin, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢åšå¸‚å•†åˆçº¦æ‰‹ç»­è´¹ç‡
+	///ÇëÇó²éÑ¯×öÊĞÉÌºÏÔ¼ÊÖĞø·ÑÂÊ
 	TDAPI_API int		ReqQryMMInstrumentCommissionRate(CThostFtdcTraderApi* pApi, CThostFtdcQryMMInstrumentCommissionRateField* pQryMMInstrumentCommissionRate, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢åšå¸‚å•†æœŸæƒåˆçº¦æ‰‹ç»­è´¹
+	///ÇëÇó²éÑ¯×öÊĞÉÌÆÚÈ¨ºÏÔ¼ÊÖĞø·Ñ
 	TDAPI_API int		ReqQryMMOptionInstrCommRate(CThostFtdcTraderApi* pApi, CThostFtdcQryMMOptionInstrCommRateField* pQryMMOptionInstrCommRate, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢ä»“å•æŠ˜æŠµä¿¡æ¯
+	///ÇëÇó²éÑ¯²Öµ¥ÕÛµÖĞÅÏ¢
 	TDAPI_API int		ReqQryEWarrantOffset(CThostFtdcTraderApi* pApi, CThostFtdcQryEWarrantOffsetField* pQryEWarrantOffset, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢æŠ¥å•æ‰‹ç»­è´¹
+	///ÇëÇó²éÑ¯±¨µ¥ÊÖĞø·Ñ
 	TDAPI_API int		ReqQryInstrumentOrderCommRate(CThostFtdcTraderApi* pApi, CThostFtdcQryInstrumentOrderCommRateField* pQryInstrumentOrderCommRate, int nRequestID);
 #pragma endregion
 
 
-#pragma region äºŒçº§ä»£ç†/sec agent
-	///è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·
+#pragma region ¶ş¼¶´úÀí/sec agent
+	///ÇëÇó²éÑ¯×Ê½ğÕË»§
 	TDAPI_API int		ReqQrySecAgentTradingAccount(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingAccountField* pQryTradingAccount, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†æ“ä½œå‘˜é“¶æœŸæƒé™
+	///ÇëÇó²éÑ¯¶ş¼¶´úÀí²Ù×÷Ô±ÒøÆÚÈ¨ÏŞ
 	TDAPI_API int		ReqQrySecAgentACIDMap(CThostFtdcTraderApi* pApi, CThostFtdcQrySecAgentACIDMapField* pQrySecAgentACIDMap, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†å•†èµ„é‡‘æ ¡éªŒæ¨¡å¼
+	///ÇëÇó²éÑ¯¶ş¼¶´úÀíÉÌ×Ê½ğĞ£ÑéÄ£Ê½
 	TDAPI_API int		ReqQrySecAgentCheckMode(CThostFtdcTraderApi* pApi, CThostFtdcQrySecAgentCheckModeField* pQrySecAgentCheckMode, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†å•†ä¿¡æ¯
+	///ÇëÇó²éÑ¯¶ş¼¶´úÀíÉÌĞÅÏ¢
 	TDAPI_API int		ReqQrySecAgentTradeInfo(CThostFtdcTraderApi* pApi, CThostFtdcQrySecAgentTradeInfoField* pQrySecAgentTradeInfo, int nRequestID);
 #pragma endregion
 
 
-#pragma region æœŸæƒoption
-	///æœŸæƒè‡ªå¯¹å†²å½•å…¥è¯·æ±‚
+#pragma region ÆÚÈ¨option
+	///ÆÚÈ¨×Ô¶Ô³åÂ¼ÈëÇëÇó
 	TDAPI_API int		ReqOptionSelfCloseInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputOptionSelfCloseField* pInputOptionSelfClose, int nRequestID);
-	///æœŸæƒè‡ªå¯¹å†²æ“ä½œè¯·æ±‚
+	///ÆÚÈ¨×Ô¶Ô³å²Ù×÷ÇëÇó
 	TDAPI_API int		ReqOptionSelfCloseAction(CThostFtdcTraderApi* pApi, CThostFtdcInputOptionSelfCloseActionField* pInputOptionSelfCloseAction, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢æœŸæƒäº¤æ˜“æˆæœ¬
+	///ÇëÇó²éÑ¯ÆÚÈ¨½»Ò×³É±¾
 	TDAPI_API int		ReqQryOptionInstrTradeCost(CThostFtdcTraderApi* pApi, CThostFtdcQryOptionInstrTradeCostField* pQryOptionInstrTradeCost, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æœŸæƒåˆçº¦æ‰‹ç»­è´¹
+	///ÇëÇó²éÑ¯ÆÚÈ¨ºÏÔ¼ÊÖĞø·Ñ
 	TDAPI_API int		ReqQryOptionInstrCommRate(CThostFtdcTraderApi* pApi, CThostFtdcQryOptionInstrCommRateField* pQryOptionInstrCommRate, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æœŸæƒè‡ªå¯¹å†²
+	///ÇëÇó²éÑ¯ÆÚÈ¨×Ô¶Ô³å
 	TDAPI_API int		ReqQryOptionSelfClose(CThostFtdcTraderApi* pApi, CThostFtdcQryOptionSelfCloseField* pQryOptionSelfClose, int nRequestID);
 #pragma endregion
 
 
 #pragma region Banking
-	///è¯·æ±‚æŸ¥è¯¢è½¬å¸é“¶è¡Œ
+	///ÇëÇó²éÑ¯×ªÕÊÒøĞĞ
 	TDAPI_API int		ReqQryTransferBank(CThostFtdcTraderApi* pApi, CThostFtdcQryTransferBankField* pQryTransferBank, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢é“¶æœŸç­¾çº¦å…³ç³»
+	///ÇëÇó²éÑ¯ÒøÆÚÇ©Ô¼¹ØÏµ
 	TDAPI_API int		ReqQryAccountregister(CThostFtdcTraderApi* pApi, CThostFtdcQryAccountregisterField* pQryAccountregister, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢ç­¾çº¦é“¶è¡Œ
+	///ÇëÇó²éÑ¯Ç©Ô¼ÒøĞĞ
 	TDAPI_API int		ReqQryContractBank(CThostFtdcTraderApi* pApi, CThostFtdcQryContractBankField* pQryContractBank, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢è½¬å¸æµæ°´
+	///ÇëÇó²éÑ¯×ªÕÊÁ÷Ë®
 	TDAPI_API int		ReqQryTransferSerial(CThostFtdcTraderApi* pApi, CThostFtdcQryTransferSerialField* pQryTransferSerial, int nRequestID);
-	///æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢è¯·æ±‚
+	///ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶îÇëÇó
 	TDAPI_API int		ReqQueryBankAccountMoneyByFuture(CThostFtdcTraderApi* pApi, CThostFtdcReqQueryAccountField* pReqQueryAccount, int nRequestID);
 
-	///æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§è¯·æ±‚
+	///ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÇëÇó
 	TDAPI_API int		ReqFromBankToFutureByFuture(CThostFtdcTraderApi* pApi, CThostFtdcReqTransferField* pReqTransfer, int nRequestID);
-	///æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œè¯·æ±‚
+	///ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÇëÇó
 	TDAPI_API int		ReqFromFutureToBankByFuture(CThostFtdcTraderApi* pApi, CThostFtdcReqTransferField* pReqTransfer, int nRequestID);
 #pragma endregion
 
 
-#pragma region Exchange/äº¤æ˜“æ‰€
-	///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€
+#pragma region Exchange/½»Ò×Ëù
+	///ÇëÇó²éÑ¯½»Ò×Ëù
 	TDAPI_API int		ReqQryExchange(CThostFtdcTraderApi* pApi, CThostFtdcQryExchangeField* pQryExchange, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€ä¿è¯é‡‘ç‡
+	///ÇëÇó²éÑ¯½»Ò×Ëù±£Ö¤½ğÂÊ
 	TDAPI_API int		ReqQryExchangeMarginRate(CThostFtdcTraderApi* pApi, CThostFtdcQryExchangeMarginRateField* pQryExchangeMarginRate, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€è°ƒæ•´ä¿è¯é‡‘ç‡
+	///ÇëÇó²éÑ¯½»Ò×Ëùµ÷Õû±£Ö¤½ğÂÊ
 	TDAPI_API int		ReqQryExchangeMarginRateAdjust(CThostFtdcTraderApi* pApi, CThostFtdcQryExchangeMarginRateAdjustField* pQryExchangeMarginRateAdjust, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢æ±‡ç‡
+	///ÇëÇó²éÑ¯»ãÂÊ
 	TDAPI_API int		ReqQryExchangeRate(CThostFtdcTraderApi* pApi, CThostFtdcQryExchangeRateField* pQryExchangeRate, int nRequestID);
 #pragma endregion
 
 
 #pragma region Broker
-	///è¯·æ±‚æŸ¥è¯¢ç»çºªå…¬å¸äº¤æ˜“å‚æ•°
+	///ÇëÇó²éÑ¯¾­¼Í¹«Ë¾½»Ò×²ÎÊı
 	TDAPI_API int		ReqQryBrokerTradingParams(CThostFtdcTraderApi* pApi, CThostFtdcQryBrokerTradingParamsField* pQryBrokerTradingParams, int nRequestID);
-	///è¯·æ±‚æŸ¥è¯¢ç»çºªå…¬å¸äº¤æ˜“ç®—æ³•
+	///ÇëÇó²éÑ¯¾­¼Í¹«Ë¾½»Ò×Ëã·¨
 	TDAPI_API int		ReqQryBrokerTradingAlgos(CThostFtdcTraderApi* pApi, CThostFtdcQryBrokerTradingAlgosField* pQryBrokerTradingAlgos, int nRequestID);
 #pragma endregion
 
 #pragma region CFMMC
-	///è¯·æ±‚æŸ¥è¯¢ç›‘æ§ä¸­å¿ƒç”¨æˆ·ä»¤ç‰Œ
+	///ÇëÇó²éÑ¯¼à¿ØÖĞĞÄÓÃ»§ÁîÅÆ
 	TDAPI_API int		ReqQueryCFMMCTradingAccountToken(CThostFtdcTraderApi* pApi, CThostFtdcQueryCFMMCTradingAccountTokenField* pQueryCFMMCTradingAccountToken, int nRequestID);
 
-	///è¯·æ±‚æŸ¥è¯¢ä¿è¯é‡‘ç›‘ç®¡ç³»ç»Ÿç»çºªå…¬å¸èµ„é‡‘è´¦æˆ·å¯†é’¥
+	///ÇëÇó²éÑ¯±£Ö¤½ğ¼à¹ÜÏµÍ³¾­¼Í¹«Ë¾×Ê½ğÕË»§ÃÜÔ¿
 	TDAPI_API int		ReqQryCFMMCTradingAccountKey(CThostFtdcTraderApi* pApi, CThostFtdcQryCFMMCTradingAccountKeyField* pQryCFMMCTradingAccountKey, int nRequestID);
 #pragma endregion
 
@@ -319,120 +319,122 @@ extern "C"  // ä»¥Cçš„æ–¹å¼å¯¼å‡ºå‡½æ•°å
 
 #pragma endregion
 
-#pragma region æ³¨å†Œå›è°ƒå‡½æ•°
+#pragma region ×¢²á»Øµ÷º¯Êı
 	//========================================
-	//==================================== å›è°ƒå‡½æ•° =======================================
-	TDAPI_API void RegOnRspError(TraderSpi* pSpi, CBOnRspError cb);	//é”™è¯¯åº”ç­”
-	TDAPI_API void RegOnHeartBeatWarning(TraderSpi* pSpi, CBOnHeartBeatWarning cb);		//å¿ƒè·³è¶…æ—¶è­¦å‘Šã€‚å½“é•¿æ—¶é—´æœªæ”¶åˆ°æŠ¥æ–‡æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
+	//==================================== »Øµ÷º¯Êı =======================================
+	TDAPI_API void RegOnRspError(TraderSpi* pSpi, CBOnRspError cb);	//´íÎóÓ¦´ğ
+	TDAPI_API void RegOnHeartBeatWarning(TraderSpi* pSpi, CBOnHeartBeatWarning cb);		//ĞÄÌø³¬Ê±¾¯¸æ¡£µ±³¤Ê±¼äÎ´ÊÕµ½±¨ÎÄÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£
 
-	TDAPI_API void RegOnRspFrontConnected(TraderSpi* pSpi, CBOnRspFrontConnected cb);		//å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°å»ºç«‹èµ·é€šä¿¡è¿æ¥æ—¶ï¼ˆè¿˜æœªç™»å½•å‰ï¼‰ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚
-	TDAPI_API void RegOnRspFrontDisconnected(TraderSpi* pSpi, CBOnRspFrontDisconnected cb);		//å½“å®¢æˆ·ç«¯ä¸äº¤æ˜“åå°é€šä¿¡è¿æ¥æ–­å¼€æ—¶ï¼Œè¯¥æ–¹æ³•è¢«è°ƒç”¨ã€‚å½“å‘ç”Ÿè¿™ä¸ªæƒ…å†µåï¼ŒAPIä¼šè‡ªåŠ¨é‡æ–°è¿æ¥ï¼Œå®¢æˆ·ç«¯å¯ä¸åšå¤„ç†ã€‚
+	TDAPI_API void RegOnRspFrontConnected(TraderSpi* pSpi, CBOnRspFrontConnected cb);		//µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨½¨Á¢ÆğÍ¨ĞÅÁ¬½ÓÊ±£¨»¹Î´µÇÂ¼Ç°£©£¬¸Ã·½·¨±»µ÷ÓÃ¡£
+	TDAPI_API void RegOnRspFrontDisconnected(TraderSpi* pSpi, CBOnRspFrontDisconnected cb);		//µ±¿Í»§¶ËÓë½»Ò×ºóÌ¨Í¨ĞÅÁ¬½Ó¶Ï¿ªÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£µ±·¢ÉúÕâ¸öÇé¿öºó£¬API»á×Ô¶¯ÖØĞÂÁ¬½Ó£¬¿Í»§¶Ë¿É²»×ö´¦Àí¡£
 
 	TDAPI_API void RegOnRspAuthenticate(TraderSpi* pSpi, CBOnRspAuthenticate cb);
 
-	TDAPI_API void RegOnRspUserLogin(TraderSpi* pSpi, CBOnRspUserLogin cb);	//ç™»å½•è¯·æ±‚å“åº”
-	TDAPI_API void RegOnRspUserLogout(TraderSpi* pSpi, CBOnRspUserLogout cb);	//ç™»å‡ºè¯·æ±‚å“åº”
+	TDAPI_API void RegOnRspUserLogin(TraderSpi* pSpi, CBOnRspUserLogin cb);	//µÇÂ¼ÇëÇóÏìÓ¦
+	TDAPI_API void RegOnRspUserLogout(TraderSpi* pSpi, CBOnRspUserLogout cb);	//µÇ³öÇëÇóÏìÓ¦
 
-	TDAPI_API void RegOnRspSettlementInfoConfirm(TraderSpi* pSpi, CBOnRspSettlementInfoConfirm cb);	//æŠ•èµ„è€…ç»“ç®—ç»“æœç¡®è®¤å“åº”
+	TDAPI_API void RegOnRspSettlementInfoConfirm(TraderSpi* pSpi, CBOnRspSettlementInfoConfirm cb);	//Í¶×ÊÕß½áËã½á¹ûÈ·ÈÏÏìÓ¦
 
-	TDAPI_API void RegOnRspQryTradingAccount(TraderSpi* pSpi, CBOnRspQryTradingAccount cb);	//è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·å“åº”
+	TDAPI_API void RegOnRspQryTradingAccount(TraderSpi* pSpi, CBOnRspQryTradingAccount cb);	//ÇëÇó²éÑ¯×Ê½ğÕË»§ÏìÓ¦
 
-	TDAPI_API void RegOnRspQryInvestorPosition(TraderSpi* pSpi, CBOnRspQryInvestorPosition cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“å“åº”
+	TDAPI_API void RegOnRspQryInvestorPosition(TraderSpi* pSpi, CBOnRspQryInvestorPosition cb);	//ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÏìÓ¦
 
-	TDAPI_API void RegOnRspQryInstrument(TraderSpi* pSpi, CBOnRspQryInstrument cb);	//è¯·æ±‚æŸ¥è¯¢åˆçº¦å“åº”
+	TDAPI_API void RegOnRspQryInstrument(TraderSpi* pSpi, CBOnRspQryInstrument cb);	//ÇëÇó²éÑ¯ºÏÔ¼ÏìÓ¦
 
-	TDAPI_API void RegOnRspQryOrder(TraderSpi* pSpi, CBOnRspQryOrder cb);	//è¯·æ±‚æŸ¥è¯¢æŠ¥å•å“åº”
-	TDAPI_API void RegOnRspQryTrade(TraderSpi* pSpi, CBOnRspQryTrade cb);	//è¯·æ±‚æŸ¥è¯¢æˆäº¤å“åº”
-	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//æŠ¥å•å½•å…¥è¯·æ±‚å“åº”
-	TDAPI_API void RegOnRtnOrder(TraderSpi* pSpi, CBOnRtnOrder cb);	//æŠ¥å•é€šçŸ¥
-	TDAPI_API void RegOnRtnTrade(TraderSpi* pSpi, CBOnRtnTrade cb);	//æˆäº¤é€šçŸ¥
-	TDAPI_API void RegOnErrRtnOrderInsert(TraderSpi* pSpi, CBOnErrRtnOrderInsert cb);	//æŠ¥å•å½•å…¥é”™è¯¯å›æŠ¥
-	TDAPI_API void RegOnErrRtnOrderAction(TraderSpi* pSpi, CBOnErrRtnOrderAction cb);	//æŠ¥å•æ“ä½œé”™è¯¯å›æŠ¥
+	TDAPI_API void RegOnRspQryOrder(TraderSpi* pSpi, CBOnRspQryOrder cb);	//ÇëÇó²éÑ¯±¨µ¥ÏìÓ¦
+	TDAPI_API void RegOnRspQryTrade(TraderSpi* pSpi, CBOnRspQryTrade cb);	//ÇëÇó²éÑ¯³É½»ÏìÓ¦
+	TDAPI_API void RegOnRspOrderInsert(TraderSpi* pSpi, CBOnRspOrderInsert cb);	//±¨µ¥Â¼ÈëÇëÇóÏìÓ¦
+	TDAPI_API void RegOnRtnOrder(TraderSpi* pSpi, CBOnRtnOrder cb);	//±¨µ¥Í¨Öª
+	TDAPI_API void RegOnRtnTrade(TraderSpi* pSpi, CBOnRtnTrade cb);	//³É½»Í¨Öª
+	TDAPI_API void RegOnErrRtnOrderInsert(TraderSpi* pSpi, CBOnErrRtnOrderInsert cb);	//±¨µ¥Â¼Èë´íÎó»Ø±¨
+	TDAPI_API void RegOnErrRtnOrderAction(TraderSpi* pSpi, CBOnErrRtnOrderAction cb);	//±¨µ¥²Ù×÷´íÎó»Ø±¨
 	
 
 
 
-	TDAPI_API void RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb);	//ç”¨æˆ·å£ä»¤æ›´æ–°è¯·æ±‚å“åº”
-	TDAPI_API void RegRspTradingAccountPasswordUpdate(TraderSpi* pSpi, CBRspTradingAccountPasswordUpdate cb);	//èµ„é‡‘è´¦æˆ·å£ä»¤æ›´æ–°è¯·æ±‚å“åº”
-	TDAPI_API void RegRspUserAuthMethod(TraderSpi* pSpi, CBRspUserAuthMethod cb);	//æŸ¥è¯¢ç”¨æˆ·å½“å‰æ”¯æŒçš„è®¤è¯æ¨¡å¼çš„å›å¤
-	TDAPI_API void RegRspGenUserCaptcha(TraderSpi* pSpi, CBRspGenUserCaptcha cb);	//è·å–å›¾å½¢éªŒè¯ç è¯·æ±‚çš„å›å¤
-	TDAPI_API void RegRspGenUserText(TraderSpi* pSpi, CBRspGenUserText cb);	//è·å–çŸ­ä¿¡éªŒè¯ç è¯·æ±‚çš„å›å¤
-	TDAPI_API void RegRspParkedOrderInsert(TraderSpi* pSpi, CBRspParkedOrderInsert cb);	//é¢„åŸ‹å•å½•å…¥è¯·æ±‚å“åº”
-	TDAPI_API void RegRspParkedOrderAction(TraderSpi* pSpi, CBRspParkedOrderAction cb);	//é¢„åŸ‹æ’¤å•å½•å…¥è¯·æ±‚å“åº”
-	TDAPI_API void RegRspOrderAction(TraderSpi* pSpi, CBRspOrderAction cb);	//æŠ¥å•æ“ä½œè¯·æ±‚å“åº”
-	TDAPI_API void RegRspQueryMaxOrderVolume(TraderSpi* pSpi, CBRspQueryMaxOrderVolume cb);	//æŸ¥è¯¢æœ€å¤§æŠ¥å•æ•°é‡å“åº”
-	TDAPI_API void RegRspRemoveParkedOrder(TraderSpi* pSpi, CBRspRemoveParkedOrder cb);	//åˆ é™¤é¢„åŸ‹å•å“åº”
-	TDAPI_API void RegRspRemoveParkedOrderAction(TraderSpi* pSpi, CBRspRemoveParkedOrderAction cb);	//åˆ é™¤é¢„åŸ‹æ’¤å•å“åº”
-	TDAPI_API void RegBatchOrderAction(TraderSpi* pSpi, CBRspBatchOrderAction cb);	//æ‰¹é‡æŠ¥å•æ“ä½œè¯·æ±‚å“åº”
-	TDAPI_API void RegCombActionInsert(TraderSpi* pSpi, CBRspCombActionInsert cb);	//ç”³è¯·ç»„åˆå½•å…¥è¯·æ±‚å“åº”
-	TDAPI_API void RegRspQryInvestor(TraderSpi* pSpi, CBRspQryInvestor cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…å“åº”
-	TDAPI_API void RegRspQryTradingCode(TraderSpi* pSpi, CBRspQryTradingCode cb);	//è¯·æ±‚æŸ¥è¯¢äº¤æ˜“ç¼–ç å“åº”
-	TDAPI_API void RegRspQryInstrumentMarginRate(TraderSpi* pSpi, CBRspQryInstrumentMarginRate cb);	//è¯·æ±‚æŸ¥è¯¢åˆçº¦ä¿è¯é‡‘ç‡å“åº”
-	TDAPI_API void RegRspQryInstrumentCommissionRate(TraderSpi* pSpi, CBRspQryInstrumentCommissionRate cb);	//è¯·æ±‚æŸ¥è¯¢åˆçº¦æ‰‹ç»­è´¹ç‡å“åº”
-	TDAPI_API void RegRspQryExchange(TraderSpi* pSpi, CBRspQryExchange cb);	//è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€å“åº”
-	TDAPI_API void RegRspQryDepthMarketData(TraderSpi* pSpi, CBRspQryDepthMarketData cb);	//è¯·æ±‚æŸ¥è¯¢è¡Œæƒ…å“åº”
-	TDAPI_API void RegRspQrySettlementInfo(TraderSpi* pSpi, CBRspQrySettlementInfo cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…ç»“ç®—ç»“æœå“åº”
-	TDAPI_API void RegRspQryTransferBank(TraderSpi* pSpi, CBRspQryTransferBank cb);	//è¯·æ±‚æŸ¥è¯¢è½¬å¸é“¶è¡Œå“åº”
-	TDAPI_API void RegRspQryInvestorPositionDetail(TraderSpi* pSpi, CBRspQryInvestorPositionDetail cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“æ˜ç»†å“åº”
-	TDAPI_API void RegRspQryNotice(TraderSpi* pSpi, CBRspQryNotice cb);	//è¯·æ±‚æŸ¥è¯¢å®¢æˆ·é€šçŸ¥å“åº”
-	TDAPI_API void RegRspQrySettlementInfoConfirm(TraderSpi* pSpi, CBRspQrySettlementInfoConfirm cb);	//è¯·æ±‚æŸ¥è¯¢ç»“ç®—ä¿¡æ¯ç¡®è®¤å“åº”
-	TDAPI_API void RegRspQryInvestorPositionCombineDetail(TraderSpi* pSpi, CBRspQryInvestorPositionCombineDetail cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…æŒä»“æ˜ç»†å“åº”
-	TDAPI_API void RegRspQryCFMMCTradingAccountKey(TraderSpi* pSpi, CBRspQryCFMMCTradingAccountKey cb);	//æŸ¥è¯¢ä¿è¯é‡‘ç›‘ç®¡ç³»ç»Ÿç»çºªå…¬å¸èµ„é‡‘è´¦æˆ·å¯†é’¥å“åº”
-	TDAPI_API void RegRspQryEWarrantOffset(TraderSpi* pSpi, CBRspQryEWarrantOffset cb);	//è¯·æ±‚æŸ¥è¯¢ä»“å•æŠ˜æŠµä¿¡æ¯
-	TDAPI_API void RegRspQryInvestorProductGroupMargin(TraderSpi* pSpi, CBRspQryInvestorProductGroupMargin cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„è€…å“ç§/è·¨å“ç§ä¿è¯é‡‘
-	TDAPI_API void RegRspQryExchangeMarginRate(TraderSpi* pSpi, CBRspQryExchangeMarginRate cb);	//è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€ä¿è¯é‡‘ç‡
-	TDAPI_API void RegRspQryExchangeMarginRateAdjust(TraderSpi* pSpi, CBRspQryExchangeMarginRateAdjust cb);	//è¯·æ±‚æŸ¥è¯¢äº¤æ˜“æ‰€è°ƒæ•´ä¿è¯é‡‘ç‡
-	TDAPI_API void RegRspQryExchangeRate(TraderSpi* pSpi, CBRspQryExchangeRate cb);	//è¯·æ±‚æŸ¥è¯¢æ±‡ç‡å“åº”
-	TDAPI_API void RegRspQrySecAgentACIDMap(TraderSpi* pSpi, CBRspQrySecAgentACIDMap cb);	//è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†æ“ä½œå‘˜é“¶æœŸæƒé™å“åº”
-	TDAPI_API void RegRspQryProductExchRate(TraderSpi* pSpi, CBRspQryProductExchRate cb);	//è¯·æ±‚æŸ¥è¯¢äº§å“æŠ¥ä»·æ±‡ç‡
-	TDAPI_API void RegRspQryProductGroup(TraderSpi* pSpi, CBRspQryProductGroup cb);	//è¯·æ±‚æŸ¥è¯¢äº§å“ç»„
-	TDAPI_API void RegRspQryMMInstrumentCommissionRate(TraderSpi* pSpi, CBRspQryMMInstrumentCommissionRate cb);	//è¯·æ±‚æŸ¥è¯¢åšå¸‚å•†åˆçº¦æ‰‹ç»­è´¹ç‡å“åº”
-	TDAPI_API void RegRspQryMMOptionInstrCommRate(TraderSpi* pSpi, CBRspQryMMOptionInstrCommRate cb);	//è¯·æ±‚æŸ¥è¯¢åšå¸‚å•†æœŸæƒåˆçº¦æ‰‹ç»­è´¹å“åº”
-	TDAPI_API void RegRspQryInstrumentOrderCommRate(TraderSpi* pSpi, CBRspQryInstrumentOrderCommRate cb);	//è¯·æ±‚æŸ¥è¯¢æŠ¥å•æ‰‹ç»­è´¹å“åº”
-	TDAPI_API void RegRspQrySecAgentTradingAccount(TraderSpi* pSpi, CBRspQrySecAgentTradingAccount cb);	//è¯·æ±‚æŸ¥è¯¢èµ„é‡‘è´¦æˆ·å“åº”
-	TDAPI_API void RegRspQrySecAgentCheckMode(TraderSpi* pSpi, CBRspQrySecAgentCheckMode cb);	//è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†å•†èµ„é‡‘æ ¡éªŒæ¨¡å¼å“åº”
-	TDAPI_API void RegRspQrySecAgentTradeInfo(TraderSpi* pSpi, CBRspQrySecAgentTradeInfo cb);	//è¯·æ±‚æŸ¥è¯¢äºŒçº§ä»£ç†å•†ä¿¡æ¯å“åº”
-	TDAPI_API void RegRspQryOptionInstrTradeCost(TraderSpi* pSpi, CBRspQryOptionInstrTradeCost cb);	//è¯·æ±‚æŸ¥è¯¢æœŸæƒäº¤æ˜“æˆæœ¬å“åº”
-	TDAPI_API void RegRspQryOptionInstrCommRate(TraderSpi* pSpi, CBRspQryOptionInstrCommRate cb);	//è¯·æ±‚æŸ¥è¯¢æœŸæƒåˆçº¦æ‰‹ç»­è´¹å“åº”
-	TDAPI_API void RegRspQryExecOrder(TraderSpi* pSpi, CBRspQryExecOrder cb);	//è¯·æ±‚æŸ¥è¯¢æ‰§è¡Œå®£å‘Šå“åº”
-	TDAPI_API void RegRspQryForQuote(TraderSpi* pSpi, CBRspQryForQuote cb);	//è¯·æ±‚æŸ¥è¯¢è¯¢ä»·å“åº”
-	TDAPI_API void RegRspQryQuote(TraderSpi* pSpi, CBRspQryQuote cb);	//è¯·æ±‚æŸ¥è¯¢æŠ¥ä»·å“åº”
-	TDAPI_API void RegRspQryOptionSelfClose(TraderSpi* pSpi, CBRspQryOptionSelfClose cb);	//è¯·æ±‚æŸ¥è¯¢æœŸæƒè‡ªå¯¹å†²å“åº”
-	TDAPI_API void RegRspQryInvestUnit(TraderSpi* pSpi, CBRspQryInvestUnit cb);	//è¯·æ±‚æŸ¥è¯¢æŠ•èµ„å•å…ƒå“åº”
-	TDAPI_API void RegRspQryCombInstrumentGuard(TraderSpi* pSpi, CBRspQryCombInstrumentGuard cb);	//è¯·æ±‚æŸ¥è¯¢ç»„åˆåˆçº¦å®‰å…¨ç³»æ•°å“åº”
-	TDAPI_API void RegRspQryCombAction(TraderSpi* pSpi, CBRspQryCombAction cb);	//è¯·æ±‚æŸ¥è¯¢ç”³è¯·ç»„åˆå“åº”
-	TDAPI_API void RegRspQryTransferSerial(TraderSpi* pSpi, CBRspQryTransferSerial cb);	//è¯·æ±‚æŸ¥è¯¢è½¬å¸æµæ°´å“åº”
-	TDAPI_API void RegOnRspQryAccountregister(TraderSpi* pSpi, CBOnRspQryAccountregister cb);	//è¯·æ±‚æŸ¥è¯¢é“¶æœŸç­¾çº¦å…³ç³»å“åº”
-	TDAPI_API void RegRtnInstrumentStatus(TraderSpi* pSpi, CBRtnInstrumentStatus cb);	//åˆçº¦äº¤æ˜“çŠ¶æ€é€šçŸ¥
-	TDAPI_API void RegRtnTradingNotice(TraderSpi* pSpi, CBRtnTradingNotice cb);	//äº¤æ˜“é€šçŸ¥
-	TDAPI_API void RegRtnErrorConditionalOrder(TraderSpi* pSpi, CBRtnErrorConditionalOrder cb);	//æç¤ºæ¡ä»¶å•æ ¡éªŒé”™è¯¯
-	TDAPI_API void RegRspQryContractBank(TraderSpi* pSpi, CBRspQryContractBank cb);	//è¯·æ±‚æŸ¥è¯¢ç­¾çº¦é“¶è¡Œå“åº”
-	TDAPI_API void RegRspQryParkedOrder(TraderSpi* pSpi, CBRspQryParkedOrder cb);	//è¯·æ±‚æŸ¥è¯¢é¢„åŸ‹å•å“åº”
-	TDAPI_API void RegRspQryParkedOrderAction(TraderSpi* pSpi, CBRspQryParkedOrderAction cb);	//è¯·æ±‚æŸ¥è¯¢é¢„åŸ‹æ’¤å•å“åº”
-	TDAPI_API void RegRspQryTradingNotice(TraderSpi* pSpi, CBRspQryTradingNotice cb);	//è¯·æ±‚æŸ¥è¯¢äº¤æ˜“é€šçŸ¥å“åº”
-	TDAPI_API void RegRspQryBrokerTradingParams(TraderSpi* pSpi, CBRspQryBrokerTradingParams cb);	//è¯·æ±‚æŸ¥è¯¢ç»çºªå…¬å¸äº¤æ˜“å‚æ•°å“åº”
-	TDAPI_API void RegRspQryBrokerTradingAlgos(TraderSpi* pSpi, CBRspQryBrokerTradingAlgos cb);	//è¯·æ±‚æŸ¥è¯¢ç»çºªå…¬å¸äº¤æ˜“ç®—æ³•å“åº”
-	TDAPI_API void RegRtnFromBankToFutureByBank(TraderSpi* pSpi, CBRtnFromBankToFutureByBank cb);	//é“¶è¡Œå‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§é€šçŸ¥
-	TDAPI_API void RegRtnFromFutureToBankByBank(TraderSpi* pSpi, CBRtnFromFutureToBankByBank cb);	//é“¶è¡Œå‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œé€šçŸ¥
-	TDAPI_API void RegRtnRepealFromBankToFutureByBank(TraderSpi* pSpi, CBRtnRepealFromBankToFutureByBank cb);	//é“¶è¡Œå‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§é€šçŸ¥
-	TDAPI_API void RegRtnRepealFromFutureToBankByBank(TraderSpi* pSpi, CBRtnRepealFromFutureToBankByBank cb);	//é“¶è¡Œå‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œé€šçŸ¥
-	TDAPI_API void RegRtnFromBankToFutureByFuture(TraderSpi* pSpi, CBRtnFromBankToFutureByFuture cb);	//æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§é€šçŸ¥
-	TDAPI_API void RegRtnFromFutureToBankByFuture(TraderSpi* pSpi, CBRtnFromFutureToBankByFuture cb);	//æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œé€šçŸ¥
-	TDAPI_API void RegRtnRepealFromBankToFutureByFutureManual(TraderSpi* pSpi, CBRtnRepealFromBankToFutureByFutureManual cb);	//ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§è¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
-	TDAPI_API void RegRtnRepealFromFutureToBankByFutureManual(TraderSpi* pSpi, CBRtnRepealFromFutureToBankByFutureManual cb);	//ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œè¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
-	TDAPI_API void RegRtnQueryBankBalanceByFuture(TraderSpi* pSpi, CBRtnQueryBankBalanceByFuture cb);	//æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢é€šçŸ¥
-	TDAPI_API void RegErrRtnBankToFutureByFuture(TraderSpi* pSpi, CBErrRtnBankToFutureByFuture cb);	//æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§é”™è¯¯å›æŠ¥
-	TDAPI_API void RegErrRtnFutureToBankByFuture(TraderSpi* pSpi, CBErrRtnFutureToBankByFuture cb);	//æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œé”™è¯¯å›æŠ¥
-	TDAPI_API void RegErrRtnRepealBankToFutureByFutureManual(TraderSpi* pSpi, CBErrRtnRepealBankToFutureByFutureManual cb);	//ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§é”™è¯¯å›æŠ¥
-	TDAPI_API void RegErrRtnRepealFutureToBankByFutureManual(TraderSpi* pSpi, CBErrRtnRepealFutureToBankByFutureManual cb);	//ç³»ç»Ÿè¿è¡Œæ—¶æœŸè´§ç«¯æ‰‹å·¥å‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œé”™è¯¯å›æŠ¥
-	TDAPI_API void RegErrRtnQueryBankBalanceByFuture(TraderSpi* pSpi, CBErrRtnQueryBankBalanceByFuture cb);	//æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢é”™è¯¯å›æŠ¥
-	TDAPI_API void RegRtnRepealFromBankToFutureByFuture(TraderSpi* pSpi, CBRtnRepealFromBankToFutureByFuture cb);	//æœŸè´§å‘èµ·å†²æ­£é“¶è¡Œè½¬æœŸè´§è¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
-	TDAPI_API void RegRtnRepealFromFutureToBankByFuture(TraderSpi* pSpi, CBRtnRepealFromFutureToBankByFuture cb);	//æœŸè´§å‘èµ·å†²æ­£æœŸè´§è½¬é“¶è¡Œè¯·æ±‚ï¼Œé“¶è¡Œå¤„ç†å®Œæ¯•åæŠ¥ç›˜å‘å›çš„é€šçŸ¥
-	TDAPI_API void RegRspFromBankToFutureByFuture(TraderSpi* pSpi, CBRspFromBankToFutureByFuture cb);	//æœŸè´§å‘èµ·é“¶è¡Œèµ„é‡‘è½¬æœŸè´§åº”ç­”
-	TDAPI_API void RegRspFromFutureToBankByFuture(TraderSpi* pSpi, CBRspFromFutureToBankByFuture cb);	//æœŸè´§å‘èµ·æœŸè´§èµ„é‡‘è½¬é“¶è¡Œåº”ç­”
-	TDAPI_API void RegRspQueryBankAccountMoneyByFuture(TraderSpi* pSpi, CBRspQueryBankAccountMoneyByFuture cb);	//æœŸè´§å‘èµ·æŸ¥è¯¢é“¶è¡Œä½™é¢åº”ç­”
-	TDAPI_API void RegRspQueryCFMMCTradingAccountToken(TraderSpi* pSpi, CBRspQueryCFMMCTradingAccountToken cb);	//æŸ¥è¯¢ç›‘æ§ä¸­å¿ƒç”¨æˆ·ä»¤ç‰Œåº”ç­”
-	TDAPI_API void RegRtnCFMMCTradingAccountToken(TraderSpi* pSpi, CBRtnCFMMCTradingAccountToken cb);	//æŸ¥è¯¢ç›‘æ§ä¸­å¿ƒç”¨æˆ·ä»¤ç‰Œé€šçŸ¥
+	TDAPI_API void RegRspUserPasswordUpdate(TraderSpi* pSpi, CBRspUserPasswordUpdate cb);	//ÓÃ»§¿ÚÁî¸üĞÂÇëÇóÏìÓ¦
+	TDAPI_API void RegRspTradingAccountPasswordUpdate(TraderSpi* pSpi, CBRspTradingAccountPasswordUpdate cb);	//×Ê½ğÕË»§¿ÚÁî¸üĞÂÇëÇóÏìÓ¦
+	TDAPI_API void RegRspUserAuthMethod(TraderSpi* pSpi, CBRspUserAuthMethod cb);	//²éÑ¯ÓÃ»§µ±Ç°Ö§³ÖµÄÈÏÖ¤Ä£Ê½µÄ»Ø¸´
+	TDAPI_API void RegRspGenUserCaptcha(TraderSpi* pSpi, CBRspGenUserCaptcha cb);	//»ñÈ¡Í¼ĞÎÑéÖ¤ÂëÇëÇóµÄ»Ø¸´
+	TDAPI_API void RegRspGenUserText(TraderSpi* pSpi, CBRspGenUserText cb);	//»ñÈ¡¶ÌĞÅÑéÖ¤ÂëÇëÇóµÄ»Ø¸´
+	TDAPI_API void RegRspParkedOrderInsert(TraderSpi* pSpi, CBRspParkedOrderInsert cb);	//Ô¤Âñµ¥Â¼ÈëÇëÇóÏìÓ¦
+	TDAPI_API void RegRspParkedOrderAction(TraderSpi* pSpi, CBRspParkedOrderAction cb);	//Ô¤Âñ³·µ¥Â¼ÈëÇëÇóÏìÓ¦
+
+	TDAPI_API void RegOnRspOrderAction(TraderSpi* pSpi, CBOnRspOrderAction cb);	//±¨µ¥²Ù×÷ÇëÇóÏìÓ¦
+
+	TDAPI_API void RegRspQueryMaxOrderVolume(TraderSpi* pSpi, CBRspQueryMaxOrderVolume cb);	//²éÑ¯×î´ó±¨µ¥ÊıÁ¿ÏìÓ¦
+	TDAPI_API void RegRspRemoveParkedOrder(TraderSpi* pSpi, CBRspRemoveParkedOrder cb);	//É¾³ıÔ¤Âñµ¥ÏìÓ¦
+	TDAPI_API void RegRspRemoveParkedOrderAction(TraderSpi* pSpi, CBRspRemoveParkedOrderAction cb);	//É¾³ıÔ¤Âñ³·µ¥ÏìÓ¦
+	TDAPI_API void RegBatchOrderAction(TraderSpi* pSpi, CBRspBatchOrderAction cb);	//ÅúÁ¿±¨µ¥²Ù×÷ÇëÇóÏìÓ¦
+	TDAPI_API void RegCombActionInsert(TraderSpi* pSpi, CBRspCombActionInsert cb);	//ÉêÇë×éºÏÂ¼ÈëÇëÇóÏìÓ¦
+	TDAPI_API void RegRspQryInvestor(TraderSpi* pSpi, CBRspQryInvestor cb);	//ÇëÇó²éÑ¯Í¶×ÊÕßÏìÓ¦
+	TDAPI_API void RegRspQryTradingCode(TraderSpi* pSpi, CBRspQryTradingCode cb);	//ÇëÇó²éÑ¯½»Ò×±àÂëÏìÓ¦
+	TDAPI_API void RegRspQryInstrumentMarginRate(TraderSpi* pSpi, CBRspQryInstrumentMarginRate cb);	//ÇëÇó²éÑ¯ºÏÔ¼±£Ö¤½ğÂÊÏìÓ¦
+	TDAPI_API void RegRspQryInstrumentCommissionRate(TraderSpi* pSpi, CBRspQryInstrumentCommissionRate cb);	//ÇëÇó²éÑ¯ºÏÔ¼ÊÖĞø·ÑÂÊÏìÓ¦
+	TDAPI_API void RegRspQryExchange(TraderSpi* pSpi, CBRspQryExchange cb);	//ÇëÇó²éÑ¯½»Ò×ËùÏìÓ¦
+	TDAPI_API void RegRspQryDepthMarketData(TraderSpi* pSpi, CBRspQryDepthMarketData cb);	//ÇëÇó²éÑ¯ĞĞÇéÏìÓ¦
+	TDAPI_API void RegRspQrySettlementInfo(TraderSpi* pSpi, CBRspQrySettlementInfo cb);	//ÇëÇó²éÑ¯Í¶×ÊÕß½áËã½á¹ûÏìÓ¦
+	TDAPI_API void RegRspQryTransferBank(TraderSpi* pSpi, CBRspQryTransferBank cb);	//ÇëÇó²éÑ¯×ªÕÊÒøĞĞÏìÓ¦
+	TDAPI_API void RegRspQryInvestorPositionDetail(TraderSpi* pSpi, CBRspQryInvestorPositionDetail cb);	//ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÃ÷Ï¸ÏìÓ¦
+	TDAPI_API void RegRspQryNotice(TraderSpi* pSpi, CBRspQryNotice cb);	//ÇëÇó²éÑ¯¿Í»§Í¨ÖªÏìÓ¦
+	TDAPI_API void RegRspQrySettlementInfoConfirm(TraderSpi* pSpi, CBRspQrySettlementInfoConfirm cb);	//ÇëÇó²éÑ¯½áËãĞÅÏ¢È·ÈÏÏìÓ¦
+	TDAPI_API void RegRspQryInvestorPositionCombineDetail(TraderSpi* pSpi, CBRspQryInvestorPositionCombineDetail cb);	//ÇëÇó²éÑ¯Í¶×ÊÕß³Ö²ÖÃ÷Ï¸ÏìÓ¦
+	TDAPI_API void RegRspQryCFMMCTradingAccountKey(TraderSpi* pSpi, CBRspQryCFMMCTradingAccountKey cb);	//²éÑ¯±£Ö¤½ğ¼à¹ÜÏµÍ³¾­¼Í¹«Ë¾×Ê½ğÕË»§ÃÜÔ¿ÏìÓ¦
+	TDAPI_API void RegRspQryEWarrantOffset(TraderSpi* pSpi, CBRspQryEWarrantOffset cb);	//ÇëÇó²éÑ¯²Öµ¥ÕÛµÖĞÅÏ¢
+	TDAPI_API void RegRspQryInvestorProductGroupMargin(TraderSpi* pSpi, CBRspQryInvestorProductGroupMargin cb);	//ÇëÇó²éÑ¯Í¶×ÊÕßÆ·ÖÖ/¿çÆ·ÖÖ±£Ö¤½ğ
+	TDAPI_API void RegRspQryExchangeMarginRate(TraderSpi* pSpi, CBRspQryExchangeMarginRate cb);	//ÇëÇó²éÑ¯½»Ò×Ëù±£Ö¤½ğÂÊ
+	TDAPI_API void RegRspQryExchangeMarginRateAdjust(TraderSpi* pSpi, CBRspQryExchangeMarginRateAdjust cb);	//ÇëÇó²éÑ¯½»Ò×Ëùµ÷Õû±£Ö¤½ğÂÊ
+	TDAPI_API void RegRspQryExchangeRate(TraderSpi* pSpi, CBRspQryExchangeRate cb);	//ÇëÇó²éÑ¯»ãÂÊÏìÓ¦
+	TDAPI_API void RegRspQrySecAgentACIDMap(TraderSpi* pSpi, CBRspQrySecAgentACIDMap cb);	//ÇëÇó²éÑ¯¶ş¼¶´úÀí²Ù×÷Ô±ÒøÆÚÈ¨ÏŞÏìÓ¦
+	TDAPI_API void RegRspQryProductExchRate(TraderSpi* pSpi, CBRspQryProductExchRate cb);	//ÇëÇó²éÑ¯²úÆ·±¨¼Û»ãÂÊ
+	TDAPI_API void RegRspQryProductGroup(TraderSpi* pSpi, CBRspQryProductGroup cb);	//ÇëÇó²éÑ¯²úÆ·×é
+	TDAPI_API void RegRspQryMMInstrumentCommissionRate(TraderSpi* pSpi, CBRspQryMMInstrumentCommissionRate cb);	//ÇëÇó²éÑ¯×öÊĞÉÌºÏÔ¼ÊÖĞø·ÑÂÊÏìÓ¦
+	TDAPI_API void RegRspQryMMOptionInstrCommRate(TraderSpi* pSpi, CBRspQryMMOptionInstrCommRate cb);	//ÇëÇó²éÑ¯×öÊĞÉÌÆÚÈ¨ºÏÔ¼ÊÖĞø·ÑÏìÓ¦
+	TDAPI_API void RegRspQryInstrumentOrderCommRate(TraderSpi* pSpi, CBRspQryInstrumentOrderCommRate cb);	//ÇëÇó²éÑ¯±¨µ¥ÊÖĞø·ÑÏìÓ¦
+	TDAPI_API void RegRspQrySecAgentTradingAccount(TraderSpi* pSpi, CBRspQrySecAgentTradingAccount cb);	//ÇëÇó²éÑ¯×Ê½ğÕË»§ÏìÓ¦
+	TDAPI_API void RegRspQrySecAgentCheckMode(TraderSpi* pSpi, CBRspQrySecAgentCheckMode cb);	//ÇëÇó²éÑ¯¶ş¼¶´úÀíÉÌ×Ê½ğĞ£ÑéÄ£Ê½ÏìÓ¦
+	TDAPI_API void RegRspQrySecAgentTradeInfo(TraderSpi* pSpi, CBRspQrySecAgentTradeInfo cb);	//ÇëÇó²éÑ¯¶ş¼¶´úÀíÉÌĞÅÏ¢ÏìÓ¦
+	TDAPI_API void RegRspQryOptionInstrTradeCost(TraderSpi* pSpi, CBRspQryOptionInstrTradeCost cb);	//ÇëÇó²éÑ¯ÆÚÈ¨½»Ò×³É±¾ÏìÓ¦
+	TDAPI_API void RegRspQryOptionInstrCommRate(TraderSpi* pSpi, CBRspQryOptionInstrCommRate cb);	//ÇëÇó²éÑ¯ÆÚÈ¨ºÏÔ¼ÊÖĞø·ÑÏìÓ¦
+	TDAPI_API void RegRspQryExecOrder(TraderSpi* pSpi, CBRspQryExecOrder cb);	//ÇëÇó²éÑ¯Ö´ĞĞĞû¸æÏìÓ¦
+	TDAPI_API void RegRspQryForQuote(TraderSpi* pSpi, CBRspQryForQuote cb);	//ÇëÇó²éÑ¯Ñ¯¼ÛÏìÓ¦
+	TDAPI_API void RegRspQryQuote(TraderSpi* pSpi, CBRspQryQuote cb);	//ÇëÇó²éÑ¯±¨¼ÛÏìÓ¦
+	TDAPI_API void RegRspQryOptionSelfClose(TraderSpi* pSpi, CBRspQryOptionSelfClose cb);	//ÇëÇó²éÑ¯ÆÚÈ¨×Ô¶Ô³åÏìÓ¦
+	TDAPI_API void RegRspQryInvestUnit(TraderSpi* pSpi, CBRspQryInvestUnit cb);	//ÇëÇó²éÑ¯Í¶×Êµ¥ÔªÏìÓ¦
+	TDAPI_API void RegRspQryCombInstrumentGuard(TraderSpi* pSpi, CBRspQryCombInstrumentGuard cb);	//ÇëÇó²éÑ¯×éºÏºÏÔ¼°²È«ÏµÊıÏìÓ¦
+	TDAPI_API void RegRspQryCombAction(TraderSpi* pSpi, CBRspQryCombAction cb);	//ÇëÇó²éÑ¯ÉêÇë×éºÏÏìÓ¦
+	TDAPI_API void RegRspQryTransferSerial(TraderSpi* pSpi, CBRspQryTransferSerial cb);	//ÇëÇó²éÑ¯×ªÕÊÁ÷Ë®ÏìÓ¦
+	TDAPI_API void RegOnRspQryAccountregister(TraderSpi* pSpi, CBOnRspQryAccountregister cb);	//ÇëÇó²éÑ¯ÒøÆÚÇ©Ô¼¹ØÏµÏìÓ¦
+	TDAPI_API void RegRtnInstrumentStatus(TraderSpi* pSpi, CBRtnInstrumentStatus cb);	//ºÏÔ¼½»Ò××´Ì¬Í¨Öª
+	TDAPI_API void RegRtnTradingNotice(TraderSpi* pSpi, CBRtnTradingNotice cb);	//½»Ò×Í¨Öª
+	TDAPI_API void RegRtnErrorConditionalOrder(TraderSpi* pSpi, CBRtnErrorConditionalOrder cb);	//ÌáÊ¾Ìõ¼şµ¥Ğ£Ñé´íÎó
+	TDAPI_API void RegRspQryContractBank(TraderSpi* pSpi, CBRspQryContractBank cb);	//ÇëÇó²éÑ¯Ç©Ô¼ÒøĞĞÏìÓ¦
+	TDAPI_API void RegRspQryParkedOrder(TraderSpi* pSpi, CBRspQryParkedOrder cb);	//ÇëÇó²éÑ¯Ô¤Âñµ¥ÏìÓ¦
+	TDAPI_API void RegRspQryParkedOrderAction(TraderSpi* pSpi, CBRspQryParkedOrderAction cb);	//ÇëÇó²éÑ¯Ô¤Âñ³·µ¥ÏìÓ¦
+	TDAPI_API void RegRspQryTradingNotice(TraderSpi* pSpi, CBRspQryTradingNotice cb);	//ÇëÇó²éÑ¯½»Ò×Í¨ÖªÏìÓ¦
+	TDAPI_API void RegRspQryBrokerTradingParams(TraderSpi* pSpi, CBRspQryBrokerTradingParams cb);	//ÇëÇó²éÑ¯¾­¼Í¹«Ë¾½»Ò×²ÎÊıÏìÓ¦
+	TDAPI_API void RegRspQryBrokerTradingAlgos(TraderSpi* pSpi, CBRspQryBrokerTradingAlgos cb);	//ÇëÇó²éÑ¯¾­¼Í¹«Ë¾½»Ò×Ëã·¨ÏìÓ¦
+	TDAPI_API void RegRtnFromBankToFutureByBank(TraderSpi* pSpi, CBRtnFromBankToFutureByBank cb);	//ÒøĞĞ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÍ¨Öª
+	TDAPI_API void RegRtnFromFutureToBankByBank(TraderSpi* pSpi, CBRtnFromFutureToBankByBank cb);	//ÒøĞĞ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÍ¨Öª
+	TDAPI_API void RegRtnRepealFromBankToFutureByBank(TraderSpi* pSpi, CBRtnRepealFromBankToFutureByBank cb);	//ÒøĞĞ·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õÍ¨Öª
+	TDAPI_API void RegRtnRepealFromFutureToBankByBank(TraderSpi* pSpi, CBRtnRepealFromFutureToBankByBank cb);	//ÒøĞĞ·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞÍ¨Öª
+	TDAPI_API void RegRtnFromBankToFutureByFuture(TraderSpi* pSpi, CBRtnFromBankToFutureByFuture cb);	//ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÍ¨Öª
+	TDAPI_API void RegRtnFromFutureToBankByFuture(TraderSpi* pSpi, CBRtnFromFutureToBankByFuture cb);	//ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÍ¨Öª
+	TDAPI_API void RegRtnRepealFromBankToFutureByFutureManual(TraderSpi* pSpi, CBRtnRepealFromBankToFutureByFutureManual cb);	//ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+	TDAPI_API void RegRtnRepealFromFutureToBankByFutureManual(TraderSpi* pSpi, CBRtnRepealFromFutureToBankByFutureManual cb);	//ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+	TDAPI_API void RegRtnQueryBankBalanceByFuture(TraderSpi* pSpi, CBRtnQueryBankBalanceByFuture cb);	//ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶îÍ¨Öª
+	TDAPI_API void RegErrRtnBankToFutureByFuture(TraderSpi* pSpi, CBErrRtnBankToFutureByFuture cb);	//ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õ´íÎó»Ø±¨
+	TDAPI_API void RegErrRtnFutureToBankByFuture(TraderSpi* pSpi, CBErrRtnFutureToBankByFuture cb);	//ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞ´íÎó»Ø±¨
+	TDAPI_API void RegErrRtnRepealBankToFutureByFutureManual(TraderSpi* pSpi, CBErrRtnRepealBankToFutureByFutureManual cb);	//ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õ´íÎó»Ø±¨
+	TDAPI_API void RegErrRtnRepealFutureToBankByFutureManual(TraderSpi* pSpi, CBErrRtnRepealFutureToBankByFutureManual cb);	//ÏµÍ³ÔËĞĞÊ±ÆÚ»õ¶ËÊÖ¹¤·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞ´íÎó»Ø±¨
+	TDAPI_API void RegErrRtnQueryBankBalanceByFuture(TraderSpi* pSpi, CBErrRtnQueryBankBalanceByFuture cb);	//ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶î´íÎó»Ø±¨
+	TDAPI_API void RegRtnRepealFromBankToFutureByFuture(TraderSpi* pSpi, CBRtnRepealFromBankToFutureByFuture cb);	//ÆÚ»õ·¢Æğ³åÕıÒøĞĞ×ªÆÚ»õÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+	TDAPI_API void RegRtnRepealFromFutureToBankByFuture(TraderSpi* pSpi, CBRtnRepealFromFutureToBankByFuture cb);	//ÆÚ»õ·¢Æğ³åÕıÆÚ»õ×ªÒøĞĞÇëÇó£¬ÒøĞĞ´¦ÀíÍê±Ïºó±¨ÅÌ·¢»ØµÄÍ¨Öª
+	TDAPI_API void RegRspFromBankToFutureByFuture(TraderSpi* pSpi, CBRspFromBankToFutureByFuture cb);	//ÆÚ»õ·¢ÆğÒøĞĞ×Ê½ğ×ªÆÚ»õÓ¦´ğ
+	TDAPI_API void RegRspFromFutureToBankByFuture(TraderSpi* pSpi, CBRspFromFutureToBankByFuture cb);	//ÆÚ»õ·¢ÆğÆÚ»õ×Ê½ğ×ªÒøĞĞÓ¦´ğ
+	TDAPI_API void RegRspQueryBankAccountMoneyByFuture(TraderSpi* pSpi, CBRspQueryBankAccountMoneyByFuture cb);	//ÆÚ»õ·¢Æğ²éÑ¯ÒøĞĞÓà¶îÓ¦´ğ
+	TDAPI_API void RegRspQueryCFMMCTradingAccountToken(TraderSpi* pSpi, CBRspQueryCFMMCTradingAccountToken cb);	//²éÑ¯¼à¿ØÖĞĞÄÓÃ»§ÁîÅÆÓ¦´ğ
+	TDAPI_API void RegRtnCFMMCTradingAccountToken(TraderSpi* pSpi, CBRtnCFMMCTradingAccountToken cb);	//²éÑ¯¼à¿ØÖĞĞÄÓÃ»§ÁîÅÆÍ¨Öª
 #pragma endregion
 
 }

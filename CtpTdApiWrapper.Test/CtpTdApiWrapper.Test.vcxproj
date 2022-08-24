@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="CombActionInsertCtp.h" />
+    <ClInclude Include="QryTradingAccount.h" />
     <ClInclude Include="TdApiTestBase.h" />
     <ClInclude Include="Connect.h" />
     <ClInclude Include="Login.h" />

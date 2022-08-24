@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Force.DeepCloner;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace NeoCtp
@@ -132,9 +133,30 @@ namespace NeoCtp
 		///初始化
 		///@remark 初始化运行环境,只有调用后,接口才开始工作
 		public void Init()
-		{
-			MdApiCalls.Init(ApiHandle_);
-		}
+        {
+                MdApiCalls.Init(ApiHandle_);
+                return;
+            ReaderThread_ = new Thread(
+                                       () =>
+                                       {
+                                           MdApiCalls.Init(ApiHandle_);
+                                           //MdApiCalls.Join(ApiHandle_);
+                                           while (true)
+                                           {
+                                               Thread.Sleep(500);
+                                           }
+                                       })
+                ;
+            this.ReaderThread_.Start();
+
+            //Task.Run(() =>
+            //{
+            //    MdApiCalls.Init(ApiHandle_);
+            //    MdApiCalls.Join(ApiHandle_);
+            //});
+        }
+
+        protected Thread ReaderThread_;
 
 		///等待接口线程结束运行
 		///@return 线程退出代码
@@ -223,33 +245,57 @@ namespace NeoCtp
 		}
 
 
-	
-
-
+        private MdApiCalls.CbOnRspError                  cbOnRspErrorDele;
+        private MdApiCalls.CbOnHeartBeatWarning          cbOnHeartBeatWarningDele;
+        private MdApiCalls.CbOnFrontConnected            cbOnFrontConnectedDele;
+        private MdApiCalls.CbOnFrontDisconnected         cbOnFrontDisconnectedDele;
+        private MdApiCalls.CbOnRspUserLogin              cbOnRspUserLoginDele;
+        private MdApiCalls.CbOnRspUserLogout             cbOnRspUserLogoutDele;
+        private MdApiCalls.CbOnRspSubMarketData          cbOnRspSubMarketDataDele;
+        private MdApiCalls.CbOnRspUnSubMarketData        cbOnRspUnSubMarketDataDele;
+        private MdApiCalls.CbOnRspSubForQuoteRsp         cbOnRspSubForQuoteRspDele;
+        private MdApiCalls.CbOnRspUnSubForQuoteRsp       cbOnRspUnSubForQuoteRspDele;
+        private MdApiCalls.CbOnRtnDepthMarketData        cbOnRtnDepthMarketDataDele;
+        private MdApiCalls.CbOnRtnForQuoteRsp            cbOnRtnForQuoteRspDele;
+        private MdApiCalls.CbOnRspQryMulticastInstrument cbOnRspQryMulticastInstrumentDele;
 
         protected void        BindEvents_()
-		{
-			MdApiCalls.RegOnRspError(SpiHandle_, _OnRspError);
-			MdApiCalls.RegOnHeartBeatWarning(SpiHandle_, _CbOnHeartBeatWarning);
+        {
+            // 必须添加deletate引用，否则会被gc回收
+            cbOnRspErrorDele = new(_OnRspError);
+			MdApiCalls.RegOnRspError(SpiHandle_, cbOnRspErrorDele);
+            cbOnHeartBeatWarningDele = new(_CbOnHeartBeatWarning);
+			MdApiCalls.RegOnHeartBeatWarning(SpiHandle_, cbOnHeartBeatWarningDele);
 
-			MdApiCalls.RegOnFrontConnected(SpiHandle_, _OnFrontConnected);
-			MdApiCalls.RegOnFrontDisconnected(SpiHandle_, _OnFrontDisconnected);
+            cbOnFrontConnectedDele = new(_OnFrontConnected);
+			MdApiCalls.RegOnFrontConnected(SpiHandle_, cbOnFrontConnectedDele);
+            cbOnFrontDisconnectedDele = new(_OnFrontDisconnected);
+			MdApiCalls.RegOnFrontDisconnected(SpiHandle_, cbOnFrontDisconnectedDele);
 
-			MdApiCalls.RegOnRspUserLogin(SpiHandle_, _OnRspUserLogin);
-			MdApiCalls.RegOnRspUserLogout(SpiHandle_, _OnRspUserLogout);
+            cbOnRspUserLoginDele = new(_OnRspUserLogin);
+			MdApiCalls.RegOnRspUserLogin(SpiHandle_, cbOnRspUserLoginDele);
+            cbOnRspUserLogoutDele = new(_OnRspUserLogout);
+			MdApiCalls.RegOnRspUserLogout(SpiHandle_, cbOnRspUserLogoutDele);
 
-			MdApiCalls.RegOnRspSubMarketData(SpiHandle_, _OnRspSubMarketData);
-			MdApiCalls.RegOnRspUnSubMarketData(SpiHandle_, _OnRspUnSubMarketData);
+            cbOnRspSubMarketDataDele = new(_OnRspSubMarketData);
+			MdApiCalls.RegOnRspSubMarketData(SpiHandle_, cbOnRspSubMarketDataDele);
+            cbOnRspUnSubMarketDataDele = new(_OnRspUnSubMarketData);
+			MdApiCalls.RegOnRspUnSubMarketData(SpiHandle_, cbOnRspUnSubMarketDataDele);
 
-			MdApiCalls.RegOnRspSubForQuoteRsp(SpiHandle_, _OnRspSubForQuoteRsp);
-			MdApiCalls.RegOnRspUnSubForQuoteRsp(SpiHandle_, _OnRspUnSubForQuoteRsp);
+            cbOnRspSubForQuoteRspDele = new(_OnRspSubForQuoteRsp);
+			MdApiCalls.RegOnRspSubForQuoteRsp(SpiHandle_, cbOnRspSubForQuoteRspDele);
+            cbOnRspUnSubForQuoteRspDele = new(_OnRspUnSubForQuoteRsp);
+			MdApiCalls.RegOnRspUnSubForQuoteRsp(SpiHandle_, cbOnRspUnSubForQuoteRspDele);
 
-			MdApiCalls.RegOnRspQryMulticastInstrument(SpiHandle_, _OnRspQryMulticastInstrument);
+            cbOnRspQryMulticastInstrumentDele = new(_OnRspQryMulticastInstrument);
+			MdApiCalls.RegOnRspQryMulticastInstrument(SpiHandle_, cbOnRspQryMulticastInstrumentDele);
 
             /// 通知
-			MdApiCalls.RegOnRtnDepthMarketData(SpiHandle_, _OnRtnDepthMarketData);
+            cbOnRtnDepthMarketDataDele = new(_OnRtnDepthMarketData);
+			MdApiCalls.RegOnRtnDepthMarketData(SpiHandle_, cbOnRtnDepthMarketDataDele);
 
-			MdApiCalls.RegOnRtnForQuoteRsp(SpiHandle_, _OnRtnForQuoteRsp);
+            cbOnRtnForQuoteRspDele = new(_OnRtnForQuoteRsp);
+			MdApiCalls.RegOnRtnForQuoteRsp(SpiHandle_, cbOnRtnForQuoteRspDele);
         }
 
 		/// <summary>
@@ -260,7 +306,7 @@ namespace NeoCtp
         /// <param name="bIsLast">是否为最后一条数据</param>
         protected virtual void _OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
-            _MdSpi?.OnRspError(ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspError(pRspInfo, nRequestID, bIsLast);
 
             //if (_dataCallbackDict.ContainsKey(nRequestID))
             //{
@@ -311,7 +357,7 @@ namespace NeoCtp
         /// <param name="bIsLast">是否为最后一条数据</param>
         private void _OnRspUserLogin(ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
-            _MdSpi?.OnRspUserLogin(ref pRspUserLogin, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspUserLogin(pRspUserLogin, pRspInfo, nRequestID, bIsLast);
 
             //DataResult result = new DataResult();
             //if (pRspInfo.ErrorID > 0)
@@ -337,7 +383,7 @@ namespace NeoCtp
         /// <param name="bIsLast">是否为最后一条数据</param>
         private void _OnRspUserLogout(ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
-            _MdSpi?.OnRspUserLogout(ref pUserLogout, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspUserLogout(pUserLogout, pRspInfo, nRequestID, bIsLast);
 
             //DataResult result = new DataResult();
             //if (pRspInfo.ErrorID > 0)
@@ -356,41 +402,41 @@ namespace NeoCtp
 
 		protected virtual void  _OnRspSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
-            _MdSpi?.OnRspSubMarketData(ref pSpecificInstrument, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspSubMarketData(pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 		}
 		protected virtual void _OnRspUnSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
-            _MdSpi?.OnRspUnSubMarketData(ref pSpecificInstrument, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspUnSubMarketData(pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 		}
 
 
 		protected virtual void _OnRspSubForQuoteRsp(ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
 			ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
-            _MdSpi?.OnRspSubForQuoteRsp(ref pSpecificInstrument, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspSubForQuoteRsp(pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 		}
 		protected virtual void _OnRspUnSubForQuoteRsp(ref CThostFtdcSpecificInstrumentField pSpecificInstrument,
 			ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
 		{
-            _MdSpi?.OnRspUnSubForQuoteRsp(ref pSpecificInstrument, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspUnSubForQuoteRsp(pSpecificInstrument, pRspInfo, nRequestID, bIsLast);
 		}
 
 
 		protected virtual void _OnRspQryMulticastInstrument(ref CThostFtdcMulticastInstrumentField pMulticastInstrument, ref CThostFtdcRspInfoField pRspInfo,
 			int nRequestID, bool bIsLast)
 		{
-            _MdSpi?.OnRspQryMulticastInstrument(ref pMulticastInstrument, ref pRspInfo, nRequestID, bIsLast);
+            _MdSpi?.OnRspQryMulticastInstrument(pMulticastInstrument, pRspInfo, nRequestID, bIsLast);
 		}
 
 	
         protected virtual void _OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData)
         {
-            _MdSpi?.OnRtnDepthMarketData(ref pDepthMarketData);
+            _MdSpi?.OnRtnDepthMarketData(pDepthMarketData);
         }
 
 		protected virtual void _OnRtnForQuoteRsp(ref CThostFtdcForQuoteRspField pQuoteRsp)
         {
-            _MdSpi?.OnRtnForQuoteRsp(ref pQuoteRsp);
+            _MdSpi?.OnRtnForQuoteRsp(pQuoteRsp);
         }
     
 

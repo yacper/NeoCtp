@@ -29,7 +29,7 @@ namespace NeoCtp
 
 
 		///错误应答
-		void				OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) ;
+		void				OnRspError(CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) ;
 
 		///心跳超时警告。当长时间未收到报文时，该方法被调用。
 		///@param nTimeLapse 距离上次接收报文的时间
@@ -37,35 +37,35 @@ namespace NeoCtp
 
 
 		///登录请求响应
-		void				OnRspUserLogin(ref CThostFtdcRspUserLoginField pRspUserLogin, ref CThostFtdcRspInfoField  pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspUserLogin(CThostFtdcRspUserLoginField pRspUserLogin, CThostFtdcRspInfoField  pRspInfo, int nRequestID, bool bIsLast);
 
 		///登出请求响应
-		void				OnRspUserLogout(ref CThostFtdcUserLogoutField pUserLogout, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspUserLogout(CThostFtdcUserLogoutField pUserLogout, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 
 
 		///请求查询组播合约响应
-		void				OnRspQryMulticastInstrument(ref CThostFtdcMulticastInstrumentField pMulticastInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspQryMulticastInstrument(CThostFtdcMulticastInstrumentField pMulticastInstrument, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 
 
 		///订阅行情应答
-		void				OnRspSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspSubMarketData(CThostFtdcSpecificInstrumentField pSpecificInstrument, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 
 		///取消订阅行情应答
-		void				OnRspUnSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField pSpecificInstrument, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 
 
 		///订阅询价应答
-		void				OnRspSubForQuoteRsp(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField pSpecificInstrument, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 
 		///取消订阅询价应答
-		void				OnRspUnSubForQuoteRsp(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		void				OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField pSpecificInstrument, CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 
 
 		///深度行情通知
-		void				OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData);
+		void				OnRtnDepthMarketData(CThostFtdcDepthMarketDataField pDepthMarketData);
 
 		///询价通知
-		void				OnRtnForQuoteRsp(ref CThostFtdcForQuoteRspField pForQuoteRsp);
+		void				OnRtnForQuoteRsp(CThostFtdcForQuoteRspField pForQuoteRsp);
 
 	}
 }

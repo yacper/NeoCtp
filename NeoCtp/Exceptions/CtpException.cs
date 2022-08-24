@@ -34,7 +34,7 @@ public class CtpException : System.Exception
 
     public CtpException(CtpRsp rsp)
     {
-        RequestId = rsp.RequestId;
+        RequestId = rsp.RequestID;
         IsLast    = rsp.IsLast;
         ErrorID   = rsp.Rsp.ErrorID;
         ErrorMsg  = rsp.Rsp.ErrorMsg;

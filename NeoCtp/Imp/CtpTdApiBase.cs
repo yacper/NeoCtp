@@ -72,7 +72,7 @@ namespace NeoCtp.Imp
 			protected set { SetProperty(ref _SessionID, value); }
 		}
 
-//        public string MaxOrderRef { get => OrderRef_; protected set => SetProperty(ref OrderRef_, value); }                           /// 最大报单引用
+        public int	MaxOrderRef { get => MaxOrderRef_; }                           /// 最大报单引用
 
         public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
 
@@ -87,10 +87,16 @@ namespace NeoCtp.Imp
         public DateTime INETime  { get => INETime_ + LoginDuration;  protected set => SetProperty(ref INETime_, value); }
 
 	    protected int GetNextRequestId() => Interlocked.Increment(ref RequestID_);
-        protected int GetNextOrderRef() => Interlocked.Increment(ref OrderRef_);
-	
-     
-		/// 是否已登录
+
+        protected int GetNextOrderRef()
+        {
+            var ret = Interlocked.Increment(ref MaxOrderRef_); 
+			OnPropertyChanged(nameof(MaxOrderRef));
+            return ret;
+        }
+
+
+        /// 是否已登录
 
 
 		///注册回调接口
@@ -740,39 +746,85 @@ namespace NeoCtp.Imp
 
         }
 
+        private TdApiCalls.CBOnRspError cbOnRspErrorDele;
+		private TdApiCalls.CBOnHeartBeatWarning cbOnHeartBeatWarningDele;
+
+        private TdApiCalls.CBOnRspFrontConnected cbOnRspFrontConnectedDele;
+        private TdApiCalls.CBOnFrontDisconnected cbOnFrontDisconnectedDele;
+
+        private TdApiCalls.CBOnRspAuthenticate cbOnRspAuthenticateDele;
+
+        private TdApiCalls.CBOnRspUserLogin  cbOnRspUserLoginDele;
+        private TdApiCalls.CBOnRspUserLogout cbOnRspUserLogoutDele;
+
+        private TdApiCalls.CBOnRspSettlementInfoConfirm cbOnRspSettlementInfoConfirmDele;
+
+        private TdApiCalls.CBOnRspQryTradingAccount cbOnRspQryTradingAccountDele;
+
+        private TdApiCalls.CBOnRspQryInvestorPosition cbOnRspQryInvestorPositionDele;
+
+        private TdApiCalls.CBOnRspQryInstrument cbOnRspQryInstrumentDele;
+
+        private TdApiCalls.CBOnRspQryOrder       cbOnRspQryOrderDele;
+        private TdApiCalls.CBOnRspQryTrade       cbOnRspQryTradeDele;
+        private TdApiCalls.CBOnRspOrderInsert    cbOnRspOrderInsertDele;
+        private TdApiCalls.CBOnErrRtnOrderInsert cbOnErrRtnOrderInsertDele;
+        private TdApiCalls.CBRtnOrder            cbRtnOrderDele;
+        private TdApiCalls.CBRtnTrade            cbRtnTradeDele;
+
+        private TdApiCalls.CBRspOrderAction      cbRspOrderActionDele;
+        private TdApiCalls.CBOnErrRtnOrderAction cbOnErrRtnOrderActionDele;
+
         protected void        BindEvents_()
-		{
-			TdApiCalls.RegOnRspError(SpiHandle_, _CBOnRspError);
-			TdApiCalls.RegOnHeartBeatWarning(SpiHandle_, _CbOnHeartBeatWarning);
+        {
+            cbOnRspErrorDele = new(_CBOnRspError);
+			TdApiCalls.RegOnRspError(SpiHandle_, cbOnRspErrorDele);
+            cbOnHeartBeatWarningDele = new(_CbOnHeartBeatWarning);
+			TdApiCalls.RegOnHeartBeatWarning(SpiHandle_, cbOnHeartBeatWarningDele);
 
-			TdApiCalls.RegOnRspFrontConnected(SpiHandle_, _OnFrontConnected);
-			TdApiCalls.RegOnRspFrontDisconnected(SpiHandle_, _OnFrontDisconnected);
+            cbOnRspFrontConnectedDele = new(_OnFrontConnected);
+			TdApiCalls.RegOnRspFrontConnected(SpiHandle_, cbOnRspFrontConnectedDele);
+            cbOnFrontDisconnectedDele = new(_OnFrontDisconnected);
+			TdApiCalls.RegOnRspFrontDisconnected(SpiHandle_, cbOnFrontDisconnectedDele);
 
-			TdApiCalls.RegOnRspAuthenticate(SpiHandle_, _CBRspAuthenticate);
+            cbOnRspAuthenticateDele = new(_CBRspAuthenticate);
+			TdApiCalls.RegOnRspAuthenticate(SpiHandle_, cbOnRspAuthenticateDele);
 
-			TdApiCalls.RegOnRspUserLogin(SpiHandle_, _OnRspUserLogin);
-			TdApiCalls.RegOnRspUserLogout(SpiHandle_, _OnRspUserLogout);
+            cbOnRspUserLoginDele = new(_OnRspUserLogin);
+			TdApiCalls.RegOnRspUserLogin(SpiHandle_, cbOnRspUserLoginDele);
+            cbOnRspUserLogoutDele = new(_OnRspUserLogout);
+			TdApiCalls.RegOnRspUserLogout(SpiHandle_, cbOnRspUserLogoutDele);
 
-			TdApiCalls.RegOnRspSettlementInfoConfirm(SpiHandle_, _CBOnRspSettlementInfoConfirm);
+            cbOnRspSettlementInfoConfirmDele = new(_CBOnRspSettlementInfoConfirm);
+			TdApiCalls.RegOnRspSettlementInfoConfirm(SpiHandle_, cbOnRspSettlementInfoConfirmDele);
 
-			TdApiCalls.RegOnRspQryTradingAccount(SpiHandle_, _CBOnRspQryTradingAccount);
+            cbOnRspQryTradingAccountDele = new(_CBOnRspQryTradingAccount);
+			TdApiCalls.RegOnRspQryTradingAccount(SpiHandle_, cbOnRspQryTradingAccountDele);
 
-			TdApiCalls.RegOnRspQryInvestorPosition(SpiHandle_, _CBOnRspQryInvestorPosition);
+            cbOnRspQryInvestorPositionDele = new(_CBOnRspQryInvestorPosition);
+			TdApiCalls.RegOnRspQryInvestorPosition(SpiHandle_, cbOnRspQryInvestorPositionDele);
+
+            cbOnRspQryInstrumentDele = new(_CBOnRspQryInstrument);
+			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, cbOnRspQryInstrumentDele);
 
 
-			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, _CBOnRspQryInstrument);
+            cbOnRspQryOrderDele = new(_CBOnRspQryOrder);
+			TdApiCalls.RegOnRspQryOrder(SpiHandle_, cbOnRspQryOrderDele);
+            cbOnRspQryTradeDele = new(_CBOnRspQryTrade);
+			TdApiCalls.RegOnRspQryTrade(SpiHandle_, cbOnRspQryTradeDele);
+            cbOnRspOrderInsertDele = new(_CBOnRspOrderInsert);
+			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, cbOnRspOrderInsertDele);
+            cbOnErrRtnOrderInsertDele = new(_CBOnErrRtnOrderInsert);
+            TdApiCalls.RegOnErrRtnOrderInsert(SpiHandle_, cbOnErrRtnOrderInsertDele);
+            cbRtnOrderDele = new(_CBOnRtnOrder);
+	        TdApiCalls.RegOnRtnOrder(SpiHandle_, cbRtnOrderDele);
+            cbRtnTradeDele = new(_CBOnRtnTrade);
+			TdApiCalls.RegOnRtnTrade(SpiHandle_, cbRtnTradeDele);
 
-
-			TdApiCalls.RegOnRspQryOrder(SpiHandle_, _CBOnRspQryOrder);
-			TdApiCalls.RegOnRspQryTrade(SpiHandle_, _CBOnRspQryTrade);
-			TdApiCalls.RegOnRspOrderInsert(SpiHandle_, _CBOnRspOrderInsert);
-            TdApiCalls.RegOnErrRtnOrderInsert(SpiHandle_, _CBOnErrRtnOrderInsert);
-	        TdApiCalls.RegOnRtnOrder(SpiHandle_, _CBOnRtnOrder);
-			TdApiCalls.RegOnRtnTrade(SpiHandle_, _CBOnRtnTrade);
-
-			TdApiCalls.RegOnRspOrderAction(SpiHandle_, _CBOnRspOrderAction);
-			TdApiCalls.RegOnErrRtnOrderAction(SpiHandle_, _CBOnErrRtnOrderAction);
-	
+            cbRspOrderActionDele = new(_CBOnRspOrderAction);
+			TdApiCalls.RegOnRspOrderAction(SpiHandle_, cbRspOrderActionDele);
+            cbOnErrRtnOrderActionDele = new(_CBOnErrRtnOrderAction);
+			TdApiCalls.RegOnErrRtnOrderAction(SpiHandle_, cbOnErrRtnOrderActionDele);
 
             return;
 
@@ -1608,7 +1660,7 @@ namespace NeoCtp.Imp
 
 	
         protected string   FlowPath_;
-        protected   int   OrderRef_;
+        protected   int   MaxOrderRef_;
         private   DateTime LoginTime_;
         private   DateTime SHFETime_;
         private   DateTime DCETime_;
