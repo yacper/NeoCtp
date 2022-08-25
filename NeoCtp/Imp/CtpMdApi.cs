@@ -323,8 +323,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             Password = Password
         };
 
-        ECtpLocalRtn ret = (ECtpLocalRtn)ReqUserLogin(ref field, reqId);
-        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqUserLogin(ref field, reqId);
+        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLoginEvent += onRspUserLoginHandler;
@@ -380,8 +380,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             UserID   = UserId
         };
 
-        ECtpLocalRtn ret = (ECtpLocalRtn)ReqUserLogout(ref field, reqId);
-        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqUserLogout(ref field, reqId);
+        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLogoutEvent += onRspUserLogoutHandler;
@@ -438,8 +438,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent         -= onRspErrorHandler;
         }
 
-        ECtpLocalRtn ret = (ECtpLocalRtn)SubscribeMarketData(instruments);
-        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)SubscribeMarketData(instruments);
+        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspSubMarketDataEvent += onRspSubMarketDataHandler;
@@ -493,8 +493,8 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent           -= onRspErrorHandler;
         }
 
-        ECtpLocalRtn ret = (ECtpLocalRtn)UnSubscribeMarketData(instruments);
-        if (ret != ECtpLocalRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)UnSubscribeMarketData(instruments);
+        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUnSubMarketDataEvent += onRspUnSubMarketDataEvent;

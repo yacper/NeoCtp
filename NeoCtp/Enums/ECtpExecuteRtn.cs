@@ -7,7 +7,7 @@
 
 namespace NeoCtp.Enums;
 
-public enum ECtpLocalRtn // 本地失败原因
+public enum ECtpExecuteRtn // 本地调用结果
 {
     Sucess           = 0,  // 成功
     NetworkFailure   = -1, // 网络连接失败
