@@ -1190,7 +1190,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
                 {
                     clearHandler();
 
-                    taskSource.TrySetResult(new() { Rsp2 = e });
+                    taskSource.TrySetResult(new() { Rsp2 = e, RequestID = reqId});
                 }
                 else if (e.OrderSubmitStatus != TThostFtdcOrderSubmitStatusType.InsertSubmitted) // 服务器校验失败
                 {
@@ -1214,7 +1214,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             {
                 clearHandler();
 
-                taskSource.TrySetResult(new(){Rsp = e.Rsp, RequestID = e.RequestID, IsLast = e.IsLast});
+                taskSource.TrySetResult(new(){Rsp = e.Rsp, RequestID = reqId, IsLast = e.IsLast});
             }
         };
 
