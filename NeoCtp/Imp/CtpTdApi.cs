@@ -1061,7 +1061,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         {
             if (e.RequestID == reqId)
             {
-                l.Add(e.Rsp2);
+                if(!string.IsNullOrWhiteSpace(e.Rsp2.OrderSysID))  // 返回可能是是空
+                    l.Add(e.Rsp2);
                 if (e.IsLast)
                 {
                     clearHandler();
@@ -1123,7 +1124,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         {
             if (e.RequestID == reqId)
             {
-                l.Add(e.Rsp2);
+                if(!string.IsNullOrWhiteSpace(e.Rsp2.OrderSysID)) // 返回可能为空
+                    l.Add(e.Rsp2);
                 if (e.IsLast)
                 {
                     clearHandler();
