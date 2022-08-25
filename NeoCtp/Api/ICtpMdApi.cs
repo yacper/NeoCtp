@@ -48,14 +48,14 @@ namespace NeoCtp
         event EventHandler<CtpRsp> OnRspErrorEvent;
         event EventHandler<int> OnHeartBeatWarningEvent;
 
-        EConnectionState ConnectionState { get; }
-		Task<bool>          ConnectAsync();
-		Task				DisconnectAsync();
+        EConnectionState                             ConnectionState { get; }
+        Task<bool>                                   ConnectAsync(string frontAddress = null);
+        Task                                         DisconnectAsync();
         event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
 
 
 		bool                                      IsLogined { get; }
-        Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync();
+        Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync(string brokerId = null, string userId = null, string password = null);
         Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
 
 

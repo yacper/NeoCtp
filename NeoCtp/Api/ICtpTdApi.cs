@@ -54,13 +54,13 @@ namespace NeoCtp
         event EventHandler<int> OnHeartBeatWarningEvent; // ///当长时间未收到报文时，该方法被调用。///@param nTimeLapse 距离上次接收报文的时间
 
         EConnectionState ConnectionState { get; }
-		Task<bool>          ConnectAsync();
+		Task<bool>          ConnectAsync(string frontAddress = null);
 		Task				DisconnectAsync();
         event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
 
 
 		bool                                      IsLogined { get; }
-        Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync();
+        Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync(string brokerId = null, string userId = null, string password = null);
         Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
 
 
@@ -92,7 +92,7 @@ namespace NeoCtp
 
 #region Order
 
-		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? pQryOrder = null); // 不填返回所有
+		Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? pQryOrder = null); // 不填返回所有, 包括已成单子
 		Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField? pQryTrade = null); // 不填返回所有
 
  

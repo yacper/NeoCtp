@@ -155,7 +155,16 @@ public class CtpTdApi_Test
         Debug.WriteLine(acc.Dump());
     }
 
-    #endregion
+    [Test]
+    public async Task ReqQryInvestorPositionAsync_Test_All()
+    {
+        var acc = await client.ReqQryInvestorPositionAsync();
+        //.acc.Rsp2.Should().n
+
+        Debug.WriteLine("ReqQryInvestorPositionAsync " + acc.ToJson(Formatting.Indented));
+    }
+
+#endregion
 
 #region Order
 
@@ -247,7 +256,7 @@ public class CtpTdApi_Test
             InstrumentID   = "rb2210",
             CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
 
-            LimitPrice          = 4200,
+            LimitPrice          = 3800,
             VolumeTotalOriginal = 1,
             Direction           = TThostFtdcDirectionType.Buy,
             TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
@@ -283,21 +292,19 @@ public class CtpTdApi_Test
     [Test]
     public async Task ReqQryOrderAsync_Test()
     {
-        CThostFtdcQryOrderField field = new();
-        var                     acc   = await client.ReqQryOrderAsync(field);
+        var                     acc   = await client.ReqQryOrderAsync();
         //.acc.Rsp2.Should().n
 
-        Debug.WriteLine(acc.Dump());
+        Debug.WriteLine("ReqQryOrderAsync" + acc.ToJson(Formatting.Indented));
     }
 
     [Test]
     public async Task ReqQryTradeAsync_Test()
     {
-        CThostFtdcQryTradeField field = new();
-        var                     acc   = await client.ReqQryTradeAsync(field);
+        var                     acc   = await client.ReqQryTradeAsync();
         //.acc.Rsp2.Should().n
 
-        Debug.WriteLine(acc.Dump());
+        Debug.WriteLine("ReqQryTradeAsync" + acc.ToJson(Formatting.Indented));
     }
 
 

@@ -177,12 +177,14 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     string ICtpMdApi.GetApiVersion() => CtpMdApiBase.GetApiVersion();
 
-    public Task<bool> ConnectAsync()
+    public Task<bool> ConnectAsync(string frontAddress = null)
     {
         if (ConnectionState == EConnectionState.Connected)
             return Task.FromResult(true);
 
         ConnectionState = EConnectionState.Connecting;
+
+        if (frontAddress != null) FrontAddress         = frontAddress;
 
         ApiHandle_ = MdApiCalls.CreateFtdcMdApi(FlowPath, IsUsingUdp, IsMulticast);
         SpiHandle_ = MdApiCalls.CreateMdSpi();
@@ -278,11 +280,14 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
     public event EventHandler<EFrontDisconnectedReason> OnFrontDisconnectedEvent;
 
 
-    public Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync()
+    public Task<CtpRsp<CThostFtdcRspUserLoginField>> ReqUserLoginAsync(string brokerId = null, string userId = null, string password = null)
     {
         var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcRspUserLoginField>>();
         var reqId      = GetNextRequestId();
 
+        if (brokerId != null) BrokerId = brokerId;
+        if (userId != null) UserId     = userId;
+        if (password != null) Password = password;
 
         EventHandler<CtpRsp<CThostFtdcRspUserLoginField>> onRspUserLoginHandler = null;
         EventHandler<CtpRsp>                              onRspErrorHandler     = null;
