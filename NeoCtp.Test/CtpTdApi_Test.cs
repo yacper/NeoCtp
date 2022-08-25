@@ -159,15 +159,15 @@ public class CtpTdApi_Test
 
 #region Order
 
-    [Test]
-    public async Task ReqOrderInsertAsync_Test()        // 输入订单
+  [Test]
+    public async Task ReqOrderInsertAsync_Test_LocalRejected()        // 输入订单, 本地校验失败
     {
         CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
         {
             InstrumentID   = "rb2110",
             CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
 
-            LimitPrice          = 4200,
+            LimitPrice          = 5200,
             VolumeTotalOriginal = 1,
             Direction           = TThostFtdcDirectionType.Buy,
             TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
@@ -198,6 +198,87 @@ public class CtpTdApi_Test
         await Task.Delay(10000);
 
     }
+
+    [Test]
+    public async Task ReqOrderInsertAsync_Test_ServerRejected()        // 输入订单，服务器校验失败
+    {
+        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
+        {
+            InstrumentID   = "rb2210",
+            CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
+
+            LimitPrice          = 5200,
+            VolumeTotalOriginal = 1,
+            Direction           = TThostFtdcDirectionType.Buy,
+            TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
+
+            OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
+            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
+            MinVolume           = 1,                                             // 最小成交量1
+            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
+            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
+            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
+            UserForceClose      = 0,                                             // 用户强平标志：否
+
+            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
+        };
+
+        client.OnRtnOrderEvent += (s, e) =>
+        {
+            Debug.WriteLine("OnRtnOrderEvent " + e.ToJson(Formatting.Indented));
+        };
+        client.OnRtnTradeEvent += (s, e) =>
+        {
+            Debug.WriteLine("OnRtnTradeEvent " + e.ToJson(Formatting.Indented));
+        };
+
+        var acc = await client.ReqOrderInsertAsync(field);
+        Debug.WriteLine("OrderInsert " + acc.ToJson(Formatting.Indented));
+
+        await Task.Delay(10000);
+
+    }
+
+    [Test]
+    public async Task ReqOrderInsertAsync_Test_Sucess()        // 输入订单，服务器校验成功
+    {
+        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
+        {
+            InstrumentID   = "rb2210",
+            CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
+
+            LimitPrice          = 4200,
+            VolumeTotalOriginal = 1,
+            Direction           = TThostFtdcDirectionType.Buy,
+            TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
+
+            OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
+            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
+            MinVolume           = 1,                                             // 最小成交量1
+            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
+            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
+            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
+            UserForceClose      = 0,                                             // 用户强平标志：否
+
+            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
+        };
+
+        client.OnRtnOrderEvent += (s, e) =>
+        {
+            Debug.WriteLine("OnRtnOrderEvent " + e.ToJson(Formatting.Indented));
+        };
+        client.OnRtnTradeEvent += (s, e) =>
+        {
+            Debug.WriteLine("OnRtnTradeEvent " + e.ToJson(Formatting.Indented));
+        };
+
+        var acc = await client.ReqOrderInsertAsync(field);
+        Debug.WriteLine("OrderInsert " + acc.ToJson(Formatting.Indented));
+
+        await Task.Delay(5000);
+
+    }
+
 
     [Test]
     public async Task ReqQryOrderAsync_Test()
