@@ -934,7 +934,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
     ///请求查询投资者持仓
     public Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(CThostFtdcQryInvestorPositionField? field = null)
-    {
+    {// https://www.bilibili.com/read/cv7692891/
+            /*
+      持仓的数量减少到0时, 表明此笔持仓数量被全部平掉, 查询时, 当天被全平的持仓也仍会出现在响应中, 因此, 有的查询到的持仓记录的持仓数量(Position)为0. 结算后, 平仓完的持仓将被清除, 无法再查询到.
+
+        持仓里统计的一些字段, 表示的含义是在这个持仓记录上产生的所有该字段数据的和, 比如Commission(手续费), 表示的这个买卖方向的持仓上的开仓和平仓的成交产生的手续费的和(CTP的成交记录中没有手续费, 手续费体现在成交相关的持仓中). 类似的还有CloseProfit, LongFrozen, OpenAmount等. 作者：非典型小李 https://www.bilibili.com/read/cv7692891/ 出处：bilibili
+            */
         var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcInvestorPositionField>>>();
         var                                   reqId      = GetNextRequestId();
         List<CThostFtdcInvestorPositionField> l          = new List<CThostFtdcInvestorPositionField>();
