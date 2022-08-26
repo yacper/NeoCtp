@@ -762,6 +762,7 @@ namespace NeoCtp.Imp
         private TdApiCalls.CBOnRspQryTradingAccount cbOnRspQryTradingAccountDele;
 
         private TdApiCalls.CBOnRspQryInvestorPosition cbOnRspQryInvestorPositionDele;
+        private TdApiCalls.CBRspQryInvestorPositionDetail cbRspQryInvestorPositionDetailDele;
 
         private TdApiCalls.CBOnRspQryInstrument cbOnRspQryInstrumentDele;
 
@@ -803,6 +804,8 @@ namespace NeoCtp.Imp
 
             cbOnRspQryInvestorPositionDele = new(_CBOnRspQryInvestorPosition);
 			TdApiCalls.RegOnRspQryInvestorPosition(SpiHandle_, cbOnRspQryInvestorPositionDele);
+            cbRspQryInvestorPositionDetailDele = new(_CBRspQryInvestorPositionDetail);
+			TdApiCalls.RegRspQryInvestorPositionDetail(SpiHandle_, cbRspQryInvestorPositionDetailDele);
 
             cbOnRspQryInstrumentDele = new(_CBOnRspQryInstrument);
 			TdApiCalls.RegOnRspQryInstrument(SpiHandle_, cbOnRspQryInstrumentDele);

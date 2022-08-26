@@ -182,9 +182,9 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         if (ConnectionState == EConnectionState.Connected)
             return Task.FromResult(true);
 
-        ConnectionState = EConnectionState.Connecting;
-
         if (frontAddress != null) FrontAddress         = frontAddress;
+
+        ConnectionState = EConnectionState.Connecting;
 
         ApiHandle_ = MdApiCalls.CreateFtdcMdApi(FlowPath, IsUsingUdp, IsMulticast);
         SpiHandle_ = MdApiCalls.CreateMdSpi();

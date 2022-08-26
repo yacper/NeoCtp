@@ -278,8 +278,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     ///请求查询转帐银行响应
     public void OnRspQryTransferBank(ref CThostFtdcTransferBankField pTransferBank, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
 
+    private EventHandler<CtpRsp<CThostFtdcInvestorPositionDetailField>> OnRspQryInvestorPositionDetailEvent;
     ///请求查询投资者持仓明细响应
-    public void OnRspQryInvestorPositionDetail(ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
+    public void OnRspQryInvestorPositionDetail(ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    {
+        OnRspQryInvestorPositionDetailEvent?.Invoke(this, new CtpRsp<CThostFtdcInvestorPositionDetailField>(pInvestorPositionDetail, pRspInfo, nRequestID, bIsLast));
+    }
 
     ///请求查询客户通知响应
     public void OnRspQryNotice(ref CThostFtdcNoticeField pNotice, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
@@ -576,9 +580,9 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         if (ConnectionState == EConnectionState.Connected)
             return Task.FromResult(true);
 
-        ConnectionState = EConnectionState.Connecting;
-
         if (frontAddress != null) FrontAddress         = frontAddress;
+
+        ConnectionState = EConnectionState.Connecting;
 
         ApiHandle_ = TdApiCalls.CreateFtdcTraderApi(FlowPath);
         SpiHandle_ = TdApiCalls.CreateTdSpi();
@@ -693,17 +697,25 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             IsLogined = true;
 
             SessionId = e.Rsp2.SessionID;
-            MaxOrderRef_ = Convert.ToInt32(e.Rsp2.MaxOrderRef);
+            MaxOrderRef_ = string.IsNullOrWhiteSpace(e.Rsp2.MaxOrderRef)?0:Convert.ToInt32(e.Rsp2.MaxOrderRef);
             FrontId   = e.Rsp2.FrontID;
 
             DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
 
             LoginTime = day + TimeSpan.Parse(e.Rsp2.LoginTime);
-            SHFETime  = day + TimeSpan.Parse(e.Rsp2.SHFETime);
-            DCETime   = day + TimeSpan.Parse(e.Rsp2.DCETime);
-            CZCETime  = day + TimeSpan.Parse(e.Rsp2.CZCETime);
-            FFEXTime  = day + TimeSpan.Parse(e.Rsp2.FFEXTime);
-            INETime   = day + TimeSpan.Parse(e.Rsp2.INETime);
+            // 如果非要挤时段，返回如此
+            // --:--:--
+            try
+            {
+                SHFETime = day + TimeSpan.Parse(e.Rsp2.SHFETime);
+                DCETime  = day + TimeSpan.Parse(e.Rsp2.DCETime);
+                CZCETime = day + TimeSpan.Parse(e.Rsp2.CZCETime);
+                FFEXTime = day + TimeSpan.Parse(e.Rsp2.FFEXTime);
+                INETime  = day + TimeSpan.Parse(e.Rsp2.INETime);
+            }
+            catch (Exception exception)
+            {
+            }
 
             taskSource.TrySetResult(e);
         };
@@ -921,7 +933,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///请求查询投资者持仓
-    public Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(string instrumentID)
+    public Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(CThostFtdcQryInvestorPositionField? field = null)
     {
         var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcInvestorPositionField>>>();
         var                                   reqId      = GetNextRequestId();
@@ -934,7 +946,8 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         {
             if (e.RequestID == reqId)
             {
-                l.Add(e.Rsp2);
+                if (!string.IsNullOrWhiteSpace(e.Rsp2.InstrumentID)) // 返回可能是是空
+                    l.Add(e.Rsp2);
                 if (e.IsLast)
                 {
                     clearHandler();
@@ -959,15 +972,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             OnRspErrorEvent               -= onRspErrorHandler;
         }
 
+        var f = field.GetValueOrDefault();
+        f.BrokerID   = BrokerId;
+        f.InvestorID = UserId;
 
-        CThostFtdcQryInvestorPositionField field = new CThostFtdcQryInvestorPositionField()
-        {
-            BrokerID     = BrokerId,
-            InvestorID   = UserId,
-            InstrumentID = instrumentID
-        };
-
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPosition(ref field, reqId);
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPosition(ref f, reqId);
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -984,6 +993,74 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
         return taskSource.Task;
     }
+
+
+    public Task<CtpRsp<List<CThostFtdcInvestorPositionDetailField>>> ReqQryInvestorPositionDetailAsync(CThostFtdcQryInvestorPositionDetailField? field = null)
+    {
+        /*
+        持仓明细由开仓成交产生, 成交数量即为持仓明细的数量(Volume), 平仓会使得数量减少, 数量减少到0时, 
+        表明此笔持仓数量被全部平掉, 查询时, 当天被全平的持仓明细也仍会出现在响应中,
+        因此, 有的查询到的持仓明细记录的数量(Volume)为0. 结算后, 平仓完的持仓明细将被清除, 无法再查询到.*/
+        var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcInvestorPositionDetailField>>>();
+        var                                   reqId      = GetNextRequestId();
+        List<CThostFtdcInvestorPositionDetailField> l          = new ();
+
+        EventHandler<CtpRsp<CThostFtdcInvestorPositionDetailField>> onRspQryInvestorPositionDetailHandler = null;
+        EventHandler<CtpRsp>                                  onRspErrorHandler               = null;
+
+        onRspQryInvestorPositionDetailHandler = (s, e) =>
+        {
+            if (e.RequestID == reqId)
+            {
+                if (!string.IsNullOrWhiteSpace(e.Rsp2.InstrumentID)) // 返回可能是是空
+                    l.Add(e.Rsp2);
+                if (e.IsLast)
+                {
+                    clearHandler();
+
+                    taskSource.TrySetResult(new(l, e.Rsp, e.RequestID, e.IsLast));
+                }
+            }
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestID == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspQryInvestorPositionDetailEvent -= onRspQryInvestorPositionDetailHandler;
+            OnRspErrorEvent               -= onRspErrorHandler;
+        }
+
+        var f = field.GetValueOrDefault();
+        f.BrokerID   = BrokerId;
+        f.InvestorID = UserId;
+
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPositionDetail(ref f, reqId);
+        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        else
+        {
+            OnRspQryInvestorPositionDetailEvent += onRspQryInvestorPositionDetailHandler;
+            OnRspErrorEvent               += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
+    }
+
+
 
     public Task<CtpRsp<CThostFtdcInstrumentField>> ReqQryInstrumentAsync(string instrumentID)
     {

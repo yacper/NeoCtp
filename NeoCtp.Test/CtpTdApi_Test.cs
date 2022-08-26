@@ -149,7 +149,7 @@ public class CtpTdApi_Test
     [Test]
     public async Task ReqQryInvestorPositionAsync_Test()
     {
-        var acc = await client.ReqQryInvestorPositionAsync("rb2210");
+        var acc = await client.ReqQryInvestorPositionAsync();
         //.acc.Rsp2.Should().n
 
         Debug.WriteLine(acc.Dump());
@@ -163,6 +163,16 @@ public class CtpTdApi_Test
 
         Debug.WriteLine("ReqQryInvestorPositionAsync " + acc.ToJson(Formatting.Indented));
     }
+
+  [Test]
+    public async Task ReqQryInvestorPositionDetailAsync_Test_All()
+    {
+        var acc = await client.ReqQryInvestorPositionDetailAsync();
+        //.acc.Rsp2.Should().n
+
+        Debug.WriteLine("ReqQryInvestorPositionDetailAsync " + acc.ToJson(Formatting.Indented));
+    }
+
 
 #endregion
 
