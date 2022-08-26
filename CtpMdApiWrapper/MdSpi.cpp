@@ -74,7 +74,7 @@ void MdSpi::OnRspUnSubForQuoteRsp(CThostFtdcSpecificInstrumentField* pSpecificIn
 
 void MdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField* pDepthMarketData)
 {
-	//cerr << "Éî¶ÈÐÐÇé" << endl;
+	//cerr << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
 	if (cbOnRtnDepthMarketData != NULL)
 		cbOnRtnDepthMarketData(pDepthMarketData);
 }
