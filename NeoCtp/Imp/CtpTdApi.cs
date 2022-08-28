@@ -702,11 +702,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
             DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
 
-            LoginTime = day + TimeSpan.Parse(e.Rsp2.LoginTime);
-            // 如果非要挤时段，返回如此
+            // 如果非交易时段，返回如此
             // --:--:--
             try
             {
+                LoginTime = day + TimeSpan.Parse(e.Rsp2.LoginTime);
+
                 SHFETime = day + TimeSpan.Parse(e.Rsp2.SHFETime);
                 DCETime  = day + TimeSpan.Parse(e.Rsp2.DCETime);
                 CZCETime = day + TimeSpan.Parse(e.Rsp2.CZCETime);
@@ -1347,63 +1348,73 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     // 如果成功，会返回onRtnOrderEvent
-    public Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction)
+    //public Task<Tuple<CThostFtdcOrderField?,CtpRsp<CThostFtdcInputOrderActionField>>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction)
+
+	public Task<CtpRsp<CThostFtdcOrderField?>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction)
     {
-        var taskSource = new TaskCompletionSource<Tuple<CThostFtdcOrderField?, CtpRsp<CThostFtdcInputOrderActionField>>>();
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcOrderField?>>();
         var reqId      = GetNextRequestId();
+        pInputOrderAction.RequestID = reqId;
 
         pInputOrderAction.BrokerID   = BrokerId;
         pInputOrderAction.InvestorID = UserId;
 
 
+         // 本地校验成功-服务器校验成功/失败
+        EventHandler<CThostFtdcOrderField> onRtnOrderHandler = null;
+        //本地校验失败
         EventHandler<CtpRsp<CThostFtdcInputOrderActionField>> onRspOrderActionHandler = null;
-        EventHandler<CThostFtdcOrderField>              onRtnOrderHandler       = null;
-        EventHandler<CtpRsp>                            onRspErrorHandler       = null;
+        EventHandler<Tuple<CThostFtdcOrderActionField, CThostFtdcRspInfoField>> onErrRtnOrderActionHandler = null;
+
+        onRtnOrderHandler = (s, e) =>
+        {// 会返回两次，第一次是原订单，没有意义
+			if(e.OrderSysID == pInputOrderAction.OrderSysID &&
+			   e.ExchangeID == pInputOrderAction.ExchangeID &&
+               e.OrderStatus == TThostFtdcOrderStatusType.Canceled  // 第二次返回，撤单成功
+			   )  // 交易所校验通过
+			{
+				clearHandler();
+
+				taskSource.TrySetResult(new() { Rsp2 = e, RequestID = reqId });
+			}
+		};
 
         onRspOrderActionHandler = (s, e) =>
         {
-            if (e.RequestID == reqId)
+            if (e.RequestID == pInputOrderAction.RequestID)
             {
                 clearHandler();
 
-                taskSource.TrySetResult(new(null, e));
-            }
-        };
-        onRtnOrderHandler = (s, e) =>
-        {
-            if (e.OrderRef == pInputOrderAction.OrderRef)
-            {
-                clearHandler();
-
-                taskSource.TrySetResult(new(e, null));
+                taskSource.TrySetResult(new(){Rsp = e.Rsp, RequestID = reqId, IsLast = e.IsLast});
             }
         };
 
-        onRspErrorHandler = (s, e) =>
+        onErrRtnOrderActionHandler = (s, e) =>
         {
-            if (e.RequestID == reqId)
+            // todo:没测到，估计有问题
+            if (e.Item1.RequestID == pInputOrderAction.RequestID)
             {
                 clearHandler();
 
-                taskSource.TrySetException(new CtpException(e));
+                taskSource.TrySetResult(new (){Rsp = e.Item2});
             }
         };
 
         void clearHandler()
         {
-            OnRspOrderActionEvent -= onRspOrderActionHandler;
-            OnRtnOrderEvent       -= onRtnOrderHandler;
-            OnRspErrorEvent       -= onRspErrorHandler;
-        }
+            OnRtnOrderEvent          -= onRtnOrderHandler;
+            OnRspOrderActionEvent    -= onRspOrderActionHandler;
+            OnErrRtnOrderActionEvent -= onErrRtnOrderActionHandler;
+         }
 
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqOrderAction(ref pInputOrderAction, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(null, new(ret))); }
+        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
-            OnRspOrderActionEvent += onRspOrderActionHandler;
-            OnRtnOrderEvent       += onRtnOrderHandler;
-            OnRspErrorEvent       += onRspErrorHandler;
+            OnRtnOrderEvent          += onRtnOrderHandler;
+            OnRspOrderActionEvent    += onRspOrderActionHandler;
+            OnErrRtnOrderActionEvent += onErrRtnOrderActionHandler;
 
             CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
             tokenSource.Token.Register(() =>

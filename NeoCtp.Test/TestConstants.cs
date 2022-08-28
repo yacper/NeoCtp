@@ -11,6 +11,10 @@ namespace NeoCtp.Tests
         public static string GetMdFrontAddr()
         {
             DateTime now = DateTime.Now;
+            if(now.DayOfWeek == DayOfWeek.Sunday ||
+               now.DayOfWeek == DayOfWeek.Saturday)
+                return MdFrontAddr24;
+
             if ((now.Hour >= 9 && now.Hour < 16) ||
                 (now.Hour >= 21 && now.Hour < 23) ||
                 (now.Hour >= 0 && now.Hour < 3)
@@ -28,6 +32,10 @@ namespace NeoCtp.Tests
         public static string GetTdFrontAddr()
         {
             DateTime now = DateTime.Now;
+            if(now.DayOfWeek == DayOfWeek.Sunday ||
+               now.DayOfWeek == DayOfWeek.Saturday)
+                return TdFrontAddr24;
+
             if ((now.Hour >= 9 && now.Hour < 16) ||
                 (now.Hour >= 21 && now.Hour < 23) ||
                 (now.Hour >= 0 && now.Hour < 3)

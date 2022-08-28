@@ -322,19 +322,41 @@ public class CtpTdApi_Test
     [Test]
     public async Task ReqOrderActionAsync_Test()
     {
-        CThostFtdcInputOrderActionField field = new CThostFtdcInputOrderActionField()
+        CThostFtdcInputOrderField field = new CThostFtdcInputOrderField()
         {
             InstrumentID   = "rb2210",
-            //OrderRef = 
-            ActionFlag = TThostFtdcActionFlagType.Delete
+            CombOffsetFlag = TThostFtdcOffsetFlagType.Open,
+
+            LimitPrice          = 3800,
+            VolumeTotalOriginal = 1,
+            Direction           = TThostFtdcDirectionType.Buy,
+            TimeCondition       = TThostFtdcTimeConditionType.GFD, //当日有效
+
+            OrderPriceType      = TThostFtdcOrderPriceTypeType.LimitPrice,       // 默认限价
+            VolumeCondition     = TThostFtdcVolumeConditionType.AV,              // 任何数量
+            MinVolume           = 1,                                             // 最小成交量1
+            ContingentCondition = TThostFtdcContingentConditionType.Immediately, // 触发条件：立即
+            ForceCloseReason    = TThostFtdcForceCloseReasonType.NotForceClose,  // 强平原因：非强平
+            IsAutoSuspend       = 0,                                             // 自动挂起标志：否
+            UserForceClose      = 0,                                             // 用户强平标志：否
+
+            CombHedgeFlag = TThostFtdcHedgeFlagType.Speculation
         };
+        var rsp = await client.ReqOrderInsertAsync(field);
+        Debug.WriteLine("ReqOrderInsertAsync" + rsp.ToJson(Formatting.Indented));
+        if (rsp.Rsp.ErrorID == 0) // 下单成功
+        {
+			CThostFtdcInputOrderActionField actionField = new CThostFtdcInputOrderActionField()
+			{
+                // 必须提供ExchangeID + OrderSysID， 否则无法识别
+                ExchangeID = "SHFE",
+				OrderSysID =rsp.Rsp2.GetValueOrDefault().OrderSysID,
+			    ActionFlag = TThostFtdcActionFlagType.Delete
+			};
 
-
-        var acc = await client.ReqOrderActionAsync(field);
-        //.acc.Rsp2.Should().n
-
-        Debug.WriteLine(acc.Dump());
-
+			var rsp2 = await client.ReqOrderActionAsync(actionField);
+            Debug.WriteLine("ReqOrderActionAsync" + rsp2.ToJson(Formatting.Indented));
+		}
     }
 #endregion
 }
