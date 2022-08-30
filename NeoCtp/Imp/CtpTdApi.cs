@@ -700,12 +700,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             MaxOrderRef_ = string.IsNullOrWhiteSpace(e.Rsp2.MaxOrderRef)?0:Convert.ToInt32(e.Rsp2.MaxOrderRef);
             FrontId   = e.Rsp2.FrontID;
 
-            DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
 
             // 如果非交易时段，返回如此
             // --:--:--
             try
             {
+                DateTime day = DateTime.ParseExact(e.Rsp2.TradingDay, "yyyyMMdd", null);
                 LoginTime = day + TimeSpan.Parse(e.Rsp2.LoginTime);
 
                 SHFETime = day + TimeSpan.Parse(e.Rsp2.SHFETime);
