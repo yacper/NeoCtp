@@ -4206,7 +4206,7 @@ public struct CThostFtdcInputOrderActionField
     public string ExchangeID;
 
     /// <summary>
-    /// 报单编号
+    /// 报单编号，填的时候，必须留空格
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
     public string OrderSysID;

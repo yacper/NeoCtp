@@ -358,5 +358,20 @@ public class CtpTdApi_Test
             Debug.WriteLine("ReqOrderActionAsync" + rsp2.ToJson(Formatting.Indented));
 		}
     }
+
+ [Test]
+    public async Task ReqOrderActionAsync_DelTest()
+    {
+        CThostFtdcInputOrderActionField actionField = new CThostFtdcInputOrderActionField()
+        {
+            // 必须提供ExchangeID + OrderSysID， 否则无法识别
+            ExchangeID = "SHFE",
+            OrderSysID = "5335",            // 注意:这样是没用的,exhcange找不到，        9006，前面的空格是必须的
+            ActionFlag = TThostFtdcActionFlagType.Delete
+        };
+
+        var rsp2 = await client.ReqOrderActionAsync(actionField);
+        Debug.WriteLine("ReqOrderActionAsync" + rsp2.ToJson(Formatting.Indented));
+    }
 #endregion
 }
