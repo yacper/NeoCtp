@@ -1017,6 +1017,49 @@ public enum TThostFtdcOffsetFlagType : byte
 }
 
 /// <summary>
+/// TThostFtdcCombOffsetFlagType是一个组合开平标志类型
+// todo: 不知道是否和TThostFtdcOffsetFlagType一致，目前只测到0, 1
+/// </summary>
+public enum TThostFtdcCombOffsetFlagType : byte
+{
+    /// <summary>
+    /// 开仓
+    /// </summary>
+    Open = (byte)'0',
+
+    /// <summary>
+    /// 平仓
+    /// </summary>
+    Close = (byte)'1',
+
+    /// <summary>
+    /// 强平
+    /// </summary>
+    ForceClose = (byte)'2',
+
+    /// <summary>
+    /// 平今
+    /// </summary>
+    CloseToday = (byte)'3',
+
+    /// <summary>
+    /// 平昨
+    /// </summary>
+    CloseYesterday = (byte)'4',
+
+    /// <summary>
+    /// 强减
+    /// </summary>
+    ForceOff = (byte)'5',
+
+    /// <summary>
+    /// 本地强平
+    /// </summary>
+    LocalForceClose = (byte)'6'
+}
+
+
+/// <summary>
 /// TFtdcForceCloseReasonType是一个强平原因类型
 /// </summary>
 public enum TThostFtdcForceCloseReasonType : byte

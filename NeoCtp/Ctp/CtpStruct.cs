@@ -3566,6 +3566,8 @@ public struct CThostFtdcOrderField
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
     public string CombOffsetFlag;
 
+    public TThostFtdcCombOffsetFlagType GetCombOffsetFlag() => Enum.Parse<TThostFtdcCombOffsetFlagType>(CombOffsetFlag);
+
     /// <summary>
     /// 组合投机套保标志
     /// </summary>
