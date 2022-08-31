@@ -934,7 +934,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
     ///请求查询投资者持仓
-    public Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(CThostFtdcQryInvestorPositionField? field = null)
+    public async Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(CThostFtdcQryInvestorPositionField? field = null)
     {// https://www.bilibili.com/read/cv7692891/
             /*
       持仓的数量减少到0时, 表明此笔持仓数量被全部平掉, 查询时, 当天被全平的持仓也仍会出现在响应中, 因此, 有的查询到的持仓记录的持仓数量(Position)为0. 结算后, 平仓完的持仓将被清除, 无法再查询到.
@@ -982,7 +982,13 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         f.BrokerID   = BrokerId;
         f.InvestorID = UserId;
 
+        //ECtpExecuteRtn ret = await CallApi((delegate(object[] arguments) { return ReqQryInvestorPosition(ref arguments[0], arguments[1]); }));
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPosition(ref f, reqId);
+        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
+        {
+            await Task.Delay(1000);
+            ret = (ECtpExecuteRtn)ReqQryInvestorPosition(ref f, reqId);
+        }
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -997,11 +1003,17 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
     }
 
+    //public delegate int ApiAction(params object[] arguments);
 
-    public Task<CtpRsp<List<CThostFtdcInvestorPositionDetailField>>> ReqQryInvestorPositionDetailAsync(CThostFtdcQryInvestorPositionDetailField? field = null)
+    //public async Task<ECtpExecuteRtn> CallApi(ApiAction func)
+    //{
+    //    return  (ECtpExecuteRtn)func.Invoke();
+    //}
+
+    public async Task<CtpRsp<List<CThostFtdcInvestorPositionDetailField>>> ReqQryInvestorPositionDetailAsync(CThostFtdcQryInvestorPositionDetailField? field = null)
     {
         /*
         持仓明细由开仓成交产生, 成交数量即为持仓明细的数量(Volume), 平仓会使得数量减少, 数量减少到0时, 
@@ -1049,6 +1061,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         f.InvestorID = UserId;
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPositionDetail(ref f, reqId);
+        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
+        {
+            await Task.Delay(1000);
+            ret = (ECtpExecuteRtn)ReqQryInvestorPositionDetail(ref f, reqId);
+        }
+
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -1063,7 +1081,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
     }
 
 
@@ -1126,7 +1144,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         return taskSource.Task;
     }
 
-    public Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? o = null)
+    public async Task<CtpRsp<List<CThostFtdcOrderField>>> ReqQryOrderAsync(CThostFtdcQryOrderField? o = null)
     {
         var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcOrderField>>>();
         var                                   reqId      = GetNextRequestId();
@@ -1171,6 +1189,12 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         }
      
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryOrder(ref pQryOrder, reqId);
+        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
+        {
+            await Task.Delay(1000);
+            ret = (ECtpExecuteRtn)ReqQryOrder(ref pQryOrder, reqId);
+        }
+
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -1185,11 +1209,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
 
     }
 
-    public Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField? o)
+    public async Task<CtpRsp<List<CThostFtdcTradeField>>> ReqQryTradeAsync(CThostFtdcQryTradeField? o)
     {
         var                                   taskSource = new TaskCompletionSource<CtpRsp<List<CThostFtdcTradeField>>>();
         var                                   reqId      = GetNextRequestId();
@@ -1234,6 +1258,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         }
      
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryTrade(ref pQryTrade, reqId);
+        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
+        {
+            await Task.Delay(1000);
+            ret = (ECtpExecuteRtn)ReqQryTrade(ref pQryTrade, reqId);
+        }
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -1248,9 +1277,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             });
         }
 
-        return taskSource.Task;
-
-
+        return await taskSource.Task;
     }
 
 

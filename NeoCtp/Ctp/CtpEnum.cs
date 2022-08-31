@@ -850,6 +850,28 @@ public enum TThostFtdcHedgeFlagType : byte
     /// </summary>
     Hedge = (byte)'3'
 }
+/// <summary>
+/// TThostFtdcCombHedgeFlagType是一个组合投机套保标志类型
+/// </summary>
+public enum TThostFtdcCombHedgeFlagType : byte
+{
+    /// <summary>
+    /// 投机
+    /// </summary>
+    Speculation = (byte)'1',
+
+    /// <summary>
+    /// 套利
+    /// </summary>
+    Arbitrage = (byte)'2',
+
+    /// <summary>
+    /// 套保
+    /// </summary>
+    Hedge = (byte)'3'
+}
+
+
 
 
 /// <summary>

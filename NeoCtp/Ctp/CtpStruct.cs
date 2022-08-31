@@ -3565,7 +3565,6 @@ public struct CThostFtdcOrderField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
     public string CombOffsetFlag;
-
     public TThostFtdcCombOffsetFlagType GetCombOffsetFlag() => Enum.Parse<TThostFtdcCombOffsetFlagType>(CombOffsetFlag);
 
     /// <summary>
@@ -3573,6 +3572,7 @@ public struct CThostFtdcOrderField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
     public string CombHedgeFlag;
+    public TThostFtdcCombHedgeFlagType GetCombHedgeFlag()=>Enum.Parse<TThostFtdcCombHedgeFlagType>(CombHedgeFlag);
 
     /// <summary>
     /// 价格
