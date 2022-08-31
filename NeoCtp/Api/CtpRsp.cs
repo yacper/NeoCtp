@@ -13,13 +13,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoCtp.Enums;
+using NeoCtp.Imp;
 
 namespace NeoCtp.Api;
 
 public class CtpRsp
 {
     // 本地返回信息
-    public ECtpExecuteRtn ExecuteRtn { get; protected set; } // 调用函数后直接返回
+    public ECtpExecuteRtn ExecuteRtn { get; set; } // 调用函数后直接返回
 
     // 服务器返回信息
     public int                    RequestID { get; set; }
@@ -55,6 +56,9 @@ public class CtpRsp<T2> : CtpRsp
     public CtpRsp(ECtpExecuteRtn executeRtn)
         : base(executeRtn)
     {
+        Type t = typeof(T2);
+        if (t.IsList())
+            Rsp2 = (T2)t.MakeList();
     }
 
     public CtpRsp(T2 rsp2, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
@@ -84,6 +88,9 @@ public class CtpRsp<T2, T3> : CtpRsp<T2>
     public CtpRsp(ECtpExecuteRtn executeRtn)
         : base(executeRtn)
     {
+        Type t = typeof(T2);
+        if (t.IsList())
+            Rsp2 = (T2)t.MakeList();
     }
 
     public CtpRsp(T3 rsp3, T2 rsp2, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
