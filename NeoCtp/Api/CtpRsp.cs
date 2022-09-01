@@ -58,7 +58,7 @@ public class CtpRsp<T2> : CtpRsp
     {
         Type t = typeof(T2);
         if (t.IsList())
-            Rsp2 = (T2)t.MakeList();
+            Rsp2 = (T2)Activator.CreateInstance(t);
     }
 
     public CtpRsp(T2 rsp2, CThostFtdcRspInfoField rsp, int nRequestID, bool bIsLast)
