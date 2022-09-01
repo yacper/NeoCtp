@@ -406,8 +406,9 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
     public ReadOnlyObservableCollection<string> Subscribed { get => new(Subscribed_); } // 订阅的
 
-    public Task<CtpRsp<List<string>>> SubMarketDataAsync(params string[] instruments)
+    public async Task<CtpRsp<List<string>>> SubMarketDataAsync(params string[] instruments)
     {
+        var                   inss           = instruments.Select(p => p.ToLower()).ToArray();
         var                   taskSource     = new TaskCompletionSource<CtpRsp<List<string>>>();
         ConcurrentBag<string> instrumentsBag = new ConcurrentBag<string>();
         var                   reqId          = GetNextRequestId();
@@ -443,7 +444,12 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent         -= onRspErrorHandler;
         }
 
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)SubscribeMarketData(instruments);
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)SubscribeMarketData(inss);
+        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
+        {
+            await Task.Delay(1000);
+            ret = (ECtpExecuteRtn)SubscribeMarketData(inss);
+        }
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -458,11 +464,12 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
     }
 
-    public Task<CtpRsp<List<string>>> UnSubMarketDataAsync(params string[] instruments)
+    public async Task<CtpRsp<List<string>>> UnSubMarketDataAsync(params string[] instruments)
     {
+        var                   inss           = instruments.Select(p => p.ToLower()).ToArray();
         var                   taskSource     = new TaskCompletionSource<CtpRsp<List<string>>>();
         ConcurrentBag<string> instrumentsBag = new ConcurrentBag<string>();
         var                   reqId          = GetNextRequestId();
@@ -498,7 +505,12 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent           -= onRspErrorHandler;
         }
 
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)UnSubscribeMarketData(instruments);
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)UnSubscribeMarketData(inss);
+        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
+        {
+            await Task.Delay(1000);
+            ret = (ECtpExecuteRtn)SubscribeMarketData(inss);
+        }
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -513,7 +525,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             });
         }
 
-        return taskSource.Task;
+        return await taskSource.Task;
     }
 
     public event EventHandler<CThostFtdcDepthMarketDataField> OnRtnDepthMarketDataEvent;

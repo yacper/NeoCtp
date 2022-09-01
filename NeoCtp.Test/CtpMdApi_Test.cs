@@ -84,7 +84,9 @@ public class CtpMdApi_Test
     [Test]
     public async Task SubMarketDataAsync_Test()
     {
+            // 必须小写，大写不行
         List<string> instruments = new() { "rb2210", "hc2210" };
+        //List<string> instruments = new() { "rb2210"};
 
         var marketDataFields = new List<CThostFtdcDepthMarketDataField>();
         client.OnRtnDepthMarketDataEvent += (s, e) =>
