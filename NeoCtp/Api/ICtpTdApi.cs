@@ -104,6 +104,9 @@ namespace NeoCtp
         event EventHandler<CThostFtdcOrderField> OnRtnOrderEvent;		// order 状态通知
         event EventHandler<CThostFtdcTradeField> OnRtnTradeEvent;	    // trade 成交通知
 
+        event EventHandler<Tuple<CThostFtdcInputOrderField, CThostFtdcRspInfoField>>  OnErrRtnOrderInsertEvent; // 报单插入错误回报
+        event EventHandler<Tuple<CThostFtdcOrderActionField, CThostFtdcRspInfoField>> OnErrRtnOrderActionEvent; //报单操作错误回报
+
 
         // 撤单 不支持改单
         Task<CtpRsp<CThostFtdcOrderField?>> ReqOrderActionAsync(CThostFtdcInputOrderActionField pInputOrderAction);
