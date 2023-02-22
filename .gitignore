@@ -16,3 +16,9 @@ Desktop.ini
 .DS_Store
 
 Messages/
+/CtpSimpleTest/rb2210_market_data.csv
+/CtpTdApiWrapper.Test/CtpFlow/DialogRsp.con
+/CtpTdApiWrapper.Test/CtpFlow/Private.con
+/CtpTdApiWrapper.Test/CtpFlow/Public.con
+/CtpTdApiWrapper.Test/CtpFlow/QueryRsp.con
+/CtpTdApiWrapper.Test/CtpFlow/TradingDay.con
