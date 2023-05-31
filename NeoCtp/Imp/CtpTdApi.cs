@@ -572,7 +572,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     protected EConnectionState ConnectionState_;
 
 
-    public int TimeoutMilliseconds { get; set; } = 5000;
+    public int TimeoutMilliseconds { get; set; } = 10000;
 
 
     public Task<bool> ConnectAsync(string frontAddress = null)
