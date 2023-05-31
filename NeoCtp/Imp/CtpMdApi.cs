@@ -172,7 +172,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
     public bool IsLogined { get { return _IsLogined; } protected set { SetProperty(ref _IsLogined, value); } }
 
 
-    public int TimeoutMilliseconds { get; set; } = 5000;
+    public int TimeoutMilliseconds { get; set; } = 10000;  // simnow 默认也是10s
 
 
     string ICtpMdApi.GetApiVersion() => CtpMdApiBase.GetApiVersion();
