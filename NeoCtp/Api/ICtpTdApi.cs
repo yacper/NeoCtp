@@ -84,6 +84,7 @@ namespace NeoCtp
 #region Position
 
          ///请求查询投资者持仓 不填参数可以查询所有position
+         // 持仓的查询与更新 https://zhuanlan.zhihu.com/p/334757236 https://zhuanlan.zhihu.com/p/348396367
         Task<CtpRsp<List<CThostFtdcInvestorPositionField>>> ReqQryInvestorPositionAsync(CThostFtdcQryInvestorPositionField? field = null);
 
         Task<CtpRsp<List<CThostFtdcInvestorPositionDetailField>>> ReqQryInvestorPositionDetailAsync(CThostFtdcQryInvestorPositionDetailField? field = null);
