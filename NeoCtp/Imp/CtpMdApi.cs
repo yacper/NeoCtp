@@ -444,12 +444,15 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent         -= onRspErrorHandler;
         }
 
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)SubscribeMarketData(inss);
-        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
-        {
-            await Task.Delay(1000);
+        ECtpExecuteRtn ret;
+        do
+        {// 请求忙
             ret = (ECtpExecuteRtn)SubscribeMarketData(inss);
-        }
+            if (ret.IsBusy())
+                await Task.Delay(1000);
+        } while (ret.IsBusy());
+
+
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -505,12 +508,16 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
             OnRspErrorEvent           -= onRspErrorHandler;
         }
 
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)UnSubscribeMarketData(inss);
-        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
-        {
-            await Task.Delay(1000);
-            ret = (ECtpExecuteRtn)SubscribeMarketData(inss);
-        }
+        ECtpExecuteRtn ret;
+        do
+        {// 请求忙
+            ret = (ECtpExecuteRtn)UnSubscribeMarketData(inss);
+            if (ret.IsBusy())
+                await Task.Delay(1000);
+        } while (ret.IsBusy());
+
+
+
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {

@@ -985,13 +985,14 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         f.BrokerID   = BrokerId;
         f.InvestorID = UserId;
 
-        //ECtpExecuteRtn ret = await CallApi((delegate(object[] arguments) { return ReqQryInvestorPosition(ref arguments[0], arguments[1]); }));
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPosition(ref f, reqId);
-        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
-        {
-            await Task.Delay(1000);
+        ECtpExecuteRtn ret;
+        do
+        {// 请求忙
             ret = (ECtpExecuteRtn)ReqQryInvestorPosition(ref f, reqId);
-        }
+            if (ret.IsBusy())
+                await Task.Delay(1000);
+        } while (ret.IsBusy());
+
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
@@ -1066,12 +1067,13 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         f.BrokerID   = BrokerId;
         f.InvestorID = UserId;
 
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInvestorPositionDetail(ref f, reqId);
-        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
-        {
-            await Task.Delay(1000);
+        ECtpExecuteRtn ret;
+        do
+        {// 请求忙
             ret = (ECtpExecuteRtn)ReqQryInvestorPositionDetail(ref f, reqId);
-        }
+            if (ret.IsBusy())
+                await Task.Delay(1000);
+        } while (ret.IsBusy());
 
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
@@ -1196,15 +1198,19 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             OnRspQryOrderEvent -= onRspQryOrderHandler;
             OnRspErrorEvent               -= onRspErrorHandler;
         }
-     
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryOrder(ref pQryOrder, reqId);
-        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
-        {
-            await Task.Delay(1000);
-            ret = (ECtpExecuteRtn)ReqQryOrder(ref pQryOrder, reqId);
-        }
 
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        ECtpExecuteRtn ret;
+        do
+        {// 请求忙
+            ret = (ECtpExecuteRtn)ReqQryOrder(ref pQryOrder, reqId);
+            if (ret.IsBusy())
+                await Task.Delay(1000);
+        } while (ret.IsBusy());
+
+        if (ret != ECtpExecuteRtn.Sucess)
+        {
+            taskSource.TrySetResult(new(ret));
+        }
         else
         {
             OnRspQryOrderEvent += onRspQryOrderHandler;
@@ -1268,12 +1274,15 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
             OnRspErrorEvent               -= onRspErrorHandler;
         }
      
-        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryTrade(ref pQryTrade, reqId);
-        if (ret == ECtpExecuteRtn.ExceedPerSeceond)
-        {
-            await Task.Delay(1000);
+        ECtpExecuteRtn ret;
+        do
+        {// 请求忙
             ret = (ECtpExecuteRtn)ReqQryTrade(ref pQryTrade, reqId);
-        }
+            if (ret.IsBusy())
+                await Task.Delay(1000);
+        } while (ret.IsBusy());
+
+
         if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
         else
         {
