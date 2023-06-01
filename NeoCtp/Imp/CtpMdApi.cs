@@ -329,7 +329,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         };
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqUserLogin(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLoginEvent += onRspUserLoginHandler;
@@ -386,7 +386,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         };
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqUserLogout(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLogoutEvent += onRspUserLogoutHandler;
@@ -453,7 +453,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
         } while (ret.IsBusy());
 
 
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspSubMarketDataEvent += onRspSubMarketDataHandler;
@@ -518,7 +518,7 @@ public class CtpMdApi : CtpMdApiBase, ICtpMdSpi, ICtpMdApi
 
 
 
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUnSubMarketDataEvent += onRspUnSubMarketDataEvent;

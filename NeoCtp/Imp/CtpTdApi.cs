@@ -745,7 +745,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqUserLogin(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLoginEvent += onRspUserLoginHandler;
@@ -799,7 +799,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqUserLogout(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspUserLogoutEvent += onRspUserLogoutHandler;
@@ -856,7 +856,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqSettlementInfoConfirm(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspSettlementInfoConfirmEvent += onRspSettlementInfoConfirmHandler;
@@ -915,7 +915,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         await Task.Delay(700);
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryTradingAccount(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryTradingAccountEvent += onRspQryTradingAccountHandler;
@@ -993,7 +993,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
                 await Task.Delay(1000);
         } while (ret.IsBusy());
 
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryInvestorPositionEvent += onRspQryInvestorPositionHandler;
@@ -1075,7 +1075,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
                 await Task.Delay(1000);
         } while (ret.IsBusy());
 
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryInvestorPositionDetailEvent += onRspQryInvestorPositionDetailHandler;
@@ -1135,7 +1135,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryInstrument(ref field, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryInstrumentEvent += onRspQryInstrumentHandler;
@@ -1207,7 +1207,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
                 await Task.Delay(1000);
         } while (ret.IsBusy());
 
-        if (ret != ECtpExecuteRtn.Sucess)
+        if (ret != ECtpExecuteRtn.Success)
         {
             taskSource.TrySetResult(new(ret));
         }
@@ -1283,7 +1283,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         } while (ret.IsBusy());
 
 
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRspQryTradeEvent += onRspQryTradeHandler;
@@ -1374,7 +1374,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqOrderInsert(ref pInputOrder, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRtnOrderEvent       += onRtnOrderHandler;
@@ -1456,7 +1456,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
 
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqOrderAction(ref pInputOrderAction, reqId);
-        if (ret != ECtpExecuteRtn.Sucess) { taskSource.TrySetResult(new(ret)); }
+        if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }
         else
         {
             OnRtnOrderEvent          += onRtnOrderHandler;
