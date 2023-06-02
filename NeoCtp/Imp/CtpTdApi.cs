@@ -1023,6 +1023,9 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         持仓明细由开仓成交产生, 成交数量即为持仓明细的数量(Volume), 平仓会使得数量减少, 数量减少到0时, 
         表明此笔持仓数量被全部平掉, 查询时, 当天被全平的持仓明细也仍会出现在响应中,
         因此, 有的查询到的持仓明细记录的数量(Volume)为0. 结算后, 平仓完的持仓明细将被清除, 无法再查询到.*/
+        /*
+         *手续费： ctp
+         */
         List<CThostFtdcInvestorPositionDetailField> l          = new ();
         if (ConnectionState != EConnectionState.Connected)
             return new() { ExecuteRtn = ECtpExecuteRtn.NetworkFailure, Rsp2 = l };
