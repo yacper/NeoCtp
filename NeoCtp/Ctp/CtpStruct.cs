@@ -3352,7 +3352,8 @@ public struct CThostFtdcInputOrderField
     /// <summary>
     /// 组合开平标志
     /// </summary>
-    [MarshalAs(UnmanagedType.I1)] public TThostFtdcOffsetFlagType CombOffsetFlag;
+    [MarshalAs(UnmanagedType.I1)]
+    public TThostFtdcOffsetFlagType CombOffsetFlag;
 
     /// <summary>
     /// 组合开平标志
