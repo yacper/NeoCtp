@@ -89,6 +89,23 @@ public class CtpTdApi_Test
         confirm.Rsp2.InvestorID.Should().Be(TestConstants.UserID);
     }
 
+#region Enums
+
+    //[Test]
+    //public async Task TThostFtdcCombOffsetFlagType_Test()  // 
+    //{
+    //    var l = Enum.GetValues<TThostFtdcCombOffsetFlagType>();
+    //    Enum.
+
+    //    var ee = Convert.ToByte("0");
+    //    var e  = (TThostFtdcCombOffsetFlagType)(ee);
+
+    //    e.Should().Be(TThostFtdcCombOffsetFlagType.Open);
+    //}
+
+
+#endregion
+
 #region Account
     [Test]
     public async Task ReqQryTradingAccountAsync_Test()  // 查询账户资金

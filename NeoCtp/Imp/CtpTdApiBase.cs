@@ -79,7 +79,11 @@ public partial class CtpTdApiBase : ObservableObject, ICtpTdApiBase
 
     ///删除接口对象本身
     ///@remark 不再使用本接口对象时,调用该函数删除接口对象
-    public void Release() { TdApiCalls.Release(ApiHandle_); }
+    public void Release()
+    {
+        TdApiCalls.Release(ApiHandle_);
+        ApiHandle_ = IntPtr.Zero;
+    }
 
     ///初始化
     ///@remark 初始化运行环境,只有调用后,接口才开始工作

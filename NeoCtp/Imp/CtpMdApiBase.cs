@@ -77,7 +77,11 @@ public partial class CtpMdApiBase : ObservableObject, ICtpMdApiBase
 
     public void Dispose() { throw new NotImplementedException(); }
 
-    public void Release() { MdApiCalls.Release(ApiHandle_); }
+    public void Release()
+    {
+        MdApiCalls.Release(ApiHandle_);
+        ApiHandle_ = IntPtr.Zero;
+    }
 
     ///初始化
     ///@remark 初始化运行环境,只有调用后,接口才开始工作

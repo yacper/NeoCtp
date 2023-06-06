@@ -1887,6 +1887,14 @@ public struct CThostFtdcTradingAccountField
 
 /// <summary>
 /// 投资者持仓
+// 开头这6个字段我们称之为持仓记录的键值（Key），通过这6个字段就可以区分唯一一条持仓记录。
+//
+//  InstrumentID记录的是合约ID，例如通过这个字段可以区分究竟是au2012的持仓还是ag2012的持仓记录。
+//  PosiDirection是枚举值，'2'表示多头持仓；'3'表示空头持仓，可见同一合约的不同方向的持仓在CTP是通过不同的记录来返回的。
+//  HedgeFlag是投机套保标志枚举值，多数投资者是'1'，表示为投机仓。
+//  PositionDate是区分是否历史仓的枚举值，‘1’表示当前交易日持仓；‘2’表示是历史仓（昨仓）。
+//  只有上期/能源交易所的合约才可能有PositionDate为‘2’的持仓记录，因为上期/能源区分今仓和昨仓记录，昨仓平仓需要单独指定平昨仓。
+//  经过上面分析，对于个人投资者关键键值字段为合约，方向，持仓日期这3个，有这3个基本就能确定唯一持仓。
 /// </summary>
 [StructLayout(LayoutKind.Sequential)]
 public struct CThostFtdcInvestorPositionField
@@ -3561,19 +3569,72 @@ public struct CThostFtdcOrderField
     /// </summary>
     public TThostFtdcDirectionType Direction;
 
+        // 原始组合
+    ///// <summary>
+    ///// 组合开平标志
+    ///// </summary>
+    //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+    //public string CombOffsetFlag;
+    //public TThostFtdcCombOffsetFlagType GetCombOffsetFlag() => Enum.Parse<TThostFtdcCombOffsetFlagType>(CombOffsetFlag);
+
+    ///// <summary>
+    ///// 组合投机套保标志
+    ///// </summary>
+    //[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+    //public string CombHedgeFlag;
+    //public TThostFtdcCombHedgeFlagType GetCombHedgeFlag()=>Enum.Parse<TThostFtdcCombHedgeFlagType>(CombHedgeFlag);
+
+ /// <summary>
+    /// 组合开平标志
+    /// </summary>
+    [MarshalAs(UnmanagedType.I1)]
+    public TThostFtdcOffsetFlagType CombOffsetFlag;
+
     /// <summary>
     /// 组合开平标志
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
-    public string CombOffsetFlag;
-    public TThostFtdcCombOffsetFlagType GetCombOffsetFlag() => Enum.Parse<TThostFtdcCombOffsetFlagType>(CombOffsetFlag);
+    public TThostFtdcOffsetFlagType CombOffsetFlag_1;
+
+    /// <summary>
+    /// 组合开平标志
+    /// </summary>
+    public TThostFtdcOffsetFlagType CombOffsetFlag_2;
+
+    /// <summary>
+    /// 组合开平标志
+    /// </summary>
+    public TThostFtdcOffsetFlagType CombOffsetFlag_3;
+
+    /// <summary>
+    /// 组合开平标志
+    /// </summary>
+    public TThostFtdcOffsetFlagType CombOffsetFlag_4;
 
     /// <summary>
     /// 组合投机套保标志
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
-    public string CombHedgeFlag;
-    public TThostFtdcCombHedgeFlagType GetCombHedgeFlag()=>Enum.Parse<TThostFtdcCombHedgeFlagType>(CombHedgeFlag);
+    public TThostFtdcHedgeFlagType CombHedgeFlag;
+
+    /// <summary>
+    /// 组合投机套保标志
+    /// </summary>
+    public TThostFtdcHedgeFlagType CombHedgeFlag_1;
+
+    /// <summary>
+    /// 组合投机套保标志
+    /// </summary>
+    public TThostFtdcHedgeFlagType CombHedgeFlag_2;
+
+    /// <summary>
+    /// 组合投机套保标志
+    /// </summary>
+    public TThostFtdcHedgeFlagType CombHedgeFlag_3;
+
+    /// <summary>
+    /// 组合投机套保标志
+    /// </summary>
+    public TThostFtdcHedgeFlagType CombHedgeFlag_4;
+
 
     /// <summary>
     /// 价格
