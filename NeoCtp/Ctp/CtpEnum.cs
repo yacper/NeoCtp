@@ -9,7 +9,8 @@ public enum THOST_TE_RESUME_TYPE
 {
     THOST_TERT_RESTART = 0,
     THOST_TERT_RESUME,
-    THOST_TERT_QUICK
+    THOST_TERT_QUICK,
+    THOST_TERT_NONE
 }
 
 /// <summary>
@@ -84,9 +85,48 @@ public enum TThostFtdcIdCardTypeType : byte
     LicenseNo = (byte)'9',
 
     /// <summary>
-    /// 税务登记号
+    ///税务登记号/当地纳税ID
     /// </summary>
     TaxNo = (byte)'A',
+
+    ///港澳居民来往内地通行证
+    HMMainlandTravelPermit = (byte)'B',
+
+    ///台湾居民来往大陆通行证
+    TwMainlandTravelPermit = (byte)'C',
+
+    ///驾照
+    DrivingLicense = (byte)'D',
+
+    ///当地社保ID
+    SocialID = (byte)'F',
+
+    ///当地身份证
+    LocalID = (byte)'G',
+
+    ///商业登记证
+    BusinessRegistration = (byte)'H',
+
+    ///港澳永久性居民身份证
+    HKMCIDCard = (byte)'I',
+
+    ///人行开户许可证
+    AccountsPermits = (byte)'J',
+
+    ///外国人永久居留证
+    FrgPrmtRdCard = (byte)'K',
+
+    ///资管产品备案函
+    CptMngPrdLetter = (byte)'L',
+
+    ///港澳台居民居住证
+    HKMCTwResidencePermit = (byte)'M',
+
+    ///统一社会信用代码
+    UniformSocialCreditCode = (byte)'N',
+
+    ///机构成立证明文件
+    CorporationCertNo = (byte)'O',
 
     /// <summary>
     /// 其他证件
@@ -293,7 +333,10 @@ public enum TThostFtdcFunctionCodeType : byte
     /// <summary>
     /// 同步动态令牌
     /// </summary>
-    SyncOTP = (byte)'E'
+    SyncOTP = (byte)'E',
+
+    ///删除未知单
+    DeleteOrder = (byte)'F'
 }
 
 /// <summary>
@@ -504,7 +547,49 @@ public enum TThostFtdcBrokerFunctionCodeType : byte
     /// <summary>
     /// 交易终端应急功能
     /// </summary>
-    TbCommand = (byte)'H'
+    TbCommand = (byte)'H',
+
+    ///删除未知单
+    DeleteOrder = (byte)'J',
+
+    ///预埋报单插入
+    ParkedOrderInsert = (byte)'K',
+
+    ///预埋报单操作
+    ParkedOrderAction = (byte)'L',
+
+    ///资金不够仍允许行权
+    ExecOrderNoCheck = (byte)'M',
+
+    ///指定
+    Designate = (byte)'N',
+
+    ///证券处置
+    StockDisposal = (byte)'O',
+
+    ///席位资金预警
+    BrokerDepositWarn = (byte)'Q',
+
+    ///备兑不足预警
+    CoverWarn = (byte)'S',
+
+    ///行权试算
+    PreExecOrder = (byte)'T',
+
+    ///行权交收风险
+    ExecOrderRisk = (byte)'P',
+
+    ///持仓限额预警
+    PosiLimitWarn = (byte)'U',
+
+    ///持仓限额查询
+    QryPosiLimit = (byte)'V',
+
+    ///银期签到签退
+    FBSign = (byte)'W',
+
+    ///银期签约解约
+    FBAccount = (byte)'X',
 }
 
 /// <summary>
@@ -701,7 +786,46 @@ public enum TThostFtdcProductClassType : byte
     /// <summary>
     /// 期转现
     /// </summary>
-    EFP = (byte)'5'
+    EFP = (byte)'5',
+
+    ///现货期权
+    SpotOption = (byte)'6',
+
+    ///TAS合约
+    TAS = (byte)'7',
+
+    ///金属指数
+    MI = (byte)'I',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcAPIProductClassType是一个产品类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcAPIProductClassType : byte
+{
+    ///期货单一合约
+    FutureSingle = (byte)'1',
+
+    ///期权单一合约
+    OptionSingle = (byte)'2',
+
+    ///可交易期货(含期货组合和期货单一合约)
+    Futures = (byte)'3',
+
+    ///可交易期权(含期权组合和期权单一合约)
+    Options = (byte)'4',
+
+    ///可下单套利组合
+    TradingComb = (byte)'5',
+
+    ///可申请的组合（可以申请的组合合约 包含可以交易的合约）
+    UnTradingComb = (byte)'6',
+
+    ///所有可以交易合约
+    AllTrading = (byte)'7',
+
+    ///所有合约（包含不能交易合约 慎用）
+    All = (byte)'8',
 }
 
 /// <summary>
@@ -864,8 +988,8 @@ public enum TThostFtdcHedgeFlagType : byte
     /// 第一腿套保第二腿投机
     /// </summary>
     HedgeSpec = (byte)'7'
-
 }
+
 /// <summary>
 /// TThostFtdcCombHedgeFlagType是一个组合投机套保标志类型
 /// </summary>
@@ -886,8 +1010,6 @@ public enum TThostFtdcCombHedgeFlagType : byte
     /// </summary>
     Hedge = (byte)'3'
 }
-
-
 
 
 /// <summary>
@@ -935,7 +1057,6 @@ public enum TThostFtdcClientIDTypeType : byte
     /// 做市商
     /// </summary>
     MarketMaker = (byte)'5'
-
 }
 
 /// <summary>
@@ -1192,11 +1313,11 @@ public enum TThostFtdcOrderTypeType : byte
     /// </summary>
     Swap = (byte)'5',
 
-///大宗交易成交衍生
+    ///大宗交易成交衍生
     DeriveFromBlockTrade = (byte)'6',
-///期转现成交衍生
-    DeriveFromEFPTrade = (byte)'7',
 
+    ///期转现成交衍生
+    DeriveFromEFPTrade = (byte)'7',
 }
 
 /// <summary>
@@ -1400,6 +1521,9 @@ public enum TThostFtdcOrderSourceType : byte
 /// </summary>
 public enum TThostFtdcTradeTypeType : byte
 {
+    ///组合持仓拆分为单一持仓,初始化不应包含该类型的持仓
+    SplitCombination = (byte)'#',
+
     /// <summary>
     /// 普通成交
     /// </summary>
@@ -1425,7 +1549,7 @@ public enum TThostFtdcTradeTypeType : byte
     /// </summary>
     CombinationDerived = (byte)'4',
 
-///大宗交易成交
+    ///大宗交易成交
     BlockTrade = (byte)'5',
 }
 
@@ -1440,7 +1564,7 @@ public enum TThostFtdcSpecPosiTypeType : byte
     Common = (byte)'#',
 
     /// <summary>
-///TAS合约成交产生的标的合约持仓明细
+    ///TAS合约成交产生的标的合约持仓明细
     /// </summary>
     Tas = (byte)'0',
 }
@@ -1466,7 +1590,7 @@ public enum TThostFtdcPriceSourceType : byte
     /// </summary>
     Sell = (byte)'2',
 
-///场外成交价
+    ///场外成交价
     OTC = (byte)'3'
 }
 
@@ -1745,11 +1869,13 @@ public enum TThostFtdcExchangeSettlementParamIDType : byte
     CZCEComMarginType = (byte)'A',
 
 
-///大商所套利保证金是否优惠
+    ///大商所套利保证金是否优惠
     DceComMarginType = (byte)'B',
-///虚值期权保证金优惠比率
+
+    ///虚值期权保证金优惠比率
     OptOutDisCountRate = (byte)'a',
-///最低保障系数
+
+    ///最低保障系数
     OptMiniGuarantee = (byte)'b',
 }
 
@@ -1919,33 +2045,44 @@ public enum TThostFtdcTradeParamIDType : byte
     /// </summary>
     IsAuthForce = (byte)'A',
 
-///是否冻结证券持仓
+    ///是否冻结证券持仓
     IsPosiFreeze = (byte)'F',
-///是否限仓
-    IsPosiLimit = (byte)'M',
-///郑商所询价时间间隔
-    ForQuoteTimeInterval = (byte)'Q',
-///是否期货限仓
-    IsFuturePosiLimit = (byte)'B',
-///是否期货下单频率限制
-    IsFutureOrderFreq = (byte)'C',
-///行权冻结是否计算盈利
-    IsExecOrderProfit = (byte)'H',
-///银期开户是否验证开户银行卡号是否是预留银行账户
-    IsCheckBankAcc = (byte)'I',
-///弱密码最后修改日期
-    PasswordDeadLine = (byte)'J',
-///强密码校验
-    IsStrongPassword = (byte)'K',
-///自有资金质押比
-    BalanceMorgage = (byte)'a',
-///最小密码长度
-    MinPwdLen = (byte)'O',
-///IP当日最大登陆失败次数
-    LoginFailMaxNumForIP = (byte)'U',
-///密码有效期
-    PasswordPeriod = (byte)'V',
 
+    ///是否限仓
+    IsPosiLimit = (byte)'M',
+
+    ///郑商所询价时间间隔
+    ForQuoteTimeInterval = (byte)'Q',
+
+    ///是否期货限仓
+    IsFuturePosiLimit = (byte)'B',
+
+    ///是否期货下单频率限制
+    IsFutureOrderFreq = (byte)'C',
+
+    ///行权冻结是否计算盈利
+    IsExecOrderProfit = (byte)'H',
+
+    ///银期开户是否验证开户银行卡号是否是预留银行账户
+    IsCheckBankAcc = (byte)'I',
+
+    ///弱密码最后修改日期
+    PasswordDeadLine = (byte)'J',
+
+    ///强密码校验
+    IsStrongPassword = (byte)'K',
+
+    ///自有资金质押比
+    BalanceMorgage = (byte)'a',
+
+    ///最小密码长度
+    MinPwdLen = (byte)'O',
+
+    ///IP当日最大登陆失败次数
+    LoginFailMaxNumForIP = (byte)'U',
+
+    ///密码有效期
+    PasswordPeriod = (byte)'V',
 }
 
 /// <summary>
@@ -1993,15 +2130,17 @@ public enum TThostFtdcFileIDType : byte
     /// </summary>
     CZCENoClose = (byte)'N',
 
-///持仓明细数据
+    ///持仓明细数据
     PositionDtl = (byte)'D',
-///期权执行文件
-    OptionStrike = (byte)'S',
-///结算价比对文件
-    SettlementPriceComparison = (byte)'M',
-///上期所非持仓变动明细
-    NonTradePosChange = (byte)'B',
 
+    ///期权执行文件
+    OptionStrike = (byte)'S',
+
+    ///结算价比对文件
+    SettlementPriceComparison = (byte)'M',
+
+    ///上期所非持仓变动明细
+    NonTradePosChange = (byte)'B',
 }
 
 /// <summary>
@@ -2208,7 +2347,7 @@ public enum TThostFtdcFundIOTypeType : byte
     /// </summary>
     Transfer = (byte)'2',
 
-///银期换汇
+    ///银期换汇
     SwapCurrency = (byte)'3',
 }
 
@@ -2230,7 +2369,10 @@ public enum TThostFtdcFundTypeType : byte
     /// <summary>
     /// 公司调整
     /// </summary>
-    Company = (byte)'3'
+    Company = (byte)'3',
+
+    ///资金内转
+    InnerTransfer = (byte)'4',
 }
 
 /// <summary>
@@ -2381,7 +2523,10 @@ public enum TThostFtdcInvestorTypeType : byte
     /// <summary>
     /// 特殊法人
     /// </summary>
-    SpecialOrgan = (byte)'3'
+    SpecialOrgan = (byte)'3',
+
+    ///资管户
+    Asset = (byte)'4',
 }
 
 /// <summary>
@@ -2509,7 +2654,6 @@ public enum TThostFtdcIncludeCloseProfitType : byte
     /// </summary>
     NotInclude = (byte)'2'
 }
-
 
 
 /// <summary>
@@ -2948,7 +3092,13 @@ public enum TThostFtdcPersonTypeType : byte
     /// <summary>
     /// 托（保）管机构联系人
     /// </summary>
-    TrusteeContact = (byte)'C'
+    TrusteeContact = (byte)'C',
+
+    ///境外自然人参考证件
+    ForeignerRefer = (byte)'D',
+
+    ///法人代表参考证件
+    CorporationRefer = (byte)'E',
 }
 
 /// <summary>
@@ -3583,6 +3733,20 @@ public enum TThostFtdcFBTPassWordTypeType : byte
     /// </summary>
     Trade = (byte)'3'
 }
+
+/// <summary>
+///TFtdcFBTEncryModeType是一个加密方式类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFBTEncryModeType : byte
+{
+///不加密
+    NoEncry = (byte)'0',
+///DES
+    DES = (byte)'1',
+///3DES
+    _3DES = (byte)'2',
+}
+
 
 /// <summary>
 /// TFtdcBankRepealFlagType是一个银行冲正标志类型
@@ -4279,6 +4443,15 @@ public enum TThostFtdcFBTUserEventTypeType : byte
     /// </summary>
     SyncKey = (byte)'B',
 
+    ///预约开户
+    ReserveOpenAccount = (byte)'C',
+
+    ///撤销预约开户
+    CancelReserveOpenAccount = (byte)'D',
+
+    ///预约开户确认
+    ReserveOpenAccountConfirm = (byte)'E',
+
     /// <summary>
     /// 其他
     /// </summary>
@@ -4341,6 +4514,121 @@ public enum TThostFtdcSyncTypeType : byte
     /// 定时完全同步
     /// </summary>
     TimerFullSync = (byte)'2'
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcExDirectionType是一个换汇方向类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcExDirectionType : byte
+{
+///结汇
+    Settlement = (byte)'0',
+///售汇
+    Sale = (byte)'1',
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+////TFtdcFBEResultFlagType是一个换汇成功标志类型
+public enum TThostFtdcFBEResultFlagType : byte
+{
+    ///成功
+    Success = (byte)'0',
+
+    ///账户余额不足
+    InsufficientBalance = (byte)'1',
+
+    ///交易结果未知
+    UnknownTrading = (byte)'8',
+
+    ///失败
+    Fail = (byte)'x',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcFBEExchStatusType是一个换汇交易状态类型
+public enum TThostFtdcFBEExchStatusType : byte
+{
+    ///正常
+    Normal = (byte)'0',
+
+    ///交易重发
+    ReExchange = (byte)'1',
+}
+
+///TFtdcFBEFileFlagType是一个换汇文件标志类型
+public enum TThostFtdcFBEFileFlagType : byte
+{
+    ///数据包
+    DataPackage = (byte)'0',
+
+    ///文件
+    File = (byte)'1',
+}
+
+///TFtdcFBEAlreadyTradeType是一个换汇已交易标志类型
+public enum TThostFtdcFBEAlreadyTradeType : byte
+{
+    ///未交易
+    NotTrade = (byte)'0',
+
+    ///已交易
+    Trade = (byte)'1',
+}
+
+///TFtdcFBEUserEventTypeType是一个银期换汇用户事件类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFBEUserEventTypeType : byte
+{
+    ///签到
+    SignIn = (byte)'0',
+
+    ///换汇
+    Exchange = (byte)'1',
+
+    ///换汇重发
+    ReExchange = (byte)'2',
+
+    ///银行账户查询
+    QueryBankAccount = (byte)'3',
+
+    ///换汇明细查询
+    QueryExchDetial = (byte)'4',
+
+    ///换汇汇总查询
+    QueryExchSummary = (byte)'5',
+
+    ///换汇汇率查询
+    QueryExchRate = (byte)'6',
+
+    ///对账文件通知
+    CheckBankAccount = (byte)'7',
+
+    ///签退
+    SignOut = (byte)'8',
+
+    ///其他
+    Other = (byte)'Z',
+}
+
+///TFtdcFBEReqFlagType是一个换汇发送标志类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFBEReqFlagType : byte
+{
+    ///未处理
+    UnProcessed = (byte)'0',
+
+    ///等待发送
+    WaitSend = (byte)'1',
+
+    ///发送成功
+    SendSuccess = (byte)'2',
+
+    ///发送失败
+    SendFailed = (byte)'3',
+
+    ///等待重发
+    WaitReSend = (byte)'4',
 }
 
 /// <summary>
@@ -4682,7 +4970,10 @@ public enum TThostFtdcClientTypeType : byte
     /// <summary>
     /// 特殊法人
     /// </summary>
-    SpecialOrgan = (byte)'4'
+    SpecialOrgan = (byte)'4',
+
+    ///资管户
+    Asset = (byte)'5',
 }
 
 /// <summary>
@@ -4708,7 +4999,10 @@ public enum TThostFtdcExchangeIDTypeType : byte
     /// <summary>
     /// 中国金融期货交易所
     /// </summary>
-    CFFEX = (byte)'J'
+    CFFEX = (byte)'J',
+
+    ///上海国际能源交易中心股份有限公司
+    INE = (byte)'N',
 }
 
 /// <summary>
@@ -6059,6 +6353,174 @@ public enum TThostFtdcCloseDealTypeType : byte
     SpecFirst = (byte)'1'
 }
 
+/////////////////////////////////////////////////////////////////////////
+///TFtdcMortgageFundUseRangeType是一个货币质押资金可用范围类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcMortgageFundUseRangeType : byte
+{
+    ///不能使用
+    None = (byte)'0',
+
+    ///用于保证金
+    Margin = (byte)'1',
+
+    ///用于手续费、盈亏、保证金
+    All = (byte)'2',
+
+    ///人民币方案3
+    CNY3 = (byte)'3',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSpecProductTypeType是一个特殊产品类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcSpecProductTypeType : byte
+{
+    ///郑商所套保产品
+    CzceHedge = (byte)'1',
+
+    ///货币质押产品
+    IneForeignCurrency = (byte)'2',
+
+    ///大连短线开平仓产品
+    DceOpenClose = (byte)'3',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcFundMortgageTypeType是一个货币质押类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFundMortgageTypeType : byte
+{
+    ///质押
+    Mortgage = (byte)'1',
+
+    ///解质
+    Redemption = (byte)'2',
+}
+
+///TFtdcAccountSettlementParamIDType是一个投资者账户结算参数代码类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcAccountSettlementParamIDType : byte
+{
+    ///基础保证金
+    BaseMargin = (byte)'1',
+
+    ///最低权益标准
+    LowestInterest = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcFundMortDirectionType是一个货币质押方向类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFundMortDirectionType : byte
+{
+    ///货币质入
+    In = (byte)'1',
+
+    ///货币质出
+    Out = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcBusinessClassType是一个换汇类别类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcBusinessClassType : byte
+{
+    ///盈利
+    Profit = (byte)'0',
+
+    ///亏损
+    Loss = (byte)'1',
+
+    ///其他
+    Other = (byte)'Z',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSwapSourceTypeType是一个换汇数据来源类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcSwapSourceTypeType : byte
+{
+    ///手工
+    Manual = (byte)'0',
+
+    ///自动生成
+    Automatic = (byte)'1',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcCurrExDirectionType是一个换汇类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcCurrExDirectionType : byte
+{
+    ///结汇
+    Settlement = (byte)'0',
+
+    ///售汇
+    Sale = (byte)'1',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcCurrencySwapStatusType是一个申请状态类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcCurrencySwapStatusType : byte
+{
+    ///已录入
+    Entry = (byte)'1',
+
+    ///已审核
+    Approve = (byte)'2',
+
+    ///已拒绝
+    Refuse = (byte)'3',
+
+    ///已撤销
+    Revoke = (byte)'4',
+
+    ///已发送
+    Send = (byte)'5',
+
+    ///换汇成功
+    Success = (byte)'6',
+
+    ///换汇失败
+    Failure = (byte)'7',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcReqFlagType是一个换汇发送标志类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcReqFlagType : byte
+{
+    ///未发送
+    NoSend = (byte)'0',
+
+    ///发送成功
+    SendSuccess = (byte)'1',
+
+    ///发送失败
+    SendFailed = (byte)'2',
+
+    ///等待重发
+    WaitReSend = (byte)'3',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcResFlagType是一个换汇返回成功标志类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcResFlagType : byte
+{
+    ///成功
+    Success = (byte)'0',
+
+    ///账户余额不足
+    InsuffiCient = (byte)'1',
+
+    ///交易结果未知
+    UnKnown = (byte)'8',
+}
+
+
 /// <summary>
 /// TFtdcExStatusType是一个修改状态类型
 /// </summary>
@@ -6074,6 +6536,40 @@ public enum TThostFtdcExStatusType : byte
     /// </summary>
     After = (byte)'1'
 }
+
+/// <summary>
+/// TFtdcClientRegionType是一个开户客户地域类型
+/// </summary>
+public enum TThostFtdcClientRegionType : byte
+{
+    /// <summary>
+    /// 国内客户
+    /// </summary>
+    Domestic = (byte)'1',
+
+    /// <summary>
+    /// 港澳台客户
+    /// </summary>
+    GMT = (byte)'2',
+
+    /// <summary>
+    /// 国外客户
+    /// </summary>
+    Foreign = (byte)'3'
+}
+
+/// <summary>
+///TFtdcHasBoardType是一个是否有董事会类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcHasBoardType : byte
+{
+    ///没有
+    No = (byte)'0',
+
+    ///有
+    Yes = (byte)'1',
+}
+
 
 /// <summary>
 /// TFtdcStartModeType是一个启动模式类型
@@ -6227,31 +6723,41 @@ public enum TThostFtdcCusAccountTypeType : byte
     /// </summary>
     Futures = (byte)'1',
 
-    /// <summary>
-    /// 资管结算账户
-    /// </summary>
-    Assetmgr = (byte)'2'
+    ///纯期货资管业务下的资管结算账户
+    AssetmgrFuture = (byte)'2',
+
+    ///综合类资管业务下的期货资管托管账户
+    AssetmgrTrustee = (byte)'3',
+
+    ///综合类资管业务下的资金中转账户
+    AssetmgrTransfer = (byte)'4',
 }
 
 /// <summary>
-/// TFtdcClientRegionType是一个开户客户地域类型
-/// </summary>
-public enum TThostFtdcClientRegionType : byte
+///TFtdcLanguageTypeType是一个通知语言类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcLanguageTypeType : byte
 {
-    /// <summary>
-    /// 国内客户
-    /// </summary>
-    Domestic = (byte)'1',
+    ///中文
+    Chinese = (byte)'1',
 
-    /// <summary>
-    /// 港澳台客户
-    /// </summary>
-    GMT = (byte)'2',
+    ///英文
+    English = (byte)'2',
+}
 
-    /// <summary>
-    /// 国外客户
-    /// </summary>
-    Foreign = (byte)'3'
+/// <summary>
+///TFtdcAssetmgrClientTypeType是一个资产管理客户类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcAssetmgrClientTypeType : byte
+{
+    ///个人资管客户
+    ChinesePerson = (byte)'1',
+
+    ///单位资管客户
+    ChineseOrgan = (byte)'2',
+
+    ///特殊单位资管客户
+    SpecialOrgan = (byte)'4',
 }
 
 /// <summary>
@@ -6323,92 +6829,203 @@ public enum TThostFtdcMaxMarginSideAlgorithmType : byte
     YES = (byte)'1'
 }
 
+/// <summary>
+///TFtdcDAClientTypeType是一个资产管理客户类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcDAClientTypeType : byte
+{
+    ///自然人
+    Person = (byte)'0',
+
+    ///法人
+    Company = (byte)'1',
+
+    ///其他
+    Other = (byte)'2',
+}
 
 /// <summary>
-/// 是否类型
-/// </summary>
-public enum TThostFtdcBoolType : int
-{
-    /// <summary>
-    /// 否
-    /// </summary>
-    No = 0,
-
-    /// <summary>
-    /// 是
-    /// </summary>
-    Yes = 1
-}
-//取值方式类型
-public enum TThostFtdcValueMethodType : byte
-{
-    ///按绝对值
-    Absolute = (byte)'0',
-
-    ///按比例
-    Ratio = (byte)'1',
-}
-
-
-///执行类型
-public enum TThostFtdcActionTypeType : byte
-{
-    ///执行
-    Exec = (byte)'1',
-
-    ///放弃
-    Abandon = (byte)'2',
-}
-
-///执行类型
-public enum TThostFtdcExecOrderPositionFlagType : byte
-{
-    ///保留
-    Reserve = (byte)'0',
-
-    ///不保留
-    UnReserve = (byte)'1',
-}
-
-///TFtdcExecOrderCloseFlagType是一个期权行权后生成的头寸是否自动平仓类型
-public enum TThostFtdcExecOrderCloseFlagType : byte
-{
-    ///自动平仓
-    AutoClose = (byte)'0',
-
-    ///免于自动平仓
-    NotToClose = (byte)'1',
-}
-
-///TFtdcExecOrderCloseFlagType是一个期权行权后生成的头寸是否自动平仓类型
-public enum TThostFtdcCombDirectionType : byte
-{
-    ///申请组合
-    Comb = (byte)'0',
-
-    ///申请拆分
-    UnComb = (byte)'1',
-
-    ///操作员删组合单
-    DelComb = (byte)'2',
-}
-
+///TFtdcUOAAssetmgrTypeType是一个投资类型类型
 /////////////////////////////////////////////////////////////////////////
-///TFtdcOptSelfCloseFlagType是一个期权行权的头寸是否自对冲类型
-/////////////////////////////////////////////////////////////////////////
-public enum TThostFtdcOptSelfCloseFlagType : byte
+public enum TThostFtdcUOAAssetmgrTypeType : byte
 {
-    ///自对冲期权仓位
-    CloseSelfOptionPosition = (byte)'1',
+    ///期货类
+    Futures = (byte)'1',
 
-    ///保留期权仓位
-    ReserveOptionPosition = (byte)'2',
+    ///综合类
+    SpecialOrgan = (byte)'2',
+}
 
-    ///自对冲卖方履约后的期货仓位
-    SellCloseSelfFuturePosition = (byte)'3',
+/// <summary>
+///TFtdcDirectionEnType是一个买卖方向类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcDirectionEnType : byte
+{
+    ///Buy
+    Buy = (byte)'0',
 
-    ///保留卖方履约后的期货仓位
-    ReserveFuturePosition = (byte)'4',
+    ///Sell
+    Sell = (byte)'1',
+}
+
+/// <summary>
+///TFtdcOffsetFlagEnType是一个开平标志类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOffsetFlagEnType : byte
+{
+    ///Position Opening
+    Open = (byte)'0',
+
+    ///Position Close
+    Close = (byte)'1',
+
+    ///Forced Liquidation
+    ForceClose = (byte)'2',
+
+    ///Close Today
+    CloseToday = (byte)'3',
+
+    ///Close Prev.
+    CloseYesterday = (byte)'4',
+
+    ///Forced Reduction
+    ForceOff = (byte)'5',
+
+    ///Local Forced Liquidation
+    LocalForceClose = (byte)'6',
+}
+
+/// <summary>
+///TFtdcHedgeFlagEnType是一个投机套保标志类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcHedgeFlagEnType : byte
+{
+    ///Speculation
+    Speculation = (byte)'1',
+
+    ///Arbitrage
+    Arbitrage = (byte)'2',
+
+    ///Hedge
+    Hedge = (byte)'3',
+}
+
+/// <summary>
+///TFtdcFundIOTypeEnType是一个出入金类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFundIOTypeEnType : byte
+{
+    ///Deposit/Withdrawal
+    FundIO = (byte)'1',
+
+    ///Bank-Futures Transfer
+    Transfer = (byte)'2',
+
+    ///Bank-Futures FX Exchange
+    SwapCurrency = (byte)'3',
+}
+
+
+/// <summary>
+///TFtdcFundTypeEnType是一个资金类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFundTypeEnType : byte
+{
+    ///Bank Deposit
+    Deposite = (byte)'1',
+
+    ///Payment/Fee
+    ItemFund = (byte)'2',
+
+    ///Brokerage Adj
+    Company = (byte)'3',
+
+    ///Internal Transfer
+    InnerTransfer = (byte)'4',
+}
+
+/// <summary>
+///TFtdcFundDirectionEnType是一个出入金方向类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFundDirectionEnType : byte
+{
+    ///Deposit
+    In = (byte)'1',
+
+    ///Withdrawal
+    Out = (byte)'2',
+}
+
+/// <summary>
+///TFtdcFundMortDirectionEnType是一个货币质押方向类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcFundMortDirectionEnType : byte
+{
+    ///Pledge
+    In = (byte)'1',
+
+    ///Redemption
+    Out = (byte)'2',
+}
+
+/// <summary>
+///TFtdcOptionsTypeType是一个期权类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOptionsTypeType : byte
+{
+    ///看涨
+    CallOptions = (byte)'1',
+
+    ///看跌
+    InPutOptions = (byte)'2',
+}
+
+/// <summary>
+///TFtdcStrikeModeType是一个执行方式类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcStrikeModeType : byte
+{
+    ///欧式
+    Continental = (byte)'0',
+
+    ///美式
+    American = (byte)'1',
+
+    ///百慕大
+    Bermuda = (byte)'2',
+}
+
+/// <summary>
+///TFtdcStrikeTypeType是一个执行类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcStrikeTypeType : byte
+{
+    ///自身对冲
+    Hedge = (byte)'0',
+
+    ///匹配执行
+    Match = (byte)'1',
+}
+
+/// <summary>
+///TFtdcApplyTypeType是一个中金所期权放弃执行申请类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcApplyTypeType : byte
+{
+    ///不执行数量
+    NotStrikeNum = (byte)'4',
+}
+
+/// <summary>
+///TFtdcGiveUpDataSourceType是一个放弃执行申请数据来源类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcGiveUpDataSourceType : byte
+{
+    ///系统生成
+    Gen = (byte)'0',
+
+    ///手工添加
+    Hand = (byte)'1',
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -6453,53 +7070,6 @@ public enum TThostFtdcExecResultType : byte
     Unknown = (byte)'a',
 }
 
-
-/////////////////////////////////////////////////////////////////////////
-///TFtdcForQuoteStatusType是一个询价状态类型
-/////////////////////////////////////////////////////////////////////////
-public enum TThostFtdcForQuoteStatusType : byte
-{
-    ///已经提交
-    Submitted = (byte)'a',
-
-    ///已经接受
-    Accepted = (byte)'b',
-
-    ///已经被拒绝
-    Rejected = (byte)'c',
-}
-
-/////////////////////////////////////////////////////////////////////////
-///TFtdcMortgageFundUseRangeType是一个货币质押资金可用范围类型
-/////////////////////////////////////////////////////////////////////////
-public enum TThostFtdcMortgageFundUseRangeType : byte
-{
-    ///不能使用
-    None = (byte)'0',
-
-    ///用于保证金
-    Margin = (byte)'1',
-
-    ///用于手续费、盈亏、保证金
-    All = (byte)'2',
-
-    ///人民币方案3
-    CNY3 = (byte)'3',
-}
-}
-
-/////////////////////////////////////////////////////////////////////////
-///TFtdcOptionsTypeType是一个期权类型类型
-/////////////////////////////////////////////////////////////////////////
-public enum TThostFtdcOptionsTypeType : byte
-{
-    ///看涨
-    CallOptions = (byte)'1',
-
-    ///看跌
-    PutOptions = (byte)'2',
-}
-
 /////////////////////////////////////////////////////////////////////////
 ///TFtdcCombinationTypeType是一个组合类型类型
 /////////////////////////////////////////////////////////////////////////
@@ -6530,8 +7100,316 @@ public enum TThostFtdcCombinationTypeType : byte
     OPL = (byte)'7',
 
     ///买备兑组合
-    BFO = (byte)'8'
+    BFO = (byte)'8',
+
+    ///买入期权垂直价差组合
+    BLS = (byte)'9',
+
+    ///卖出期权垂直价差组合
+    BES = (byte)'a',
 }
+
+///TFtdcDceCombinationTypeType是一个组合类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcDceCombinationTypeType : byte
+{
+    ///期货对锁组合
+    SPL = (byte)'0',
+
+    ///期权对锁组合
+    OPL = (byte)'1',
+
+    ///期货跨期组合
+    SP = (byte)'2',
+
+    ///期货跨品种组合
+    SPC = (byte)'3',
+
+    ///买入期权垂直价差组合
+    BLS = (byte)'4',
+
+    ///卖出期权垂直价差组合
+    BES = (byte)'5',
+
+    ///期权日历价差组合
+    CAS = (byte)'6',
+
+    ///期权跨式组合
+    STD = (byte)'7',
+
+    ///期权宽跨式组合
+    STG = (byte)'8',
+
+    ///买入期货期权组合
+    BFO = (byte)'9',
+
+    ///卖出期货期权组合
+    SFO = (byte)'a',
+}
+
+///TFtdcOptionRoyaltyPriceTypeType是一个期权权利金价格类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOptionRoyaltyPriceTypeType : byte
+{
+    ///昨结算价
+    PreSettlementPrice = (byte)'1',
+
+    ///开仓价
+    OpenPrice = (byte)'4',
+
+    ///最新价与昨结算价较大值
+    MaxPreSettlementPrice = (byte)'5',
+}
+
+///TFtdcBalanceAlgorithmType是一个权益算法类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcBalanceAlgorithmType : byte
+{
+    ///不计算期权市值盈亏
+    Default = (byte)'1',
+
+    ///计算期权市值亏损
+    IncludeOptValLost = (byte)'2',
+}
+
+///TFtdcActionTypeType是一个执行类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcActionTypeType : byte
+{
+    ///执行
+    Exec = (byte)'1',
+
+    ///放弃
+    Abandon = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcForQuoteStatusType是一个询价状态类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcForQuoteStatusType : byte
+{
+    ///已经提交
+    Submitted = (byte)'a',
+
+    ///已经接受
+    Accepted = (byte)'b',
+
+    ///已经被拒绝
+    Rejected = (byte)'c',
+}
+
+
+//取值方式类型
+public enum TThostFtdcValueMethodType : byte
+{
+    ///按绝对值
+    Absolute = (byte)'0',
+
+    ///按比例
+    Ratio = (byte)'1',
+}
+
+
+///执行类型
+public enum TThostFtdcExecOrderPositionFlagType : byte
+{
+    ///保留
+    Reserve = (byte)'0',
+
+    ///不保留
+    UnReserve = (byte)'1',
+}
+
+///TFtdcExecOrderCloseFlagType是一个期权行权后生成的头寸是否自动平仓类型
+public enum TThostFtdcExecOrderCloseFlagType : byte
+{
+    ///自动平仓
+    AutoClose = (byte)'0',
+
+    ///免于自动平仓
+    NotToClose = (byte)'1',
+}
+
+///TFtdcProductTypeType是一个产品类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcProductTypeType : byte
+{
+    ///期货
+    Futures = (byte)'1',
+
+    ///期权
+    Options = (byte)'2',
+}
+
+///TFtdcCZCEUploadFileNameType是一个郑商所结算文件名类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcCZCEUploadFileNameType : byte
+{
+    ///^\d{8}_zz_\d{4}
+    O = (byte)'O',
+
+    ///^\d{8}成交表
+    T = (byte)'T',
+
+    ///^\d{8}单腿持仓表new
+    P = (byte)'P',
+
+    ///^\d{8}非平仓了结表
+    N = (byte)'N',
+
+    ///^\d{8}平仓表
+    L = (byte)'L',
+
+    ///^\d{8}资金表
+    F = (byte)'F',
+
+    ///^\d{8}组合持仓表
+    C = (byte)'C',
+
+    ///^\d{8}保证金参数表
+    M = (byte)'M',
+}
+
+///TFtdcDCEUploadFileNameType是一个大商所结算文件名类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcDCEUploadFileNameType : byte
+{
+    ///^\d{8}_dl_\d{3}
+    O = (byte)'O',
+
+    ///^\d{8}_成交表
+    T = (byte)'T',
+
+    ///^\d{8}_持仓表
+    P = (byte)'P',
+
+    ///^\d{8}_资金结算表
+    F = (byte)'F',
+
+    ///^\d{8}_优惠组合持仓明细表
+    C = (byte)'C',
+
+    ///^\d{8}_持仓明细表
+    D = (byte)'D',
+
+    ///^\d{8}_保证金参数表
+    M = (byte)'M',
+
+    ///^\d{8}_期权执行表
+    S = (byte)'S',
+}
+
+///TFtdcSHFEUploadFileNameType是一个上期所结算文件名类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcSHFEUploadFileNameType : byte
+{
+    ///^\d{4}_\d{8}_\d{8}_DailyFundChg
+    O = (byte)'O',
+
+    ///^\d{4}_\d{8}_\d{8}_Trade
+    T = (byte)'T',
+
+    ///^\d{4}_\d{8}_\d{8}_SettlementDetail
+    P = (byte)'P',
+
+    ///^\d{4}_\d{8}_\d{8}_Capital
+    F = (byte)'F',
+}
+
+///TFtdcCFFEXUploadFileNameType是一个中金所结算文件名类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcCFFEXUploadFileNameType : byte
+{
+    ///^\d{4}_SG\d{1}_\d{8}_\d{1}_Trade
+    T = (byte)'T',
+
+    ///^\d{4}_SG\d{1}_\d{8}_\d{1}_SettlementDetail
+    P = (byte)'P',
+
+    ///^\d{4}_SG\d{1}_\d{8}_\d{1}_Capital
+    F = (byte)'F',
+
+    ///^\d{4}_SG\d{1}_\d{8}_\d{1}_OptionExec
+    S = (byte)'S',
+}
+
+///TFtdcExecOrderCloseFlagType是一个期权行权后生成的头寸是否自动平仓类型
+public enum TThostFtdcCombDirectionType : byte
+{
+    ///申请组合
+    Comb = (byte)'0',
+
+    ///申请拆分
+    UnComb = (byte)'1',
+
+    ///操作员删组合单
+    DelComb = (byte)'2',
+}
+
+///TFtdcStrikeOffsetTypeType是一个行权偏移类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcStrikeOffsetTypeType : byte
+{
+    ///实值额
+    RealValue = (byte)'1',
+
+    ///盈利额
+    ProfitValue = (byte)'2',
+
+    ///实值比例
+    RealRatio = (byte)'3',
+
+    ///盈利比例
+    ProfitRatio = (byte)'4',
+}
+
+///TFtdcReserveOpenAccStasType是一个预约开户状态类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcReserveOpenAccStasType : byte
+{
+    ///等待处理中
+    Processing = (byte)'0',
+
+    ///已撤销
+    Cancelled = (byte)'1',
+
+    ///已开户
+    Opened = (byte)'2',
+
+    ///无效请求
+    Invalid = (byte)'3',
+}
+
+///TFtdcWeakPasswordSourceType是一个弱密码来源类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcWeakPasswordSourceType : byte
+{
+    ///弱密码库
+    Lib = (byte)'1',
+
+    ///手工录入
+    Manual = (byte)'2',
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcOptSelfCloseFlagType是一个期权行权的头寸是否自对冲类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOptSelfCloseFlagType : byte
+{
+    ///自对冲期权仓位
+    CloseSelfOptionPosition = (byte)'1',
+
+    ///保留期权仓位
+    ReserveOptionPosition = (byte)'2',
+
+    ///自对冲卖方履约后的期货仓位
+    SellCloseSelfFuturePosition = (byte)'3',
+
+    ///保留卖方履约后的期货仓位
+    ReserveFuturePosition = (byte)'4',
+}
+
 
 /////////////////////////////////////////////////////////////////////////
 ///TFtdcBizTypeType是一个业务类型类型
@@ -6545,15 +7423,265 @@ public enum TThostFtdcBizTypeType : byte
     Stock = (byte)'2',
 }
 
-//期权权利金价格类型类型
-public enum TThostFtdcOptionRoyaltyPriceTypeType : byte
+/////////////////////////////////////////////////////////////////////////
+///TFtdcAppTypeType是一个用户App类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcAppTypeType : byte
 {
-    ///昨结算价
-    PreSettlementPrice = (byte)'1',
+    ///直连的投资者
+    Investor = (byte)'1',
 
-    ///开仓价
-    OpenPrice = (byte)'4',
+    ///为每个投资者都创建连接的中继
+    InvestorRelay = (byte)'2',
 
-    ///最新价与昨结算价较大值
-    MaxPreSettlementPrice = (byte)'5',
+    ///所有投资者共享一个操作员连接的中继
+    OperatorRelay = (byte)'3',
+
+    ///未知
+    UnKnown = (byte)'4',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcResponseValueType是一个应答类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcResponseValueType : byte
+{
+    ///检查成功
+    Right = (byte)'0',
+
+    ///检查失败
+    Refuse = (byte)'1',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcOTCTradeTypeType是一个OTC成交类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOTCTradeTypeType : byte
+{
+    ///大宗交易
+    Block = (byte)'0',
+
+    ///期转现
+    EFP = (byte)'1',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcMatchTypeType是一个期现风险匹配方式类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcMatchTypeType : byte
+{
+    ///基点价值
+    DV01 = (byte)'1',
+
+    ///面值
+    ParValue = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcAuthTypeType是一个用户终端认证方式类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcAuthTypeType : byte
+{
+    ///白名单校验
+    WHITE = (byte)'0',
+
+    ///黑名单校验
+    BLACK = (byte)'1',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcClassTypeType是一个合约分类方式类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcClassTypeType : byte
+{
+    ///所有合约
+    ALL = (byte)'0',
+
+    ///期货、即期、期转现、Tas、金属指数合约
+    FUTURE = (byte)'1',
+
+    ///期货、现货期权合约
+    OPTION = (byte)'2',
+
+    ///组合合约
+    COMB = (byte)'3',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcTradingTypeType是一个合约交易状态分类方式类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcTradingTypeType : byte
+{
+    ///所有状态
+    ALL = (byte)'0',
+
+    ///交易
+    TRADE = (byte)'1',
+
+    ///非交易
+    UNTRADE = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcProductStatusType是一个产品状态类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcProductStatusType : byte
+{
+    ///可交易
+    tradeable = (byte)'1',
+
+    ///不可交易
+    untradeable = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcSyncDeltaStatusType是一个追平状态类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcSyncDeltaStatusType : byte
+{
+    ///交易可读
+    Readable = (byte)'1',
+
+    ///交易在读
+    Reading = (byte)'2',
+
+    ///交易读取完成
+    Readend = (byte)'3',
+
+    ///追平失败 交易本地状态结算不存在
+    OptErr = (byte)'e',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcActionDirectionType是一个操作标志类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcActionDirectionType : byte
+{
+    ///增加
+    Add = (byte)'1',
+
+    ///删除
+    Del = (byte)'2',
+
+    ///更新
+    Upd = (byte)'3',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcOrderCancelAlgType是一个撤单时选择席位算法类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOrderCancelAlgType : byte
+{
+    ///轮询席位撤单
+    Balance = (byte)'1',
+
+    ///优先原报单席位撤单
+    OrigFirst = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcOpenLimitControlLevelType是一个开仓量限制粒度类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOpenLimitControlLevelType : byte
+{
+    ///不控制
+    None = (byte)'0',
+
+    ///产品级别
+    Product = (byte)'1',
+
+    ///合约级别
+    Inst = (byte)'2',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcOrderFreqControlLevelType是一个报单频率控制粒度类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcOrderFreqControlLevelType : byte
+{
+    ///不控制
+    None = (byte)'0',
+
+    ///产品级别
+    Product = (byte)'1',
+
+    ///合约级别
+    Inst = (byte)'2',
+}
+
+///TFtdcEnumBoolType是一个枚举bool类型类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcEnumBoolType : byte
+{
+    ///false
+    False = (byte)'0',
+
+    ///true
+    True = (byte)'1',
+}
+
+///TFtdcTimeRangeType是一个期货合约阶段标识类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcTimeRangeType : byte
+{
+    ///一般月份
+    USUAL = (byte)'1',
+
+    ///交割月前一个月上半月
+    FNSP = (byte)'2',
+
+    ///交割月前一个月下半月
+    BNSP = (byte)'3',
+
+    ///交割月份
+    SPOT = (byte)'4',
+}
+
+///TFtdcPortfolioType是一个新型组保算法类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcPortfolioType : byte
+{
+    ///不使用新型组保算法
+    None = (byte)'0',
+
+    ///SPBM算法
+    SPBM = (byte)'1',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcWithDrawParamIDType是一个可提参数代码类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcWithDrawParamIDType : byte
+{
+    ///权利金收支是否可提 1 代表可提 0 不可提
+    CashIn = (byte)'C',
+}
+
+/////////////////////////////////////////////////////////////////////////
+///TFtdcInvstTradingRightType是一个投资者交易权限类型
+/////////////////////////////////////////////////////////////////////////
+public enum TThostFtdcInvstTradingRightType : byte
+{
+    ///只能平仓
+    CloseOnly = (byte)'1',
+
+    ///不能交易
+    CashInForbidden = (byte)'2',
+}
+
+/// <summary>
+/// 是否类型
+/// </summary>
+public enum TThostFtdcBoolType : int
+{
+    /// <summary>
+    /// 否
+    /// </summary>
+    No = 0,
+
+    /// <summary>
+    /// 是
+    /// </summary>
+    Yes = 1
+}
 }
