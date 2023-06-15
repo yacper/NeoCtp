@@ -178,13 +178,13 @@ void TraderSpi::OnRspOrderAction(CThostFtdcInputOrderActionField* pInputOrderAct
 }
 
 ///查询最大报单数量响应
-void TraderSpi::OnRspQueryMaxOrderVolume(CThostFtdcQueryMaxOrderVolumeField* pQueryMaxOrderVolume, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
+void TraderSpi::OnRspQueryMaxOrderVolume(CThostFtdcQryMaxOrderVolumeField* pQueryMaxOrderVolume, CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast)
 {
 	if (cbRspQueryMaxOrderVolume != NULL)
 	{
 		if (pQueryMaxOrderVolume == NULL)
 		{
-			CThostFtdcQueryMaxOrderVolumeField req;
+			CThostFtdcQryMaxOrderVolumeField req;
 			memset(&req, 0, sizeof(req));
 			cbRspQueryMaxOrderVolume(&req, repareInfo(pRspInfo), nRequestID, bIsLast);
 		}

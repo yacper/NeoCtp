@@ -70,7 +70,11 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     }
 
 
-    public void OnRspAuthenticate(ref CThostFtdcRspAuthenticateField pRspAuthenticateField, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
+    public event EventHandler<CtpRsp<CThostFtdcRspAuthenticateField>> OnRspAuthenticateEvent;
+    public void OnRspAuthenticate(ref CThostFtdcRspAuthenticateField pRspAuthenticateField, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    {
+        OnRspAuthenticateEvent?.Invoke(this, new(pRspAuthenticateField, pRspInfo, nRequestID, bIsLast));
+    }
 
 
     public void OnRspUserPasswordUpdate(ref           CThostFtdcUserPasswordUpdateField           pUserPasswordUpdate,           ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
@@ -122,7 +126,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     }
 
     ///查询最大报单数量响应
-    public void OnRspQueryMaxOrderVolume(ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
+    public void OnRspQueryMaxOrderVolume(ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast) { }
 
 
     ///删除预埋单响应
@@ -817,6 +821,69 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
     }
 
 
+
+    public Task<CtpRsp<CThostFtdcRspAuthenticateField>> ReqAuthenticateAsync(string appId = null, string authCode = null) // 认证
+    {
+        var taskSource = new TaskCompletionSource<CtpRsp<CThostFtdcRspAuthenticateField>>();
+        var reqId      = GetNextRequestId();
+
+        if (!string.IsNullOrWhiteSpace(appId)) AppID = appId;
+        if (!string.IsNullOrWhiteSpace(authCode)) AuthCode = authCode;
+
+        EventHandler<CtpRsp<CThostFtdcRspAuthenticateField>> onRspAuthenticateHandler = null;
+        EventHandler<CtpRsp>                              onRspErrorHandler     = null;
+        onRspAuthenticateHandler = (s, e) =>
+        {
+            clearHandler();
+
+            taskSource.TrySetResult(e);
+        };
+        onRspErrorHandler = (s, e) =>
+        {
+            if (e.RequestID == reqId)
+            {
+                clearHandler();
+
+                taskSource.TrySetException(new CtpException(e));
+            }
+        };
+
+        void clearHandler()
+        {
+            OnRspAuthenticateEvent -= onRspAuthenticateHandler;
+            OnRspErrorEvent     -= onRspErrorHandler;
+        }
+
+
+        var field = new CThostFtdcReqAuthenticateField()
+        {
+            BrokerID = BrokerId,
+            UserID   = UserId,
+            AppID =AppID,
+            AuthCode = AuthCode
+        };
+
+        ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqAuthenticate(ref field, reqId);
+        if (ret != ECtpExecuteRtn.Success)
+        {
+            taskSource.TrySetResult(new(ret));
+        }
+        else
+        {
+            OnRspAuthenticateEvent += onRspAuthenticateHandler;
+            OnRspErrorEvent     += onRspErrorHandler;
+
+            CancellationTokenSource tokenSource = new CancellationTokenSource(TimeoutMilliseconds);
+            tokenSource.Token.Register(() =>
+            {
+                clearHandler();
+                taskSource.TrySetCanceled();
+            });
+        }
+
+        return taskSource.Task;
+    }
+
     ///投资者结算结果确认
     public Task<CtpRsp<CThostFtdcSettlementInfoConfirmField>> ReqSettlementInfoConfirmAsync()
     {
@@ -912,7 +979,7 @@ public class CtpTdApi : CtpTdApiBase, ICtpTdApi, ICtpTdSpi
         };
 
         // 有时候需要停顿一会才能查询成功
-        await Task.Delay(700);
+        //await Task.Delay(700);
 
         ECtpExecuteRtn ret = (ECtpExecuteRtn)ReqQryTradingAccount(ref field, reqId);
         if (ret != ECtpExecuteRtn.Success) { taskSource.TrySetResult(new(ret)); }

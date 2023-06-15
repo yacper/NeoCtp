@@ -126,7 +126,7 @@ namespace NeoCtp
 		internal extern static int ReqQryOrder(IntPtr pApi, ref CThostFtdcQryOrderField pQryOrder, int nRequestID);
 		///查询最大报单数量请求
 		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqQueryMaxOrderVolume", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
-		internal extern static int ReqQueryMaxOrderVolume(IntPtr pApi, ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID);
+		internal extern static int ReqQueryMaxOrderVolume(IntPtr pApi, ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID);
 		///报单操作请求
 		[DllImport("CtpTdApiWrapper", EntryPoint = "ReqOrderAction", SetLastError = true, CharSet = CharSet.Ansi, ExactSpelling = false, CallingConvention = CallingConvention.Cdecl)]
 		internal extern static int ReqOrderAction(IntPtr pApi, ref CThostFtdcInputOrderActionField pInputOrderAction, int nRequestID);
@@ -408,7 +408,7 @@ namespace NeoCtp
 		///报单操作请求响应
 		internal delegate void CBRspOrderAction( ref CThostFtdcInputOrderActionField pInputOrderAction, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///查询最大报单数量响应
-		internal delegate void CBRspQueryMaxOrderVolume( ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
+		internal delegate void CBRspQueryMaxOrderVolume( ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///投资者结算结果确认响应
 		internal delegate void CBOnRspSettlementInfoConfirm( ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast);
 		///删除预埋单响应

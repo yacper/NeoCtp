@@ -377,7 +377,7 @@ public class CtpTdApi_Test
     }
 
  [Test]
-    public async Task ReqOrderActionAsync_DelTest()
+    public async Task ReqOrderActionAsync_DelTest()  // 撤单
     {
         CThostFtdcInputOrderActionField actionField = new CThostFtdcInputOrderActionField()
         {

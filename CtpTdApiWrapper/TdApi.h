@@ -129,7 +129,7 @@ extern "C"  // 以C的方式导出函数名
 	///请求查询报单
 	TDAPI_API int		ReqQryOrder(CThostFtdcTraderApi* pApi, CThostFtdcQryOrderField* pQryOrder, int nRequestID);
 	///查询最大报单数量请求
-	TDAPI_API int		ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, CThostFtdcQueryMaxOrderVolumeField* pQueryMaxOrderVolume, int nRequestID);
+	TDAPI_API int		ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, CThostFtdcQryMaxOrderVolumeField* pQueryMaxOrderVolume, int nRequestID);
 	///报单操作请求
 	TDAPI_API int		ReqOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputOrderActionField* pInputOrderAction, int nRequestID);
 	///批量报单操作请求

@@ -26,6 +26,10 @@ public partial class CtpTdApiBase : ObservableObject, ICtpTdApiBase
     public string UserId       { get { return _UserID; }       protected set { SetProperty(ref _UserID, value); } }
     public string Password     { get { return _Password; }     protected set { SetProperty(ref _Password, value); } }
     public string FrontAddress { get { return _FrontAddress; } protected set { SetProperty(ref _FrontAddress, value); } }
+    public string AppID        { get { return AppID_; }        protected set { SetProperty(ref AppID_, value); } }
+    public string AuthCode     { get { return AuthCode_; }     protected set { SetProperty(ref AuthCode_, value); } }
+
+
 
     public string FlowPath { get => FlowPath_; set => SetProperty(ref FlowPath_, value); }
 
@@ -274,7 +278,7 @@ public partial class CtpTdApiBase : ObservableObject, ICtpTdApiBase
     }
 
     ///查询最大报单数量请求
-    public int ReqQueryMaxOrderVolume(ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID)
+    public int ReqQueryMaxOrderVolume(ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID)
     {
         if (ApiHandle_ == IntPtr.Zero) return (int)ECtpExecuteRtn.NetworkFailure;
         return TdApiCalls.ReqQueryMaxOrderVolume(ApiHandle_, ref pQueryMaxOrderVolume, nRequestID);
@@ -1109,7 +1113,7 @@ public partial class CtpTdApiBase : ObservableObject, ICtpTdApiBase
     }
 
     ///查询最大报单数量响应
-    private void _CBRspQueryMaxOrderVolume(ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+    private void _CBRspQueryMaxOrderVolume(ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
     {
         TdSpi_?.OnRspQueryMaxOrderVolume(ref pQueryMaxOrderVolume, ref pRspInfo, nRequestID, bIsLast);
     }
@@ -1697,6 +1701,10 @@ public partial class CtpTdApiBase : ObservableObject, ICtpTdApiBase
     protected string _UserID;
     protected string _Password;
     protected string _FrontAddress;
+    protected string AppID_;
+    protected string AuthCode_;
+
+
 
     /// <summary>
     /// 前置编号

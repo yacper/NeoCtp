@@ -19,7 +19,7 @@ namespace NeoCtp.Imp
 	{
 		public static string GetApiVersion()			// 获取版本号
 		{
-			IntPtr ptr = MdApiCalls.GetApiVersion();
+			IntPtr ptr = TdApiCalls.GetApiVersion();
             return Marshal.PtrToStringAuto(ptr);
             //return Marshal.PtrToStringAnsi(ptr);
 		}
@@ -32,6 +32,10 @@ namespace NeoCtp.Imp
         string              UserId { get; }
         string              Password { get; }
         string              FrontAddress { get; }
+
+        string              AppID { get; }
+        string              AuthCode { get; }
+
 
         string              FlowPath    { get; }
 
@@ -213,7 +217,7 @@ namespace NeoCtp.Imp
 		int ReqOrderAction(ref CThostFtdcInputOrderActionField pInputOrderAction, int nRequestID);
 
 		///查询最大报单数量请求
-		int ReqQueryMaxOrderVolume(ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID);
+		int ReqQueryMaxOrderVolume(ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID);
 
 		///投资者结算结果确认
 		int ReqSettlementInfoConfirm(ref CThostFtdcSettlementInfoConfirmField pSettlementInfoConfirm, int nRequestID);

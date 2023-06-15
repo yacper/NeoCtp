@@ -382,7 +382,7 @@ TDAPI_API int		ReqUserLoginWithOTP(CThostFtdcTraderApi* pApi, CThostFtdcReqUserL
 //	return pApi->ReqOrderAction(pOrder, requestID);
 //}
 ////查询最大报单数量请求
-//TDAPI_API int ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, int requestID, CThostFtdcQueryMaxOrderVolumeField *pMaxOrderVolume)
+//TDAPI_API int ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, int requestID, CThostFtdcQryMaxOrderVolumeField *pMaxOrderVolume)
 //{
 //	if (pApi == NULL) return -1;
 //
@@ -1048,9 +1048,9 @@ TDAPI_API int		ReqQryOrder(CThostFtdcTraderApi* pApi, CThostFtdcQryOrderField* p
 	return pApi->ReqQryOrder(pQryOrder, nRequestID);
 }
 ///查询最大报单数量请求
-TDAPI_API int		ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, CThostFtdcQueryMaxOrderVolumeField* pQueryMaxOrderVolume, int nRequestID)
+TDAPI_API int		ReqQueryMaxOrderVolume(CThostFtdcTraderApi* pApi, CThostFtdcQryMaxOrderVolumeField* pQueryMaxOrderVolume, int nRequestID)
 {
-	return pApi->ReqQueryMaxOrderVolume(pQueryMaxOrderVolume, nRequestID);
+	return pApi->ReqQryMaxOrderVolume(pQueryMaxOrderVolume, nRequestID);
 }
 ///报单操作请求
 TDAPI_API int		ReqOrderAction(CThostFtdcTraderApi* pApi, CThostFtdcInputOrderActionField* pInputOrderAction, int nRequestID)

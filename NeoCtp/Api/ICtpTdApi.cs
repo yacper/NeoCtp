@@ -64,6 +64,8 @@ namespace NeoCtp
         Task<CtpRsp<CThostFtdcUserLogoutField>>   ReqUserLogoutAsync();
 
 
+        Task<CtpRsp<CThostFtdcRspAuthenticateField>> ReqAuthenticateAsync(string appId = null, string authCode = null);        // 认证
+
 #region Accont
 
 		///投资者结算结果确认
@@ -123,7 +125,7 @@ namespace NeoCtp
 
 
 		///查询最大报单数量请求
-		int					ReqQueryMaxOrderVolume(ref CThostFtdcQueryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID);
+		int					ReqQueryMaxOrderVolume(ref CThostFtdcQryMaxOrderVolumeField pQueryMaxOrderVolume, int nRequestID);
 
 
 	}
