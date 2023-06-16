@@ -2345,7 +2345,7 @@ public struct CThostFtdcDepthMarketDataField
     /// <summary>
     /// 业务日期
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
     public string ActionDay;
 
 	///合约代码
@@ -12143,6 +12143,11 @@ public struct CThostFtdcReqChangeAccountField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 36)]
     public string Digest;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -12388,6 +12393,11 @@ public struct CThostFtdcReqTransferField
     /// 转账交易状态
     /// </summary>
     public TThostFtdcTransferStatusType TransferStatus;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -12644,6 +12654,11 @@ public struct CThostFtdcRspTransferField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
     public string ErrorMsg;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -12925,6 +12940,11 @@ public struct CThostFtdcReqRepealField
     /// 转账交易状态
     /// </summary>
     public TThostFtdcTransferStatusType TransferStatus;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -13217,6 +13237,10 @@ public struct CThostFtdcRspRepealField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
     public string ErrorMsg;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
 }
 
 /// <summary>
@@ -13426,6 +13450,9 @@ public struct CThostFtdcReqQueryAccountField
     /// 交易ID
     /// </summary>
     public int TID;
+
+
+
 }
 
 /// <summary>
@@ -13645,6 +13672,11 @@ public struct CThostFtdcRspQueryAccountField
     /// 银行可取金额
     /// </summary>
     public double BankFetchAmount;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -14342,6 +14374,12 @@ public struct CThostFtdcReqQueryTradeResultBySerialField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 36)]
     public string Digest;
+
+	///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
+
 }
 
 /// <summary>
@@ -14714,6 +14752,14 @@ public struct CThostFtdcVerifyFuturePasswordField
     /// 交易ID
     /// </summary>
     public int TID;
+
+    /// <summary>
+    /// 币种代码
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+    public string CurrencyID;
+
+
 }
 
 /// <summary>
@@ -14743,6 +14789,11 @@ public struct CThostFtdcVerifyCustInfoField
     /// 客户类型
     /// </summary>
     public TThostFtdcCustTypeType CustType;
+
+///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -14784,6 +14835,16 @@ public struct CThostFtdcVerifyFuturePasswordAndCustInfoField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
     public string Password;
+
+	///币种代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string CurrencyID;
+
+
+///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -15314,6 +15375,13 @@ public struct CThostFtdcNotifyQueryAccountField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
     public string ErrorMsg;
+
+
+///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
+
 }
 
 /// <summary>
@@ -15503,6 +15571,10 @@ public struct CThostFtdcQryTransferSerialField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
     public string BankID;
+
+	///币种代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string CurrencyID;
 }
 
 /// <summary>
@@ -15948,6 +16020,16 @@ public struct CThostFtdcQryAccountregisterField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
     public string BankID;
+
+	///银行分支机构编码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+	public	string BankBranchID;
+
+	///币种代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string CurrencyID;
+
+
 }
 
 /// <summary>
@@ -16052,6 +16134,12 @@ public struct CThostFtdcAccountregisterField
     /// 银行帐号类型
     /// </summary>
     public TThostFtdcBankAccTypeType BankAccType;
+
+
+ ///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -16319,6 +16407,11 @@ public struct CThostFtdcOpenAccountField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
     public string ErrorMsg;
+
+ ///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -16586,6 +16679,12 @@ public struct CThostFtdcCancelAccountField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
     public string ErrorMsg;
+
+
+ ///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
+
 }
 
 /// <summary>
@@ -16831,7 +16930,60 @@ public struct CThostFtdcChangeAccountField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
     public string ErrorMsg;
+
+    ///长客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string LongCustomerName;
 }
+
+
+///二级代理操作员银期权限
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcSecAgentACIDMapField
+{
+    ///经纪公司代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+    public string BrokerID;
+
+    ///用户代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string UserID;
+
+    ///资金账户
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string AccountID;
+
+    ///币种
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+    public string CurrencyID;
+
+    ///境外中介机构资金帐号
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string BrokerSecAgentID;
+};
+
+
+///二级代理操作员银期权限查询
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQrySecAgentACIDMapField
+{
+    ///经纪公司代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+    public string BrokerID;
+
+    ///用户代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string UserID;
+
+    ///资金账户
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string AccountID;
+
+    ///币种
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+    public string CurrencyID;
+};
+
 
 /// <summary>
 /// 灾备中心交易权限
@@ -16962,6 +17114,13 @@ public struct CThostFtdcLoginForbiddenUserField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
     public string UserID;
+
+	///保留的无效字段
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+	public	string reserve1;
+	///IP地址
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+	public	string IPAddress;
 }
 
 /// <summary>
@@ -16981,30 +17140,6 @@ public struct CThostFtdcQryLoginForbiddenUserField
     /// </summary>
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
     public string UserID;
-}
-
-/// <summary>
-/// UDP组播组信息
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcMulticastGroupInfoField
-{
-    /// <summary>
-    /// 组播组IP地址
-    /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-    public string GroupIP;
-
-    /// <summary>
-    /// 组播组IP端口
-    /// </summary>
-    public int GroupPort;
-
-    /// <summary>
-    /// 源地址
-    /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-    public string SourceIP;
 }
 
 /// <summary>
@@ -17029,7 +17164,272 @@ public struct CThostFtdcTradingAccountReserveField
     /// 基本准备金
     /// </summary>
     public double Reserve;
+
+	///币种代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string CurrencyID;
 }
+
+///查询禁止登录IP
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQryLoginForbiddenIPField
+{
+	///保留的无效字段
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+	public	string reserve1;
+	///IP地址
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+	public	string IPAddress;
+};
+
+///查询IP列表
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQryIPListField
+{
+	///保留的无效字段
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+	public	string reserve1;
+	///IP地址
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+	public	string IPAddress;
+};
+
+///查询用户下单权限分配表
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQryUserRightsAssignField
+{
+	///应用单元代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+	public	string BrokerID;
+	///用户代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+	public	string UserID;
+};
+
+///银期预约开户确认请求
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcReserveOpenAccountConfirmField
+{
+	///业务功能码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+	public	string TradeCode;
+	///银行代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string BankID;
+	///银行分支机构代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 5)]
+	public	string BankBranchID;
+	///期商代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+	public	string BrokerID;
+	///期商分支机构代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
+	public	string BrokerBranchID;
+	///交易日期
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string TradeDate;
+	///交易时间
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string TradeTime;
+	///银行流水号
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+	public	string BankSerial;
+	///交易系统日期 
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string TradingDay;
+	///银期平台消息流水号
+	public	int PlateSerial;
+	///最后分片标志
+	public TThostFtdcLastFragmentType	LastFragment;
+	///会话号
+	public	int SessionID;
+	///客户姓名
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 161)]
+	public	string CustomerName;
+	///证件类型
+	public TThostFtdcIdCardTypeType	IdCardType;
+	///证件号码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 51)]
+	public	string IdentifiedCardNo;
+	///性别
+	public TThostFtdcGenderType	Gender;
+	///国家代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+	public	string CountryCode;
+	///客户类型
+	public TThostFtdcCustTypeType	CustType;
+	///地址
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 101)]
+	public	string Address;
+	///邮编
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 7)]
+	public	string ZipCode;
+	///电话号码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string Telephone;
+	///手机
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
+	public	string MobilePhone;
+	///传真
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string Fax;
+	///电子邮件
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string EMail;
+	///资金账户状态
+	public TThostFtdcMoneyAccountStatusType	MoneyAccountStatus;
+	///银行帐号
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string BankAccount;
+	///银行密码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string BankPassWord;
+	///安装编号
+	public	int InstallID;
+	///验证客户证件号码标志
+	public TThostFtdcYesNoIndicatorType	VerifyCertNoFlag;
+	///币种代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+	public	string CurrencyID;
+	///摘要
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 36)]
+	public	string Digest;
+	///银行帐号类型
+	public TThostFtdcBankAccTypeType	BankAccType;
+	///期货公司银行编码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+	public	string BrokerIDByBank;
+	///交易ID
+	public	int TID;
+	///投资者帐号
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+	public	string AccountID;
+	///期货密码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string Password;
+	///预约开户银行流水号
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+	public	string BankReserveOpenSeq;
+	///预约开户日期
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+	public	string BookDate;
+	///预约开户验证密码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 41)]
+	public	string BookPsw;
+	///错误代码
+	public	int ErrorID;
+	///错误信息
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
+	public	string ErrorMsg;
+};
+
+///查询当前交易中心
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQryCurrDRIdentityField
+{
+	///交易中心代码
+	public	int DRIdentityID;
+};
+
+///当前交易中心
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcCurrDRIdentityField
+{
+	///交易中心代码
+	public	int DRIdentityID;
+};
+
+
+///查询二级代理商资金校验模式
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQrySecAgentCheckModeField
+{
+    ///经纪公司代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+    public string BrokerID;
+
+    ///投资者代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string InvestorID;
+};
+
+
+///查询二级代理商信息
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcQrySecAgentTradeInfoField
+{
+    ///经纪公司代码
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+    public string BrokerID;
+
+    ///境外中介机构资金帐号
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
+    public string BrokerSecAgentID;
+};
+
+/// <summary>
+/// 用户发出获取安全安全登陆方法请求
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcReqUserAuthMethodField
+{
+    /// <summary>
+    /// 交易日
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
+    public string TradingDay;
+
+    /// <summary>
+    /// 经纪公司代码
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
+    public string BrokerID;
+
+    /// <summary>
+    /// 用户代码
+    /// </summary>
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string UserID;
+}
+
+/// <summary>
+/// 用户发出获取安全登录方法回复
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct CThostFtdcRspUserAuthMethodField
+{
+    /// <summary>
+    /// 当前可以用的认证模式，0代表无需认证模式,A从低位开始最后一位代表图片验证码，倒数第二位代表动态口令，倒数第三位代表短信验证码类型
+    /// </summary>
+    public int UsableAuthMethod;
+}
+
+
+
+///// <summary>
+///// UDP组播组信息
+///// </summary>
+//[StructLayout(LayoutKind.Sequential)]
+//public struct CThostFtdcMulticastGroupInfoField
+//{
+//    /// <summary>
+//    /// 组播组IP地址
+//    /// </summary>
+//    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+//    public string GroupIP;
+
+//    /// <summary>
+//    /// 组播组IP端口
+//    /// </summary>
+//    public int GroupPort;
+
+//    /// <summary>
+//    /// 源地址
+//    /// </summary>
+//    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+//    public string SourceIP;
+//}
+
 
 
 ///询价查询
@@ -17715,54 +18115,6 @@ public struct CThostFtdcQryInstrumentOrderCommRateField
 };
 
 
-///二级代理操作员银期权限查询
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcQrySecAgentACIDMapField
-{
-    ///经纪公司代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-    public string BrokerID;
-
-    ///用户代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-    public string UserID;
-
-    ///资金账户
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-    public string AccountID;
-
-    ///币种
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-    public string CurrencyID;
-};
-
-
-///查询二级代理商资金校验模式
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcQrySecAgentCheckModeField
-{
-    ///经纪公司代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-    public string BrokerID;
-
-    ///投资者代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-    public string InvestorID;
-};
-
-
-///查询二级代理商信息
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcQrySecAgentTradeInfoField
-{
-    ///经纪公司代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-    public string BrokerID;
-
-    ///境外中介机构资金帐号
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-    public string BrokerSecAgentID;
-};
 
 
 ///输入的期权自对冲
@@ -17993,32 +18345,6 @@ public struct CThostFtdcQryOptionSelfCloseField
 
 
 
-
-
-///二级代理操作员银期权限
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcSecAgentACIDMapField
-{
-    ///经纪公司代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-    public string BrokerID;
-
-    ///用户代码
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-    public string UserID;
-
-    ///资金账户
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-    public string AccountID;
-
-    ///币种
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
-    public string CurrencyID;
-
-    ///境外中介机构资金帐号
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 13)]
-    public string BrokerSecAgentID;
-};
 
 
 ///产品报价汇率
@@ -19732,42 +20058,6 @@ public struct CThostFtdcQryMulticastInstrumentField
 
 };
 
-/// <summary>
-/// 用户发出获取安全安全登陆方法请求
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcReqUserAuthMethodField
-{
-    /// <summary>
-    /// 交易日
-    /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
-    public string TradingDay;
-
-    /// <summary>
-    /// 经纪公司代码
-    /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 11)]
-    public string BrokerID;
-
-    /// <summary>
-    /// 用户代码
-    /// </summary>
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
-    public string UserID;
-}
-
-/// <summary>
-/// 用户发出获取安全登录方法回复
-/// </summary>
-[StructLayout(LayoutKind.Sequential)]
-public struct CThostFtdcRspUserAuthMethodField
-{
-    /// <summary>
-    /// 当前可以用的认证模式，0代表无需认证模式,A从低位开始最后一位代表图片验证码，倒数第二位代表动态口令，倒数第三位代表短信验证码类型
-    /// </summary>
-    public int UsableAuthMethod;
-}
 
 /// <summary>
 /// 图片验证码信息

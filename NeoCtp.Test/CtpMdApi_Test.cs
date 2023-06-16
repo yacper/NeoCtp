@@ -18,6 +18,7 @@ using NeoCtp.Enums;
 using NUnit.Framework;
 using NeoCtp.Imp;
 using NeoCtp.Tests;
+using Newtonsoft.Json;
 using NLog;
 using NLog.Config;
 
@@ -85,14 +86,14 @@ public class CtpMdApi_Test
     public async Task SubMarketDataAsync_Test()
     {
             // 必须小写，大写不行
-        List<string> instruments = new() { "rb2210", "hc2210" };
+        List<string> instruments = new() { "rb2310", "hc2310" };
         //List<string> instruments = new() { "rb2210"};
 
         var marketDataFields = new List<CThostFtdcDepthMarketDataField>();
         client.OnRtnDepthMarketDataEvent += (s, e) =>
         {
             marketDataFields.Add(e);
-            Debug.WriteLine(e.ToJson());
+            Debug.WriteLine(e.ToJson(Formatting.Indented));
         };
 
         var subs = await client.SubMarketDataAsync(instruments.ToArray());
@@ -100,7 +101,7 @@ public class CtpMdApi_Test
         //await client.SubMarketDataAsync(instruments.ToArray());
 
         client.Subscribed.Should().NotBeEmpty();
-        await Task.Delay(500000); // wait 5s for marketdata
+        await Task.Delay(5000); // wait 5s for marketdata
         marketDataFields.Should().NotBeEmpty();
 
         // cancel
