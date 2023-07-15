@@ -8,7 +8,8 @@
 #pragma once
 #include "pch.h"
 
-#pragma region 回调委托申明
+#pragma region 
+//回调委托申明
 extern "C"
 {
 	typedef void (WINAPI* CBOnRspError)(CThostFtdcRspInfoField* pRspInfo, int nRequestID, bool bIsLast);
@@ -36,7 +37,8 @@ class /*MDAPI_API*/ MdSpi : public CThostFtdcMdSpi
 {
 public:
 
-#pragma region 回调委托实例
+#pragma region 
+	//回调委托实例
 	CBOnRspError cbOnRspError = nullptr;
 	CBOnHeartBeatWarning cbOnHeartBeatWarning = 0;
 

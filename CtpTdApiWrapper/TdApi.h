@@ -200,7 +200,7 @@ extern "C"  // 以C的方式导出函数名
 	TDAPI_API int		ReqQryInvestUnit(CThostFtdcTraderApi* pApi, CThostFtdcQryInvestUnitField* pQryInvestUnit, int nRequestID);
 
 
-#pragma region 结算
+#pragma region Settlement
 	///请求查询投资者结算结果
 	TDAPI_API int		ReqQrySettlementInfo(CThostFtdcTraderApi* pApi, CThostFtdcQrySettlementInfoField* pQrySettlementInfo, int nRequestID);
 	///请求查询结算信息确认
@@ -241,7 +241,7 @@ extern "C"  // 以C的方式导出函数名
 #pragma endregion
 
 
-#pragma region 二级代理/sec agent
+#pragma region sec agent
 	///请求查询资金账户
 	TDAPI_API int		ReqQrySecAgentTradingAccount(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingAccountField* pQryTradingAccount, int nRequestID);
 	///请求查询二级代理操作员银期权限
@@ -253,7 +253,7 @@ extern "C"  // 以C的方式导出函数名
 #pragma endregion
 
 
-#pragma region 期权option
+#pragma region option
 	///期权自对冲录入请求
 	TDAPI_API int		ReqOptionSelfCloseInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputOptionSelfCloseField* pInputOptionSelfClose, int nRequestID);
 	///期权自对冲操作请求
@@ -287,7 +287,7 @@ extern "C"  // 以C的方式导出函数名
 #pragma endregion
 
 
-#pragma region Exchange/交易所
+#pragma region Exchange
 	///请求查询交易所
 	TDAPI_API int		ReqQryExchange(CThostFtdcTraderApi* pApi, CThostFtdcQryExchangeField* pQryExchange, int nRequestID);
 	///请求查询交易所保证金率
@@ -319,7 +319,8 @@ extern "C"  // 以C的方式导出函数名
 
 #pragma endregion
 
-#pragma region 注册回调函数
+#pragma region 
+	//注册回调函数
 	//========================================
 	//==================================== 回调函数 =======================================
 	TDAPI_API void RegOnRspError(TraderSpi* pSpi, CBOnRspError cb);	//错误应答

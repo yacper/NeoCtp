@@ -43,7 +43,7 @@ extern "C"  // 以C的方式导出函数名
 	MDAPI_API int			ReqQryMulticastInstrument(CThostFtdcMdApi* pUserApi, CThostFtdcQryMulticastInstrumentField* pQryMulticastInstrument, int nRequestID);
 #pragma endregion
 
-#pragma region 回调函数
+#pragma region
 //============================================ 注册回调函数 ===========================================
 	MDAPI_API void			RegOnRspError(MdSpi* spi, CBOnRspError cb);
 	MDAPI_API void			RegOnHeartBeatWarning(MdSpi* spi, CBOnHeartBeatWarning cb);

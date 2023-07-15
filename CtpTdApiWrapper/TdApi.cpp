@@ -1213,7 +1213,7 @@ TDAPI_API int		ReqSettlementInfoConfirm(CThostFtdcTraderApi* pApi, CThostFtdcSet
 }
 
 
-#pragma region 产品/合约/Instrument
+#pragma region Instrument
 ///请求查询产品
 TDAPI_API int		ReqQryProduct(CThostFtdcTraderApi* pApi, CThostFtdcQryProductField* pQryProduct, int nRequestID)
 {
@@ -1302,7 +1302,7 @@ TDAPI_API int		ReqQryInstrumentOrderCommRate(CThostFtdcTraderApi* pApi, CThostFt
 }
 
 
-#pragma region 二级代理/sec agent
+#pragma region sec agent
 ///请求查询资金账户
 TDAPI_API int		ReqQrySecAgentTradingAccount(CThostFtdcTraderApi* pApi, CThostFtdcQryTradingAccountField* pQryTradingAccount, int nRequestID)
 {
@@ -1326,7 +1326,7 @@ TDAPI_API int		ReqQrySecAgentTradeInfo(CThostFtdcTraderApi* pApi, CThostFtdcQryS
 #pragma endregion
 
 
-#pragma region 期权option
+#pragma region option
 ///期权自对冲录入请求
 TDAPI_API int		ReqOptionSelfCloseInsert(CThostFtdcTraderApi* pApi, CThostFtdcInputOptionSelfCloseField* pInputOptionSelfClose, int nRequestID)
 {
@@ -1406,7 +1406,7 @@ TDAPI_API int		ReqFromFutureToBankByFuture(CThostFtdcTraderApi* pApi, CThostFtdc
 #pragma endregion
 
 
-#pragma region Exchange/交易所
+#pragma region Exchange
 ///请求查询交易所
 TDAPI_API int		ReqQryExchange(CThostFtdcTraderApi* pApi, CThostFtdcQryExchangeField* pQryExchange, int nRequestID)
 {
@@ -1460,7 +1460,8 @@ TDAPI_API int		ReqQryCFMMCTradingAccountKey(CThostFtdcTraderApi* pApi, CThostFtd
 
 #pragma endregion
 
-#pragma region 回调函数
+#pragma region 
+//回调函数
 //========================================
 //==================================== 回调函数 =======================================
 
