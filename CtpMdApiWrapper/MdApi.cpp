@@ -133,7 +133,7 @@ MDAPI_API int ReqQryMulticastInstrument(CThostFtdcMdApi* pUserApi, CThostFtdcQry
 
 #pragma endregion
 
-#pragma region 
+#pragma region 回调函数
 //回调函数
 
 //============================================ 注册回调函数 ===========================================
