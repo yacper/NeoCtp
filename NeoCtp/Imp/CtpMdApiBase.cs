@@ -15,8 +15,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Force.DeepCloner;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using NeoCtp.Enums;
 
 namespace NeoCtp
